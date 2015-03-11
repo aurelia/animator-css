@@ -1,0 +1,20 @@
+{
+  "name": "aurelia-animator-css",
+  "version": "0.1.0",
+  "description": "An implementation of the abstract Animator interface from templating which enables css-based animations.",
+  "keywords": [
+    "aurelia",
+    "animation",
+    "css",
+    "plugin"
+  ],
+  "homepage": "http://aurelia.io",
+  "license": "MIT",
+  "authors": [
+    "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aurelia/animator-css"
+  }
+}
