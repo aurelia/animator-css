@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jspm', 'jasmine'],
+    frameworks: ['jspm', 'jasmine-jquery', 'jasmine'],
 
     jspm: {
       // Edit this to your needs
@@ -19,7 +19,15 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: [],
+    files: [
+      'node_modules/karma-jasmine-jquery/',
+      {
+        pattern: 'test/fixtures/*.html',
+        watched: true,
+        included: false,
+        served: true
+      }
+    ],
 
 
     // list of files to exclude

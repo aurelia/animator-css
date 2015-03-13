@@ -1,0 +1,22 @@
+<style type="text/css">
+  @keyframes increase-size {
+    from { height: 0px; }
+    to { height: 200px; }
+  }
+  @-webkit-keyframes increase-size{
+    from { height: 0px; }
+    to { height: 200px; }
+  }
+
+  .animated-item.au-enter-active {
+    -webkit-animation:0.2s increase-size;
+    animation:0.2s increase-size;
+  }
+</style>
+
+<div id="animation">
+  <ul>
+    <li class="animated-item au-animate">Test 1</li>
+    <li class="boring-item au-animate">Test 2</li>
+  </ul>
+</div>
