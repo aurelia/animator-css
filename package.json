@@ -24,6 +24,9 @@
     "format": "register",
     "directories": {
       "lib": "dist/system"
+    },
+    "dependencies": {
+      "jquery": "^2.1.3"
     }
   },
   "devDependencies": {
@@ -36,11 +39,13 @@
     "gulp-jshint": "^1.9.0",
     "gulp-yuidoc": "^0.1.2",
     "jasmine-core": "^2.1.3",
+    "jasmine-jquery": "^2.0.6",
     "jshint-stylish": "^1.0.0",
     "karma": "^0.12.28",
     "karma-babel-preprocessor": "^4.0.0",
     "karma-chrome-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.2",
+    "karma-jasmine-jquery": "^0.1.1",
     "karma-jspm": "^1.0.1",
     "object.assign": "^1.0.3",
     "require-dir": "^0.1.0",

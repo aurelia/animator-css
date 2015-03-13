@@ -80,7 +80,7 @@ export class Animator {
           classList.remove('au-enter-active');
           classList.remove('au-enter');
 
-          resolve(true);
+          resolve(false);
         }
       }, 50);
     });
