@@ -12,6 +12,60 @@
     -webkit-animation:0.2s increase-size;
     animation:0.2s increase-size;
   }
+
+  @keyframes decrease-size {
+    from { height: 200px; }
+    to { height: 0px; }
+  }
+  @-webkit-keyframes decrease-size{
+    from { height: 200px; }
+    to { height: 0px; }
+  }
+
+  .animated-item.au-leave-active {
+    -webkit-animation:0.2s decrease-size;
+    animation:0.2s decrease-size;
+  }
+
+  @keyframes show-animation {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @-webkit-keyframes show-animation{
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .hidden {
+    opacity: 0;
+  }
+
+  .hidden-remove {
+    -webkit-animation:0.2s show-animation;
+    animation:0.2s show-animation;
+  }
+
+  .addMoreWidth {
+    width: 40px;
+  }
+
+  @keyframes add-more-width-animation {
+    from { width: 20px; }
+    to { width: 40px; }
+  }
+  @-webkit-keyframes add-more-width-animation{
+    from { width: 20px; }
+    to { width: 40px; }
+  }
+
+  .addMoreWidth-add {
+    -webkit-animation:0.2s add-more-width-animation;
+    animation:0.2s add-more-width-animation;
+  }
+
+  .nonAnimatedWidth {
+    width: 100px;
+  }
 </style>
 
 <div id="animation">
@@ -19,4 +73,11 @@
     <li class="animated-item au-animate">Test 1</li>
     <li class="boring-item au-animate">Test 2</li>
   </ul>
+
+  <div id="goingToBeShown" class="hidden">Hello</div>
+  <div id="removeClassWrong" class="wrongHidden">Test</div>
+
+  <div id="goingToBeIncreased">
+    I'm going to get bigger
+  </div>
 </div>

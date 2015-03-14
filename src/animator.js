@@ -146,8 +146,10 @@ export class Animator {
     return new Promise( (resolve, reject) => {
       var classList = element.classList;
 
-      if (!classList.contains(className))
+      if (!classList.contains(className)) {
+        resolve(false);
         return;
+      }
 
       // Step 1: generate animation id
       var animId = element.toString() + className + Math.random();
@@ -192,7 +194,7 @@ export class Animator {
       // Step 5: if no animations happened cleanup animation classes and remove final class
       setTimeout(() => {
         if (this.animationStack.indexOf(animId) < 0) {
-          classList.remove(className + "-add");
+          classList.remove(className + "-remove");
           classList.remove(className);
 
           resolve(false);
