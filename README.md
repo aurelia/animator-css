@@ -6,7 +6,7 @@ An implementation of the abstract Animator interface from templating which enabl
 
 ## Dependencies
 
-This library has **NO** external dependencies.
+* [aurelia-templating](https://github.com/aurelia/templating)
 
 ## Used By
 

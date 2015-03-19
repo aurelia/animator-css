@@ -1,6 +1,5 @@
-export class Animator {
-  constructor() {
-    Animator.instance = this;
+export class CssAnimator {
+  constructor(){
     this.animationStack = [];
   }
 

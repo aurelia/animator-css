@@ -26,6 +26,7 @@
       "lib": "dist/system"
     },
     "dependencies": {
+      "aurelia-templating": "github:aurelia/templating@^0.8.14",
       "jquery": "^2.1.3"
     }
   },
