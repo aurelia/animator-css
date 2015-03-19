@@ -10,7 +10,6 @@ System.config({
 System.config({
   "map": {
     "aurelia-templating": "github:aurelia/templating@0.8.14",
-    "jquery": "github:components/jquery@2.1.3",
     "github:aurelia/binding@0.3.7": {
       "aurelia-dependency-injection": "github:aurelia/dependency-injection@0.4.5",
       "aurelia-metadata": "github:aurelia/metadata@0.3.3",

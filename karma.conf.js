@@ -17,9 +17,9 @@ module.exports = function(config) {
       loadFiles: ['src/**/*.js', 'test/**/*.js']
     },
 
-
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/jquery/dist/jquery.min.js',
       'node_modules/karma-jasmine-jquery/',
       {
         pattern: 'test/fixtures/*.html',

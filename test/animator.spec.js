@@ -1,12 +1,11 @@
-import {Animator} from '../src/animator';
-import $ from 'jquery';
+import {CssAnimator} from '../src/animator';
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/';
 
 describe('animator-css', () => {
   var sut;
   beforeEach( () => {
-    sut = new Animator();
+    sut = new CssAnimator();
   });
 
   describe('enter animation', () => {
