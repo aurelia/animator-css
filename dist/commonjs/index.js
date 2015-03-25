@@ -7,7 +7,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var Animator = require("aurelia-templating").Animator;
 
-exports.CssAnimator = require("./animator").CssAnimator;
+var _animator = require("./animator");
+
+var CssAnimator = _animator.CssAnimator;
+exports.CssAnimator = _animator.CssAnimator;
 
 function install(aurelia) {
   Animator.configureDefault(aurelia.container, new CssAnimator());

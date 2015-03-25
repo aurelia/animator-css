@@ -6,6 +6,7 @@ define(["exports", "aurelia-templating", "./animator"], function (exports, _aure
     value: true
   });
   var Animator = _aureliaTemplating.Animator;
+  var CssAnimator = _animator.CssAnimator;
   exports.CssAnimator = _animator.CssAnimator;
 
   function install(aurelia) {

@@ -1,5 +1,5 @@
 System.register(["aurelia-templating", "./animator"], function (_export) {
-  var Animator;
+  var Animator, CssAnimator;
 
   _export("install", install);
 
@@ -11,6 +11,8 @@ System.register(["aurelia-templating", "./animator"], function (_export) {
     setters: [function (_aureliaTemplating) {
       Animator = _aureliaTemplating.Animator;
     }, function (_animator) {
+      CssAnimator = _animator.CssAnimator;
+
       _export("CssAnimator", _animator.CssAnimator);
     }],
     execute: function () {
