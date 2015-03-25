@@ -1,4 +1,6 @@
 import {Animator} from 'aurelia-templating';
+import {CssAnimator} from './animator';
+
 export {CssAnimator} from './animator';
 
 export function install(aurelia){
