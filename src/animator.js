@@ -81,7 +81,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, 400);
     });
   }
 
@@ -137,7 +137,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, 400);
     });
   }
 
@@ -198,7 +198,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, 400);
     });
   }
 
@@ -253,7 +253,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, 50);
+      }, 400);
     });
   }
 }

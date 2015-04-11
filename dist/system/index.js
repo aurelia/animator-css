@@ -1,7 +1,7 @@
-System.register(["aurelia-templating", "./animator"], function (_export) {
+System.register(['aurelia-templating', './animator'], function (_export) {
   var Animator, CssAnimator;
 
-  _export("install", install);
+  _export('install', install);
 
   function install(aurelia) {
     Animator.configureDefault(aurelia.container, new CssAnimator());
@@ -13,10 +13,10 @@ System.register(["aurelia-templating", "./animator"], function (_export) {
     }, function (_animator) {
       CssAnimator = _animator.CssAnimator;
 
-      _export("CssAnimator", _animator.CssAnimator);
+      _export('CssAnimator', _animator.CssAnimator);
     }],
     execute: function () {
-      "use strict";
+      'use strict';
     }
   };
 });

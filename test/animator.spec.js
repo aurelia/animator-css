@@ -21,7 +21,9 @@ describe('animator-css', () => {
     });
 
     it('should remove animation from stack after done', (done) => {
-      var result = sut.enter(elem).then( () => {
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.enter(elem).then( () => {
         expect(sut.animationStack.length).toBe(0);
         done();
       });

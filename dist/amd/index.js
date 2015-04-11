@@ -1,15 +1,18 @@
-define(["exports", "aurelia-templating", "./animator"], function (exports, _aureliaTemplating, _animator) {
-  "use strict";
+define(['exports', 'aurelia-templating', './animator'], function (exports, _aureliaTemplating, _animator) {
+  'use strict';
 
-  exports.install = install;
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(exports, '__esModule', {
     value: true
   });
-  var Animator = _aureliaTemplating.Animator;
-  var CssAnimator = _animator.CssAnimator;
-  exports.CssAnimator = _animator.CssAnimator;
+  exports.install = install;
+  Object.defineProperty(exports, 'CssAnimator', {
+    enumerable: true,
+    get: function get() {
+      return _animator.CssAnimator;
+    }
+  });
 
   function install(aurelia) {
-    Animator.configureDefault(aurelia.container, new CssAnimator());
+    _aureliaTemplating.Animator.configureDefault(aurelia.container, new _animator.CssAnimator());
   }
 });
