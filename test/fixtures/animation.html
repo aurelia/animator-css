@@ -49,6 +49,14 @@
     width: 40px;
   }
 
+  #delayedElement.au-enter-active {
+    -webkit-animation:0.2s show-animation;
+    animation:0.2s show-animation;
+
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+  }
+
   @keyframes add-more-width-animation {
     from { width: 20px; }
     to { width: 40px; }
@@ -80,4 +88,6 @@
   <div id="goingToBeIncreased">
     I'm going to get bigger
   </div>
+
+  <div id="delayedElement" class="au-animate">Delayed element</div>
 </div>

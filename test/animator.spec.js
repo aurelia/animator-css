@@ -29,6 +29,15 @@ describe('animator-css', () => {
       });
     });
 
+    it('should respect animation-delay', (done) => {
+      var elem = $('#delayedElement').eq(0)[0];
+
+      sut.enter(elem).then( () => {
+        expect(sut.animationStack.length).toBe(0);
+        done();
+      });
+    });
+
     it('should kick off animation', (done) => {
       var elem = $('.animated-item').eq(0)[0];
 
