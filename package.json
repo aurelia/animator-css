@@ -26,7 +26,7 @@
       "lib": "dist/system"
     },
     "dependencies": {
-      "aurelia-templating": "github:aurelia/templating@^0.10.0"
+      "aurelia-templating": "github:aurelia/templating@^0.10.3"
     }
   },
   "devDependencies": {
