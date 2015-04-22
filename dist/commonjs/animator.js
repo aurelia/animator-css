@@ -100,7 +100,19 @@ var CssAnimator = (function () {
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
         }, false);
 
-        classList.add('au-enter-active');
+        var parent = element.parentElement,
+            delay = 0;
+
+        if (parent.classList.contains('au-stagger')) {
+          var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+          delay = _this.getElementAnimationDelay(parent) * elemPos;
+
+          setTimeout(function () {
+            classList.add('au-enter-active');
+          }, delay);
+        } else {
+          classList.add('au-enter-active');
+        }
 
         setTimeout(function () {
           if (_this.animationStack.indexOf(animId) < 0) {
@@ -109,7 +121,7 @@ var CssAnimator = (function () {
 
             resolve(false);
           }
-        }, _this.getElementAnimationDelay(element) + 400);
+        }, _this.getElementAnimationDelay(element) + 400 + delay);
       });
     }
   }, {
@@ -146,7 +158,19 @@ var CssAnimator = (function () {
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
         }, false);
 
-        classList.add('au-leave-active');
+        var parent = element.parentElement,
+            delay = 0;
+
+        if (parent.classList.contains('au-stagger')) {
+          var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+          delay = _this2.getElementAnimationDelay(parent) * elemPos;
+
+          setTimeout(function () {
+            classList.add('au-leave-active');
+          }, delay);
+        } else {
+          classList.add('au-leave-active');
+        }
 
         setTimeout(function () {
           if (_this2.animationStack.indexOf(animId) < 0) {
@@ -155,7 +179,7 @@ var CssAnimator = (function () {
 
             resolve(false);
           }
-        }, _this2.getElementAnimationDelay(element) + 400);
+        }, _this2.getElementAnimationDelay(element) + 400 + delay);
       });
     }
   }, {

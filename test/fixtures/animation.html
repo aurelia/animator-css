@@ -36,6 +36,15 @@
     to { opacity: 1; }
   }
 
+  @keyframes hide-animation {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @-webkit-keyframes hide-animation{
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
   .hidden {
     opacity: 0;
   }
@@ -74,6 +83,30 @@
   .nonAnimatedWidth {
     width: 100px;
   }
+
+  .stagger.au-enter {
+    opacity: 0!important;
+  }
+
+  .stagger.au-leave {
+    opacity: 1!important;
+  }
+
+  .stagger.au-enter-active {
+    -webkit-animation:1.5s show-animation;
+    animation:1.5s show-animation;
+  }
+
+  .stagger.au-leave-active {
+    -webkit-animation:1.5s hide-animation;
+    animation:1.5s hide-animation;
+  }
+
+  ul.au-stagger {
+    /* 200ms will be applied between each successive enter operation */
+    -webkit-animation-delay:100ms;
+    animation-delay:100ms;
+  }
 </style>
 
 <div id="animation">
@@ -90,4 +123,13 @@
   </div>
 
   <div id="delayedElement" class="au-animate">Delayed element</div>
+
+
+  <ul class="au-stagger">
+    <li class="stagger au-animate">Item1</li>
+    <li class="stagger au-animate">Item2</li>
+    <li class="stagger au-animate">Item3</li>
+    <li class="stagger au-animate">Item4</li>
+    <li class="stagger au-animate">Item5</li>
+  </ul>
 </div>

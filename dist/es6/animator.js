@@ -32,13 +32,10 @@ export class CssAnimator {
 
     if (styl.getPropertyValue('animation-delay')) {
       prop = 'animation-delay';
-
     } else if (styl.getPropertyValue('-webkit-animation-delay')) {
       prop = '-webkit-animation-delay';
-
     } else if (styl.getPropertyValue('-moz-animation-delay')) {
       prop = '-moz-animation-delay';
-
     } else {
       return 0;
     }
@@ -93,8 +90,20 @@ export class CssAnimator {
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
 
-      // Step 4: Add active class to kick off animation
-      classList.add('au-enter-active');
+      // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
+      var parent = element.parentElement,
+          delay = 0;
+
+      if(parent.classList.contains('au-stagger')) {
+        var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+        delay = this.getElementAnimationDelay(parent) * elemPos;
+
+        setTimeout(() => {
+          classList.add('au-enter-active');
+        }, delay);
+      } else {
+        classList.add('au-enter-active');
+      }
 
       // Step 5: if no animations happened cleanup animation classes
       setTimeout(() => {
@@ -104,7 +113,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, this.getElementAnimationDelay(element) + 400);
+      }, this.getElementAnimationDelay(element) + 400 + delay);
     });
   }
 
@@ -149,8 +158,20 @@ export class CssAnimator {
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
 
-      // Step 4: Add active class to kick off animation
-      classList.add('au-leave-active');
+      // Step 4: check if parent element is defined to stagger animations otherwise trigger leave immediately
+      var parent = element.parentElement,
+        delay = 0;
+
+      if(parent.classList.contains('au-stagger')) {
+        var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+        delay = this.getElementAnimationDelay(parent) * elemPos;
+
+        setTimeout(() => {
+          classList.add('au-leave-active');
+        }, delay);
+      } else {
+        classList.add('au-leave-active');
+      }
 
       // Step 5: if no animations happened cleanup animation classes
       setTimeout(() => {
@@ -160,7 +181,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, this.getElementAnimationDelay(element) + 400);
+      }, this.getElementAnimationDelay(element) + 400 + delay);
     });
   }
 

@@ -58,7 +58,7 @@ describe('animator-css', () => {
     it('should cleanup animation classes', (done) => {
       var elem = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( (didRunAnimation) => {
+      sut.enter(elem).then( () => {
         expect(elem.classList.contains("au-enter")).toBe(false);
         expect(elem.classList.contains("au-enter-active")).toBe(false);
         done();
@@ -105,7 +105,7 @@ describe('animator-css', () => {
     it('should cleanup animation classes', (done) => {
       var elem = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( (didRunAnimation) => {
+      sut.enter(elem).then( () => {
         expect(elem.classList.contains("au-leave")).toBe(false);
         expect(elem.classList.contains("au-leave-active")).toBe(false);
         done();
@@ -151,7 +151,7 @@ describe('animator-css', () => {
     });
 
     it('should cleanup animation classes', (done) => {
-      sut.removeClass(elem, testClass).then( (didRunAnimation) => {
+      sut.removeClass(elem, testClass).then( () => {
         expect(elem.classList.contains(testClass)).toBe(false);
         expect(elem.classList.contains(testClass + "-remove")).toBe(false);
         done();
@@ -202,6 +202,37 @@ describe('animator-css', () => {
         expect(elem.classList.contains(testClass + "-add")).toBe(false);
         done();
       });
+    });
+  });
+
+  describe('staggering animations', () => {
+    var elems;
+
+    beforeEach(() => {
+      loadFixtures('animation.html');
+      elems = $('.stagger');
+    });
+
+    it('should animate enter elements staggered', (done) => {
+      var proms = [];
+      elems.each( (idx, elem) => {
+        proms.push(sut.enter(elem));
+      });
+
+      Promise.all(proms).then( () => {
+        done();
+      })
+    });
+
+    it('should animate leave elements staggered', (done) => {
+      var proms = [];
+      elems.each( (idx, elem) => {
+        proms.push(sut.leave(elem));
+      });
+
+      Promise.all(proms).then( () => {
+        done();
+      })
     });
   });
 });
