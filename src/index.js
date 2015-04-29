@@ -3,6 +3,6 @@ import {CssAnimator} from './animator';
 
 export {CssAnimator} from './animator';
 
-export function install(aurelia){
+export function configure(aurelia){
   Animator.configureDefault(aurelia.container, new CssAnimator());
 }
