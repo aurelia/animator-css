@@ -1,3 +1,16 @@
+## 0.2.0 (2015-05-01)
+
+
+#### Bug Fixes
+
+* **all:** update to latest plugin api ([3a5210c0](https://github.com/aurelia/animator-css/commit/3a5210c0289dc3d65460b6b61f71fa88bb32c138))
+
+
+#### Features
+
+* **stagger:** add staggering animations ([d57d22b6](https://github.com/aurelia/animator-css/commit/d57d22b6dd6f4653c8463e27b41cedd38f7c7df3))
+
+
 ### 0.1.0 (2015-04-13)
 
 

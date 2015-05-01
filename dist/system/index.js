@@ -1,9 +1,9 @@
 System.register(['aurelia-templating', './animator'], function (_export) {
   var Animator, CssAnimator;
 
-  _export('install', install);
+  _export('configure', configure);
 
-  function install(aurelia) {
+  function configure(aurelia) {
     Animator.configureDefault(aurelia.container, new CssAnimator());
   }
 
