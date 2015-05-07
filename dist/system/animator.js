@@ -96,7 +96,7 @@ System.register([], function (_export) {
             var parent = element.parentElement,
                 delay = 0;
 
-            if (parent.classList.contains('au-stagger')) {
+            if (parent !== null && parent !== undefined && parent.classList.contains('au-stagger')) {
               var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
               delay = _this.getElementAnimationDelay(parent) * elemPos;
 
@@ -153,7 +153,7 @@ System.register([], function (_export) {
             var parent = element.parentElement,
                 delay = 0;
 
-            if (parent.classList.contains('au-stagger')) {
+            if (parent !== null && parent !== undefined && parent.classList.contains('au-stagger')) {
               var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
               delay = _this2.getElementAnimationDelay(parent) * elemPos;
 
