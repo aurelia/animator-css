@@ -1,6 +1,8 @@
 export class CssAnimator {
+
   constructor(){
     this.animationStack = [];
+    this.isAnimating = false;
   }
 
   addMultipleEventListener(el, s, fn) {
@@ -61,6 +63,8 @@ export class CssAnimator {
       // Step 3: setup event to check whether animations started
       var animStart;
       this.addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = (evAnimStart) => {
+        this.isAnimating = true;
+
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
@@ -83,6 +87,7 @@ export class CssAnimator {
           // Step 3.2.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+          this.isAnimating = false;
           resolve(true);
         }, false);
 
@@ -131,6 +136,8 @@ export class CssAnimator {
       // Step 3: setup event to check whether animations started
       var animStart;
       this.addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = (evAnimStart) => {
+        this.isAnimating = true;
+
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
@@ -153,6 +160,7 @@ export class CssAnimator {
           // Step 3.2.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+          this.isAnimating = false;
           resolve(true);
         }, false);
 
@@ -207,6 +215,8 @@ export class CssAnimator {
       // Step 3: setup event to check whether animations started
       var animStart;
       this.addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = (evAnimStart) => {
+        this.isAnimating = true;
+
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
@@ -228,6 +238,7 @@ export class CssAnimator {
           // Step 3.2.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+          this.isAnimating = false;
           resolve(true);
         }, false);
 
@@ -259,6 +270,8 @@ export class CssAnimator {
       // Step 2: setup event to check whether animations started
       var animStart;
       this.addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = (evAnimStart) => {
+        this.isAnimating = true;
+
         // Step 2.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
@@ -283,6 +296,7 @@ export class CssAnimator {
           // Step 2.2.4 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+          this.isAnimating = false;
           resolve(true);
         }, false);
 

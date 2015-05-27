@@ -64,6 +64,19 @@ describe('animator-css', () => {
         done();
       });
     });
+
+    it('should set isAnimating to active during animations', (done) => {
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.enter(elem).then( () => {
+        expect(sut.isAnimating).toBe(false);
+        done();
+      });
+
+      setTimeout( () => {
+        expect(sut.isAnimating).toBe(true);
+      }, 70);
+    });
   });
 
   describe('leave animation', () => {
@@ -111,6 +124,19 @@ describe('animator-css', () => {
         done();
       });
     });
+
+    it('should set isAnimating to active during animations', (done) => {
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.leave(elem).then( () => {
+        expect(sut.isAnimating).toBe(false);
+        done();
+      });
+
+      setTimeout( () => {
+        expect(sut.isAnimating).toBe(true);
+      }, 70);
+    });
   });
 
   describe('removeClass animation', () => {
@@ -157,6 +183,17 @@ describe('animator-css', () => {
         done();
       });
     });
+
+    it('should set isAnimating to active during animations', (done) => {
+      sut.removeClass(elem, testClass).then( () => {
+        expect(sut.isAnimating).toBe(false);
+        done();
+      });
+
+      setTimeout( () => {
+        expect(sut.isAnimating).toBe(true);
+      }, 70);
+    });
   });
 
   describe('addClass animation', () => {
@@ -202,6 +239,17 @@ describe('animator-css', () => {
         expect(elem.classList.contains(testClass + "-add")).toBe(false);
         done();
       });
+    });
+
+    it('should set isAnimating to active during animations', (done) => {
+      sut.addClass(elem, testClass).then( () => {
+        expect(sut.isAnimating).toBe(false);
+        done();
+      });
+
+      setTimeout( () => {
+        expect(sut.isAnimating).toBe(true);
+      }, 70);
     });
   });
 

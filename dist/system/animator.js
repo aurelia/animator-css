@@ -13,6 +13,7 @@ System.register([], function (_export) {
           _classCallCheck(this, CssAnimator);
 
           this.animationStack = [];
+          this.isAnimating = false;
         }
 
         CssAnimator.prototype.addMultipleEventListener = function addMultipleEventListener(el, s, fn) {
@@ -72,6 +73,8 @@ System.register([], function (_export) {
 
             var animStart;
             _this.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+              _this.isAnimating = true;
+
               evAnimStart.stopPropagation();
 
               _this.addAnimationToStack(animId);
@@ -87,6 +90,7 @@ System.register([], function (_export) {
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+                _this.isAnimating = false;
                 resolve(true);
               }, false);
 
@@ -129,6 +133,8 @@ System.register([], function (_export) {
 
             var animStart;
             _this2.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+              _this2.isAnimating = true;
+
               evAnimStart.stopPropagation();
 
               _this2.addAnimationToStack(animId);
@@ -144,6 +150,7 @@ System.register([], function (_export) {
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+                _this2.isAnimating = false;
                 resolve(true);
               }, false);
 
@@ -192,6 +199,8 @@ System.register([], function (_export) {
 
             var animStart;
             _this3.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+              _this3.isAnimating = true;
+
               evAnimStart.stopPropagation();
 
               _this3.addAnimationToStack(animId);
@@ -206,6 +215,7 @@ System.register([], function (_export) {
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+                _this3.isAnimating = false;
                 resolve(true);
               }, false);
 
@@ -234,6 +244,8 @@ System.register([], function (_export) {
 
             var animStart;
             _this4.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+              _this4.isAnimating = true;
+
               evAnimStart.stopPropagation();
 
               _this4.addAnimationToStack(animId);
@@ -250,6 +262,7 @@ System.register([], function (_export) {
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+                _this4.isAnimating = false;
                 resolve(true);
               }, false);
 
