@@ -1,6 +1,10 @@
 export class CssAnimator {
   constructor(){
     this.animationStack = [];
+
+    this.useAnimationDoneClasses = false;
+    this.animationEnteredClass = 'au-entered';
+    this.animationLeftClass = 'au-left';
   }
 
   addMultipleEventListener(el, s, fn) {
@@ -83,6 +87,11 @@ export class CssAnimator {
           // Step 3.2.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+          // Step 3.2.4 in case animation done animations are active, add the defined entered class to the element
+          if(this.useAnimationDoneClasses) {
+            classList.add(this.animationEnteredClass);
+          }
+
           resolve(true);
         }, false);
 
@@ -152,6 +161,11 @@ export class CssAnimator {
 
           // Step 3.2.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+          // Step 3.2.4 in case animation done animations are active, add the defined left class to the element
+          if(this.useAnimationDoneClasses) {
+            classList.add(this.animationLeftClass);
+          }
 
           resolve(true);
         }, false);

@@ -10,6 +10,10 @@ define(['exports'], function (exports) {
       _classCallCheck(this, CssAnimator);
 
       this.animationStack = [];
+
+      this.useAnimationDoneClasses = false;
+      this.animationEnteredClass = 'au-entered';
+      this.animationLeftClass = 'au-left';
     }
 
     CssAnimator.prototype.addMultipleEventListener = function addMultipleEventListener(el, s, fn) {
@@ -84,6 +88,10 @@ define(['exports'], function (exports) {
 
             evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+            if (_this.useAnimationDoneClasses) {
+              classList.add(_this.animationEnteredClass);
+            }
+
             resolve(true);
           }, false);
 
@@ -140,6 +148,10 @@ define(['exports'], function (exports) {
             _this2.removeAnimationFromStack(animId);
 
             evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+            if (_this2.useAnimationDoneClasses) {
+              classList.add(_this2.animationLeftClass);
+            }
 
             resolve(true);
           }, false);

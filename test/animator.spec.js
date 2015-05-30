@@ -1,3 +1,4 @@
+import {configure} from '../src/index';
 import {CssAnimator} from '../src/animator';
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/';
@@ -6,6 +7,39 @@ describe('animator-css', () => {
   var sut;
   beforeEach( () => {
     sut = new CssAnimator();
+  });
+
+  describe('plugin initialization', () => {
+    var aurelia = {
+      globalizeResources: () => {
+
+      },
+      container: {
+        registerInstance: (type, instance) => {
+
+        },
+        get: (type) => { return new type(); }
+      }
+    };
+
+    it('should export configure function', () => {
+      expect(typeof configure).toBe('function');
+    });
+
+    it('should accept a setup callback passing back the animator instance', (done) => {
+      var cb = (instance) => {
+        expect(typeof instance).toBe('object');
+        done();
+      };
+
+      configure(aurelia, cb);
+    });
+
+    it('should have animation done classes disabled by default', () => {
+      configure(aurelia, (instance) => {
+        expect(instance.useAnimationDoneClasses).toBe(false);
+      });
+    });
   });
 
   describe('enter animation', () => {
@@ -64,6 +98,27 @@ describe('animator-css', () => {
         done();
       });
     });
+
+    it('should not add left class by default', (done) => {
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.enter(elem).then( () => {
+        expect(elem.classList.contains("au-entered")).toBe(false);
+        done();
+      });
+    });
+
+    it('should add configured entered class', (done) => {
+      sut.useAnimationDoneClasses = true;
+      sut.animationEnteredClass = 'custom-entered';
+
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.enter(elem).then( () => {
+        expect(elem.classList.contains("custom-entered")).toBe(true);
+        done();
+      });
+    });
   });
 
   describe('leave animation', () => {
@@ -108,6 +163,27 @@ describe('animator-css', () => {
       sut.enter(elem).then( () => {
         expect(elem.classList.contains("au-leave")).toBe(false);
         expect(elem.classList.contains("au-leave-active")).toBe(false);
+        done();
+      });
+    });
+
+    it('should not add left class by default', (done) => {
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.leave(elem).then( () => {
+        expect(elem.classList.contains("au-left")).toBe(false);
+        done();
+      });
+    });
+
+    it('should add configured entered class', (done) => {
+      sut.useAnimationDoneClasses = true;
+      sut.animationLeftClass = 'custom-left';
+
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.leave(elem).then( () => {
+        expect(elem.classList.contains("custom-left")).toBe(true);
         done();
       });
     });
