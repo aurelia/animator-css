@@ -12,5 +12,5 @@ exports.CssAnimator = _CssAnimator.CssAnimator;
 function configure(aurelia, cb) {
   var animator = new _CssAnimator.CssAnimator();
   _Animator.Animator.configureDefault(aurelia.container, animator);
-  cb(animator);
+  cb(aurelia.container.get(_CssAnimator.CssAnimator));
 }

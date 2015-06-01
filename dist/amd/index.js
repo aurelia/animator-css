@@ -8,6 +8,6 @@ define(['exports', 'aurelia-templating', './animator'], function (exports, _aure
   function configure(aurelia, cb) {
     var animator = new _animator.CssAnimator();
     _aureliaTemplating.Animator.configureDefault(aurelia.container, animator);
-    cb(animator);
+    cb(aurelia.container.get(_animator.CssAnimator));
   }
 });

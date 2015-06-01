@@ -119,6 +119,18 @@ describe('animator-css', () => {
         done();
       });
     });
+
+    it('should not add undefined done class', (done) => {
+      sut.useAnimationDoneClasses = true;
+      sut.animationEnteredClass = undefined;
+
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.enter(elem).then( () => {
+        expect(elem.classList.contains("undefined")).toBe(false);
+        done();
+      });
+    });
   });
 
   describe('leave animation', () => {
@@ -184,6 +196,18 @@ describe('animator-css', () => {
 
       sut.leave(elem).then( () => {
         expect(elem.classList.contains("custom-left")).toBe(true);
+        done();
+      });
+    });
+
+    it('should not add undefined done class', (done) => {
+      sut.useAnimationDoneClasses = true;
+      sut.animationLeftClass = undefined;
+
+      var elem = $('.animated-item').eq(0)[0];
+
+      sut.leave(elem).then( () => {
+        expect(elem.classList.contains("undefined")).toBe(false);
         done();
       });
     });

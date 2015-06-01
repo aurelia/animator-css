@@ -59,6 +59,12 @@ export class CssAnimator {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
+      // Step 1.1: remove done classes
+      if(this.useAnimationDoneClasses) {
+        classList.remove(this.animationEnteredClass);
+        classList.remove(this.animationLeftClass);
+      }
+
       // Step 2: Add animation preparation class
       classList.add('au-enter');
 
@@ -88,7 +94,9 @@ export class CssAnimator {
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           // Step 3.2.4 in case animation done animations are active, add the defined entered class to the element
-          if(this.useAnimationDoneClasses) {
+          if(this.useAnimationDoneClasses &&
+             this.animationEnteredClass !== undefined &&
+             this.animationEnteredClass !== null) {
             classList.add(this.animationEnteredClass);
           }
 
@@ -134,6 +142,12 @@ export class CssAnimator {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
+      // Step 1.1: remove done classes
+      if(this.useAnimationDoneClasses) {
+        classList.remove(this.animationEnteredClass);
+        classList.remove(this.animationLeftClass);
+      }
+
       // Step 2: Add animation preparation class
       classList.add('au-leave');
 
@@ -163,7 +177,9 @@ export class CssAnimator {
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           // Step 3.2.4 in case animation done animations are active, add the defined left class to the element
-          if(this.useAnimationDoneClasses) {
+          if(this.useAnimationDoneClasses &&
+             this.animationLeftClass !== undefined &&
+             this.animationLeftClass !== null) {
             classList.add(this.animationLeftClass);
           }
 

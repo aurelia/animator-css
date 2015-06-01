@@ -6,7 +6,7 @@ System.register(['aurelia-templating', './animator'], function (_export) {
   function configure(aurelia, cb) {
     var animator = new CssAnimator();
     Animator.configureDefault(aurelia.container, animator);
-    cb(animator);
+    cb(aurelia.container.get(CssAnimator));
   }
 
   return {

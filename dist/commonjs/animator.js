@@ -68,6 +68,11 @@ var CssAnimator = (function () {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
+      if (_this.useAnimationDoneClasses) {
+        classList.remove(_this.animationEnteredClass);
+        classList.remove(_this.animationLeftClass);
+      }
+
       classList.add('au-enter');
 
       var animStart;
@@ -87,7 +92,7 @@ var CssAnimator = (function () {
 
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-          if (_this.useAnimationDoneClasses) {
+          if (_this.useAnimationDoneClasses && _this.animationEnteredClass !== undefined && _this.animationEnteredClass !== null) {
             classList.add(_this.animationEnteredClass);
           }
 
@@ -129,6 +134,11 @@ var CssAnimator = (function () {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
+      if (_this2.useAnimationDoneClasses) {
+        classList.remove(_this2.animationEnteredClass);
+        classList.remove(_this2.animationLeftClass);
+      }
+
       classList.add('au-leave');
 
       var animStart;
@@ -148,7 +158,7 @@ var CssAnimator = (function () {
 
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-          if (_this2.useAnimationDoneClasses) {
+          if (_this2.useAnimationDoneClasses && _this2.animationLeftClass !== undefined && _this2.animationLeftClass !== null) {
             classList.add(_this2.animationLeftClass);
           }
 
