@@ -6,8 +6,10 @@ define(['exports', 'aurelia-templating', './animator'], function (exports, _aure
   exports.CssAnimator = _animator.CssAnimator;
 
   function configure(aurelia, cb) {
-    var animator = new _animator.CssAnimator();
+    var animator = aurelia.container.get(_animator.CssAnimator);
     _aureliaTemplating.Animator.configureDefault(aurelia.container, animator);
-    cb(aurelia.container.get(_animator.CssAnimator));
+    if (cb !== undefined && typeof cb === 'function') {
+      cb(animator);
+    }
   }
 });

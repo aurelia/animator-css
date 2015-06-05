@@ -10,7 +10,9 @@ var _CssAnimator = require('./animator');
 exports.CssAnimator = _CssAnimator.CssAnimator;
 
 function configure(aurelia, cb) {
-  var animator = new _CssAnimator.CssAnimator();
+  var animator = aurelia.container.get(_CssAnimator.CssAnimator);
   _Animator.Animator.configureDefault(aurelia.container, animator);
-  cb(aurelia.container.get(_CssAnimator.CssAnimator));
+  if (cb !== undefined && typeof cb === 'function') {
+    cb(animator);
+  }
 }

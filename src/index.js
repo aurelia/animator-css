@@ -4,7 +4,9 @@ import {CssAnimator} from './animator';
 export {CssAnimator} from './animator';
 
 export function configure(aurelia, cb){
-  var animator = new CssAnimator();
+  var animator = aurelia.container.get(CssAnimator);
   Animator.configureDefault(aurelia.container, animator);
-  cb(aurelia.container.get(CssAnimator));
+  if(cb !== undefined && typeof(cb) === 'function') {
+    cb(animator);
+  }
 }

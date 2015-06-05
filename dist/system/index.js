@@ -4,9 +4,11 @@ System.register(['aurelia-templating', './animator'], function (_export) {
   _export('configure', configure);
 
   function configure(aurelia, cb) {
-    var animator = new CssAnimator();
+    var animator = aurelia.container.get(CssAnimator);
     Animator.configureDefault(aurelia.container, animator);
-    cb(aurelia.container.get(CssAnimator));
+    if (cb !== undefined && typeof cb === 'function') {
+      cb(animator);
+    }
   }
 
   return {
