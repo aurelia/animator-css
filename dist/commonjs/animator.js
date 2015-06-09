@@ -1,18 +1,15 @@
 'use strict';
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-
 exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var CssAnimator = (function () {
   function CssAnimator() {
     _classCallCheck(this, CssAnimator);
 
     this.animationStack = [];
-
-    this.useAnimationDoneClasses = false;
-    this.animationEnteredClass = 'au-entered';
-    this.animationLeftClass = 'au-left';
+    this.isAnimating = false;
   }
 
   CssAnimator.prototype.addMultipleEventListener = function addMultipleEventListener(el, s, fn) {
@@ -68,15 +65,12 @@ var CssAnimator = (function () {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
-      if (_this.useAnimationDoneClasses) {
-        classList.remove(_this.animationEnteredClass);
-        classList.remove(_this.animationLeftClass);
-      }
-
       classList.add('au-enter');
 
       var animStart;
       _this.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+        _this.isAnimating = true;
+
         evAnimStart.stopPropagation();
 
         _this.addAnimationToStack(animId);
@@ -92,10 +86,7 @@ var CssAnimator = (function () {
 
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-          if (_this.useAnimationDoneClasses && _this.animationEnteredClass !== undefined && _this.animationEnteredClass !== null) {
-            classList.add(_this.animationEnteredClass);
-          }
-
+          _this.isAnimating = false;
           resolve(true);
         }, false);
 
@@ -134,15 +125,12 @@ var CssAnimator = (function () {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
-      if (_this2.useAnimationDoneClasses) {
-        classList.remove(_this2.animationEnteredClass);
-        classList.remove(_this2.animationLeftClass);
-      }
-
       classList.add('au-leave');
 
       var animStart;
       _this2.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+        _this2.isAnimating = true;
+
         evAnimStart.stopPropagation();
 
         _this2.addAnimationToStack(animId);
@@ -158,10 +146,7 @@ var CssAnimator = (function () {
 
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-          if (_this2.useAnimationDoneClasses && _this2.animationLeftClass !== undefined && _this2.animationLeftClass !== null) {
-            classList.add(_this2.animationLeftClass);
-          }
-
+          _this2.isAnimating = false;
           resolve(true);
         }, false);
 
@@ -210,6 +195,8 @@ var CssAnimator = (function () {
 
       var animStart;
       _this3.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+        _this3.isAnimating = true;
+
         evAnimStart.stopPropagation();
 
         _this3.addAnimationToStack(animId);
@@ -224,6 +211,7 @@ var CssAnimator = (function () {
 
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+          _this3.isAnimating = false;
           resolve(true);
         }, false);
 
@@ -252,6 +240,8 @@ var CssAnimator = (function () {
 
       var animStart;
       _this4.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+        _this4.isAnimating = true;
+
         evAnimStart.stopPropagation();
 
         _this4.addAnimationToStack(animId);
@@ -268,6 +258,7 @@ var CssAnimator = (function () {
 
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
+          _this4.isAnimating = false;
           resolve(true);
         }, false);
 
