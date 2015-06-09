@@ -7,6 +7,8 @@ export class CssAnimator {
     this.animationEnteredClass = 'au-entered';
     this.animationLeftClass = 'au-left';
     this.isAnimating = false;
+
+    this.animationTimeout = 50;
   }
 
   addMultipleEventListener(el, s, fn) {
@@ -137,7 +139,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, this.getElementAnimationDelay(element) + 400 + delay);
+      }, this.getElementAnimationDelay(element) + this.animationTimeout + delay);
     });
   }
 
@@ -223,7 +225,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, this.getElementAnimationDelay(element) + 400 + delay);
+      }, this.getElementAnimationDelay(element) + this.animationTimeout + delay);
     });
   }
 
@@ -287,7 +289,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, this.getElementAnimationDelay(element) + 400);
+      }, this.getElementAnimationDelay(element) + this.animationTimeout);
     });
   }
 
@@ -345,7 +347,7 @@ export class CssAnimator {
 
           resolve(false);
         }
-      }, this.getElementAnimationDelay(element) + 400);
+      }, this.getElementAnimationDelay(element) + this.animationTimeout);
     });
   }
 }

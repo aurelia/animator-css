@@ -15,6 +15,8 @@ define(['exports'], function (exports) {
       this.animationEnteredClass = 'au-entered';
       this.animationLeftClass = 'au-left';
       this.isAnimating = false;
+
+      this.animationTimeout = 50;
     }
 
     CssAnimator.prototype.addMultipleEventListener = function addMultipleEventListener(el, s, fn) {
@@ -128,7 +130,7 @@ define(['exports'], function (exports) {
 
             resolve(false);
           }
-        }, _this.getElementAnimationDelay(element) + 400 + delay);
+        }, _this.getElementAnimationDelay(element) + _this.animationTimeout + delay);
       });
     };
 
@@ -197,7 +199,7 @@ define(['exports'], function (exports) {
 
             resolve(false);
           }
-        }, _this2.getElementAnimationDelay(element) + 400 + delay);
+        }, _this2.getElementAnimationDelay(element) + _this2.animationTimeout + delay);
       });
     };
 
@@ -250,7 +252,7 @@ define(['exports'], function (exports) {
 
             resolve(false);
           }
-        }, _this3.getElementAnimationDelay(element) + 400);
+        }, _this3.getElementAnimationDelay(element) + _this3.animationTimeout);
       });
     };
 
@@ -297,7 +299,7 @@ define(['exports'], function (exports) {
 
             resolve(false);
           }
-        }, _this4.getElementAnimationDelay(element) + 400);
+        }, _this4.getElementAnimationDelay(element) + _this4.animationTimeout);
       });
     };
 

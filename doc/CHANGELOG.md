@@ -1,3 +1,11 @@
+### 0.3.2 (2015-06-09)
+
+
+#### Bug Fixes
+
+* **timeout:** fixes timeouts for animation triggers ([9fb1ffa6](https://github.com/aurelia/animator-css/commit/9fb1ffa60fb4d926d4e4e587529693be8ea005ce))
+
+
 ### 0.3.1 (2015-06-09)
 
 
