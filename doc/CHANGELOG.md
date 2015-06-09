@@ -1,3 +1,16 @@
+## 0.3.0 (2015-06-08)
+
+
+#### Bug Fixes
+
+* **stagger:** check for null/undefined on stagger parent ([cb5dfa33](https://github.com/aurelia/animator-css/commit/cb5dfa3305bd5c330690d76db65cb0ac4be549a4))
+
+
+#### Features
+
+* **isAnimating:** indicator for whether an animation is active ([277f81bf](https://github.com/aurelia/animator-css/commit/277f81bf97d5193487c6da24ce2fd1273823cd53))
+
+
 ## 0.2.0 (2015-05-01)
 
 

@@ -3,12 +3,12 @@
 exports.__esModule = true;
 exports.configure = configure;
 
-var _Animator = require('aurelia-templating');
+var _aureliaTemplating = require('aurelia-templating');
 
-var _CssAnimator = require('./animator');
+var _animator = require('./animator');
 
-exports.CssAnimator = _CssAnimator.CssAnimator;
+exports.CssAnimator = _animator.CssAnimator;
 
 function configure(aurelia) {
-  _Animator.Animator.configureDefault(aurelia.container, new _CssAnimator.CssAnimator());
+  _aureliaTemplating.Animator.configureDefault(aurelia.container, new _animator.CssAnimator());
 }
