@@ -2,6 +2,10 @@ export class CssAnimator {
 
   constructor(){
     this.animationStack = [];
+
+    this.useAnimationDoneClasses = false;
+    this.animationEnteredClass = 'au-entered';
+    this.animationLeftClass = 'au-left';
     this.isAnimating = false;
   }
 
@@ -57,6 +61,12 @@ export class CssAnimator {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
+      // Step 1.1: remove done classes
+      if(this.useAnimationDoneClasses) {
+        classList.remove(this.animationEnteredClass);
+        classList.remove(this.animationLeftClass);
+      }
+
       // Step 2: Add animation preparation class
       classList.add('au-enter');
 
@@ -86,6 +96,13 @@ export class CssAnimator {
 
           // Step 3.2.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+          // Step 3.2.4 in case animation done animations are active, add the defined entered class to the element
+          if(this.useAnimationDoneClasses &&
+             this.animationEnteredClass !== undefined &&
+             this.animationEnteredClass !== null) {
+            classList.add(this.animationEnteredClass);
+          }
 
           this.isAnimating = false;
           resolve(true);
@@ -130,6 +147,12 @@ export class CssAnimator {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
+      // Step 1.1: remove done classes
+      if(this.useAnimationDoneClasses) {
+        classList.remove(this.animationEnteredClass);
+        classList.remove(this.animationLeftClass);
+      }
+
       // Step 2: Add animation preparation class
       classList.add('au-leave');
 
@@ -159,6 +182,13 @@ export class CssAnimator {
 
           // Step 3.2.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+          // Step 3.2.4 in case animation done animations are active, add the defined left class to the element
+          if(this.useAnimationDoneClasses &&
+             this.animationLeftClass !== undefined &&
+             this.animationLeftClass !== null) {
+            classList.add(this.animationLeftClass);
+          }
 
           this.isAnimating = false;
           resolve(true);

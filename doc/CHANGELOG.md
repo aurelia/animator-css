@@ -1,3 +1,18 @@
+### 0.3.1 (2015-06-09)
+
+
+#### Bug Fixes
+
+* **instance:**
+  * fix instance passing ([9236153b](https://github.com/aurelia/animator-css/commit/9236153b45e61a9e400680ef3aa2623ca1d40f1d))
+  * ensure callback returns DI instance ([06b20691](https://github.com/aurelia/animator-css/commit/06b20691a4ef06517671e4e6eb6035510621b322))
+
+
+#### Features
+
+* **anim-done:** indicate when animation is done via classes ([6779c9ff](https://github.com/aurelia/animator-css/commit/6779c9ffc02d9083fd8f1bbc8da60989713ab008))
+
+
 ## 0.3.0 (2015-06-08)
 
 
