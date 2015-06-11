@@ -1,3 +1,5 @@
+import {animationEvent} from 'aurelia-templating/animation-event';
+
 export class CssAnimator {
 
   constructor(){
@@ -63,7 +65,10 @@ export class CssAnimator {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
-      // Step 1.1: remove done classes
+      var evt = new window.CustomEvent(animationEvent.enterBegin, { bubbles: true, cancelable: true, detail: element });
+      document.dispatchEvent(evt);
+
+      // Step 1.2: remove done classes
       if(this.useAnimationDoneClasses) {
         classList.remove(this.animationEnteredClass);
         classList.remove(this.animationLeftClass);
@@ -76,6 +81,9 @@ export class CssAnimator {
       var animStart;
       this.addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = (evAnimStart) => {
         this.isAnimating = true;
+
+        var evt = new window.CustomEvent(animationEvent.enterActive, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
 
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
@@ -107,6 +115,8 @@ export class CssAnimator {
           }
 
           this.isAnimating = false;
+          var evt = new window.CustomEvent(animationEvent.enterDone, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(true);
         }, false);
 
@@ -124,6 +134,9 @@ export class CssAnimator {
         var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
         delay = this.getElementAnimationDelay(parent) * elemPos;
 
+        var evt = new window.CustomEvent(animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
+
         setTimeout(() => {
           classList.add('au-enter-active');
         }, delay);
@@ -137,6 +150,8 @@ export class CssAnimator {
           classList.remove('au-enter-active');
           classList.remove('au-enter');
 
+          var evt = new window.CustomEvent(animationEvent.enterTimeout, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(false);
         }
       }, this.getElementAnimationDelay(element) + this.animationTimeout + delay);
@@ -148,6 +163,9 @@ export class CssAnimator {
       // Step 1: generate animation id
       var animId = element.toString() + Math.random(),
           classList = element.classList;
+
+      var evt = new window.CustomEvent(animationEvent.leaveBegin, { bubbles: true, cancelable: true, detail: element });
+      document.dispatchEvent(evt);
 
       // Step 1.1: remove done classes
       if(this.useAnimationDoneClasses) {
@@ -162,6 +180,9 @@ export class CssAnimator {
       var animStart;
       this.addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = (evAnimStart) => {
         this.isAnimating = true;
+
+        var evt = new window.CustomEvent(animationEvent.leaveActive, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
 
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
@@ -193,6 +214,8 @@ export class CssAnimator {
           }
 
           this.isAnimating = false;
+          var evt = new window.CustomEvent(animationEvent.leaveDone, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(true);
         }, false);
 
@@ -210,6 +233,9 @@ export class CssAnimator {
         var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
         delay = this.getElementAnimationDelay(parent) * elemPos;
 
+        var evt = new window.CustomEvent(animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
+
         setTimeout(() => {
           classList.add('au-leave-active');
         }, delay);
@@ -223,6 +249,8 @@ export class CssAnimator {
           classList.remove('au-leave-active');
           classList.remove('au-leave');
 
+          var evt = new window.CustomEvent(animationEvent.leaveTimeout, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(false);
         }
       }, this.getElementAnimationDelay(element) + this.animationTimeout + delay);
@@ -237,6 +265,9 @@ export class CssAnimator {
         resolve(false);
         return;
       }
+
+      var evt = new window.CustomEvent(animationEvent.removeClassBegin, { bubbles: true, cancelable: true, detail: element });
+      document.dispatchEvent(evt);
 
       // Step 1: generate animation id
       var animId = element.toString() + className + Math.random();
@@ -271,6 +302,8 @@ export class CssAnimator {
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           this.isAnimating = false;
+          var evt = new window.CustomEvent(animationEvent.removeClassDone, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(true);
         }, false);
 
@@ -287,6 +320,8 @@ export class CssAnimator {
           classList.remove(className + "-remove");
           classList.remove(className);
 
+          var evt = new window.CustomEvent(animationEvent.removeClassTimeout, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(false);
         }
       }, this.getElementAnimationDelay(element) + this.animationTimeout);
@@ -298,6 +333,9 @@ export class CssAnimator {
       // Step 1: generate animation id
       var animId = element.toString() + className + Math.random(),
           classList = element.classList;
+
+      var evt = new window.CustomEvent(animationEvent.addClassBegin, { bubbles: true, cancelable: true, detail: element });
+      document.dispatchEvent(evt);
 
       // Step 2: setup event to check whether animations started
       var animStart;
@@ -329,6 +367,8 @@ export class CssAnimator {
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           this.isAnimating = false;
+          var evt = new window.CustomEvent(animationEvent.addClassDone, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(true);
         }, false);
 
@@ -345,6 +385,8 @@ export class CssAnimator {
           classList.remove(className + "-add");
           classList.add(className);
 
+          var evt = new window.CustomEvent(animationEvent.addClassTimeout, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
           resolve(false);
         }
       }, this.getElementAnimationDelay(element) + this.animationTimeout);

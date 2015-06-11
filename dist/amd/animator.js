@@ -1,9 +1,9 @@
-define(['exports'], function (exports) {
+define(['exports', 'aurelia-templating/animation-event'], function (exports, _aureliaTemplatingAnimationEvent) {
   'use strict';
 
-  exports.__esModule = true;
+  var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  exports.__esModule = true;
 
   var CssAnimator = (function () {
     function CssAnimator() {
@@ -72,6 +72,9 @@ define(['exports'], function (exports) {
         var animId = element.toString() + Math.random(),
             classList = element.classList;
 
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterBegin, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
+
         if (_this.useAnimationDoneClasses) {
           classList.remove(_this.animationEnteredClass);
           classList.remove(_this.animationLeftClass);
@@ -82,6 +85,9 @@ define(['exports'], function (exports) {
         var animStart;
         _this.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
           _this.isAnimating = true;
+
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterActive, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
 
           evAnimStart.stopPropagation();
 
@@ -103,6 +109,8 @@ define(['exports'], function (exports) {
             }
 
             _this.isAnimating = false;
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterDone, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(true);
           }, false);
 
@@ -116,6 +124,9 @@ define(['exports'], function (exports) {
           var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
           delay = _this.getElementAnimationDelay(parent) * elemPos;
 
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
+
           setTimeout(function () {
             classList.add('au-enter-active');
           }, delay);
@@ -128,6 +139,8 @@ define(['exports'], function (exports) {
             classList.remove('au-enter-active');
             classList.remove('au-enter');
 
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterTimeout, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(false);
           }
         }, _this.getElementAnimationDelay(element) + _this.animationTimeout + delay);
@@ -141,6 +154,9 @@ define(['exports'], function (exports) {
         var animId = element.toString() + Math.random(),
             classList = element.classList;
 
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveBegin, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
+
         if (_this2.useAnimationDoneClasses) {
           classList.remove(_this2.animationEnteredClass);
           classList.remove(_this2.animationLeftClass);
@@ -151,6 +167,9 @@ define(['exports'], function (exports) {
         var animStart;
         _this2.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
           _this2.isAnimating = true;
+
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveActive, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
 
           evAnimStart.stopPropagation();
 
@@ -172,6 +191,8 @@ define(['exports'], function (exports) {
             }
 
             _this2.isAnimating = false;
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveDone, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(true);
           }, false);
 
@@ -185,6 +206,9 @@ define(['exports'], function (exports) {
           var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
           delay = _this2.getElementAnimationDelay(parent) * elemPos;
 
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
+          document.dispatchEvent(evt);
+
           setTimeout(function () {
             classList.add('au-leave-active');
           }, delay);
@@ -197,6 +221,8 @@ define(['exports'], function (exports) {
             classList.remove('au-leave-active');
             classList.remove('au-leave');
 
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveTimeout, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(false);
           }
         }, _this2.getElementAnimationDelay(element) + _this2.animationTimeout + delay);
@@ -213,6 +239,9 @@ define(['exports'], function (exports) {
           resolve(false);
           return;
         }
+
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.removeClassBegin, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
 
         var animId = element.toString() + className + Math.random();
 
@@ -237,6 +266,8 @@ define(['exports'], function (exports) {
             evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
             _this3.isAnimating = false;
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.removeClassDone, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(true);
           }, false);
 
@@ -250,6 +281,8 @@ define(['exports'], function (exports) {
             classList.remove(className + '-remove');
             classList.remove(className);
 
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.removeClassTimeout, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(false);
           }
         }, _this3.getElementAnimationDelay(element) + _this3.animationTimeout);
@@ -262,6 +295,9 @@ define(['exports'], function (exports) {
       return new Promise(function (resolve, reject) {
         var animId = element.toString() + className + Math.random(),
             classList = element.classList;
+
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.addClassBegin, { bubbles: true, cancelable: true, detail: element });
+        document.dispatchEvent(evt);
 
         var animStart;
         _this4.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
@@ -284,6 +320,8 @@ define(['exports'], function (exports) {
             evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
             _this4.isAnimating = false;
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.addClassDone, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(true);
           }, false);
 
@@ -297,6 +335,8 @@ define(['exports'], function (exports) {
             classList.remove(className + '-add');
             classList.add(className);
 
+            var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.addClassTimeout, { bubbles: true, cancelable: true, detail: element });
+            document.dispatchEvent(evt);
             resolve(false);
           }
         }, _this4.getElementAnimationDelay(element) + _this4.animationTimeout);
