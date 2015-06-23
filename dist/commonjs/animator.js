@@ -1,10 +1,10 @@
 'use strict';
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-
 exports.__esModule = true;
 
-var _animationEvent = require('aurelia-templating/animation-event');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _aureliaTemplatingAnimationEvent = require('aurelia-templating/animation-event');
 
 var CssAnimator = (function () {
   function CssAnimator() {
@@ -73,7 +73,7 @@ var CssAnimator = (function () {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
-      var evt = new window.CustomEvent(_animationEvent.animationEvent.enterBegin, { bubbles: true, cancelable: true, detail: element });
+      var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterBegin, { bubbles: true, cancelable: true, detail: element });
       document.dispatchEvent(evt);
 
       if (_this.useAnimationDoneClasses) {
@@ -87,7 +87,7 @@ var CssAnimator = (function () {
       _this.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
         _this.isAnimating = true;
 
-        var evt = new window.CustomEvent(_animationEvent.animationEvent.enterActive, { bubbles: true, cancelable: true, detail: element });
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterActive, { bubbles: true, cancelable: true, detail: element });
         document.dispatchEvent(evt);
 
         evAnimStart.stopPropagation();
@@ -110,7 +110,7 @@ var CssAnimator = (function () {
           }
 
           _this.isAnimating = false;
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.enterDone, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterDone, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(true);
         }, false);
@@ -125,7 +125,7 @@ var CssAnimator = (function () {
         var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
         delay = _this.getElementAnimationDelay(parent) * elemPos;
 
-        var evt = new window.CustomEvent(_animationEvent.animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
         document.dispatchEvent(evt);
 
         setTimeout(function () {
@@ -140,7 +140,7 @@ var CssAnimator = (function () {
           classList.remove('au-enter-active');
           classList.remove('au-enter');
 
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.enterTimeout, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.enterTimeout, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(false);
         }
@@ -155,7 +155,7 @@ var CssAnimator = (function () {
       var animId = element.toString() + Math.random(),
           classList = element.classList;
 
-      var evt = new window.CustomEvent(_animationEvent.animationEvent.leaveBegin, { bubbles: true, cancelable: true, detail: element });
+      var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveBegin, { bubbles: true, cancelable: true, detail: element });
       document.dispatchEvent(evt);
 
       if (_this2.useAnimationDoneClasses) {
@@ -169,7 +169,7 @@ var CssAnimator = (function () {
       _this2.addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
         _this2.isAnimating = true;
 
-        var evt = new window.CustomEvent(_animationEvent.animationEvent.leaveActive, { bubbles: true, cancelable: true, detail: element });
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveActive, { bubbles: true, cancelable: true, detail: element });
         document.dispatchEvent(evt);
 
         evAnimStart.stopPropagation();
@@ -192,7 +192,7 @@ var CssAnimator = (function () {
           }
 
           _this2.isAnimating = false;
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.leaveDone, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveDone, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(true);
         }, false);
@@ -207,7 +207,7 @@ var CssAnimator = (function () {
         var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
         delay = _this2.getElementAnimationDelay(parent) * elemPos;
 
-        var evt = new window.CustomEvent(_animationEvent.animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
+        var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.staggerNext, { bubbles: true, cancelable: true, detail: element });
         document.dispatchEvent(evt);
 
         setTimeout(function () {
@@ -222,7 +222,7 @@ var CssAnimator = (function () {
           classList.remove('au-leave-active');
           classList.remove('au-leave');
 
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.leaveTimeout, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.leaveTimeout, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(false);
         }
@@ -241,7 +241,7 @@ var CssAnimator = (function () {
         return;
       }
 
-      var evt = new window.CustomEvent(_animationEvent.animationEvent.removeClassBegin, { bubbles: true, cancelable: true, detail: element });
+      var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.removeClassBegin, { bubbles: true, cancelable: true, detail: element });
       document.dispatchEvent(evt);
 
       var animId = element.toString() + className + Math.random();
@@ -267,7 +267,7 @@ var CssAnimator = (function () {
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           _this3.isAnimating = false;
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.removeClassDone, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.removeClassDone, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(true);
         }, false);
@@ -282,7 +282,7 @@ var CssAnimator = (function () {
           classList.remove(className + '-remove');
           classList.remove(className);
 
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.removeClassTimeout, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.removeClassTimeout, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(false);
         }
@@ -297,7 +297,7 @@ var CssAnimator = (function () {
       var animId = element.toString() + className + Math.random(),
           classList = element.classList;
 
-      var evt = new window.CustomEvent(_animationEvent.animationEvent.addClassBegin, { bubbles: true, cancelable: true, detail: element });
+      var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.addClassBegin, { bubbles: true, cancelable: true, detail: element });
       document.dispatchEvent(evt);
 
       var animStart;
@@ -321,7 +321,7 @@ var CssAnimator = (function () {
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           _this4.isAnimating = false;
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.addClassDone, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.addClassDone, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(true);
         }, false);
@@ -336,7 +336,7 @@ var CssAnimator = (function () {
           classList.remove(className + '-add');
           classList.add(className);
 
-          var evt = new window.CustomEvent(_animationEvent.animationEvent.addClassTimeout, { bubbles: true, cancelable: true, detail: element });
+          var evt = new window.CustomEvent(_aureliaTemplatingAnimationEvent.animationEvent.addClassTimeout, { bubbles: true, cancelable: true, detail: element });
           document.dispatchEvent(evt);
           resolve(false);
         }

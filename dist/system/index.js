@@ -1,4 +1,6 @@
 System.register(['aurelia-templating', './animator'], function (_export) {
+  'use strict';
+
   var Animator, CssAnimator;
 
   _export('configure', configure);
@@ -19,8 +21,6 @@ System.register(['aurelia-templating', './animator'], function (_export) {
 
       _export('CssAnimator', _animator.CssAnimator);
     }],
-    execute: function () {
-      'use strict';
-    }
+    execute: function () {}
   };
 });

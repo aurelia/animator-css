@@ -1,15 +1,15 @@
 System.register(['aurelia-templating/animation-event'], function (_export) {
-  var animationEvent, _classCallCheck, CssAnimator;
+  'use strict';
+
+  var animationEvent, CssAnimator;
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
   return {
     setters: [function (_aureliaTemplatingAnimationEvent) {
       animationEvent = _aureliaTemplatingAnimationEvent.animationEvent;
     }],
     execute: function () {
-      'use strict';
-
-      _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-
       CssAnimator = (function () {
         function CssAnimator() {
           _classCallCheck(this, CssAnimator);
