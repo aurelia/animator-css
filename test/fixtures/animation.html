@@ -54,6 +54,21 @@
     animation:0.2s show-animation;
   }
 
+  #animateAddAndRemove {
+    opacity: 0;
+  }
+  .animate-test {
+    opacity: 1;
+  }
+  .animate-test-add {
+    -webkit-animation:0.2s show-animation;
+    animation:0.2s show-animation;
+  }
+  .animate-test-remove {
+    -webkit-animation:0.2s hide-animation;
+    animation:0.2s hide-animation;
+  }
+
   .addMoreWidth {
     width: 40px;
   }
@@ -73,6 +88,15 @@
   @-webkit-keyframes add-more-width-animation{
     from { width: 20px; }
     to { width: 40px; }
+  }
+
+  @keyframes reduce-width-animation {
+    from { width: 40px; }
+    to { width: 20px; }
+  }
+  @-webkit-keyframes reduce-width-animation{
+    from { width: 40px; }
+    to { width: 20px; }
   }
 
   .addMoreWidth-add {
@@ -119,6 +143,7 @@
   <div id="removeClassWrong" class="wrongHidden">Test</div>
   <div id="removeClassNoAnim" class="remove-non-anim"></div>
   <div id="addClassNoAnim"></div>
+  <div id="animateAddAndRemove">Animation - automatic add/remove</div>
 
   <div id="goingToBeIncreased">
     I'm going to get bigger
@@ -133,5 +158,11 @@
     <li class="stagger au-animate">Item3</li>
     <li class="stagger au-animate">Item4</li>
     <li class="stagger au-animate">Item5</li>
+  </ul>
+
+  <ul class="sequenced-items">
+    <li class="au-animate">Sequence 1</li>
+    <li class="au-animate">Sequence 2</li>
+    <li class="au-animate">Sequence 3</li>
   </ul>
 </div>
