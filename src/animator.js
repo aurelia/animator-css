@@ -1,4 +1,4 @@
-import {animationEvent} from 'aurelia-templating/animation-event';
+import {animationEvent} from 'aurelia-templating';
 
 export class CssAnimator {
 
