@@ -1,4 +1,4 @@
-import {animationEvent} from 'aurelia-templating/animation-event';
+import {animationEvent,Animator} from 'aurelia-templating';
 
 export class CssAnimator {
 
@@ -391,5 +391,13 @@ export class CssAnimator {
         }
       }, this.getElementAnimationDelay(element) + this.animationTimeout);
     });
+  }
+}
+
+export function configure(aurelia, cb){
+  var animator = aurelia.container.get(CssAnimator);
+  Animator.configureDefault(aurelia.container, animator);
+  if(typeof cb === 'function') {
+    cb(animator);
   }
 }

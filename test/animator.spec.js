@@ -1,6 +1,6 @@
 import {configure} from '../src/index';
 import {CssAnimator} from '../src/animator';
-import {animationEvent} from 'aurelia-templating/animation-event';
+import {animationEvent} from 'aurelia-templating';
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/';
 

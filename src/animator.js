@@ -1,4 +1,4 @@
-import {animationEvent} from 'aurelia-templating/animation-event';
+import {animationEvent} from 'aurelia-templating';
 
 /**
  * Aurelia animator implementation using CSS3-Animations
