@@ -1,6 +1,6 @@
 {
   "name": "aurelia-animator-css",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "An implementation of the abstract Animator interface from templating which enables css-based animations.",
   "keywords": [
     "aurelia",
@@ -26,7 +26,7 @@
       "lib": "dist/amd"
     },
     "dependencies": {
-      "aurelia-templating": "github:aurelia/templating@^0.12.1"
+      "aurelia-templating": "github:aurelia/templating@^0.13.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.1.13",

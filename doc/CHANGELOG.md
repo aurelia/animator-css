@@ -1,3 +1,12 @@
+## 0.4.0 (2015-07-02)
+
+
+#### Features
+
+* **beta:** new methods, events and refactoring ([1bb61d76](https://github.com/aurelia/animator-css/commit/1bb61d7650aaaa62a556b80e572656e9491c08f2))
+* **events:** trigger animation events ([affc3710](https://github.com/aurelia/animator-css/commit/affc3710b96fbf4d165e58cec81bbf33e3b099cf))
+
+
 ### 0.3.2 (2015-06-09)
 
 
