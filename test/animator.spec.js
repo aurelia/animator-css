@@ -497,38 +497,18 @@ describe('animator-css', () => {
     });
   });
 
-  describe('staggering animations', () => {
+  fdescribe('staggering animations', () => {
     var elems;
 
     beforeEach(() => {
+      sut.useAnimationDoneClasses = true;
       loadFixtures('animation.html');
       elems = $('.stagger');
-    });
-
-    it('should animate enter elements staggered', (done) => {
-      var proms = [];
-      elems.each( (idx, elem) => {
-        proms.push(sut.enter(elem));
-      });
-
-      Promise.all(proms).then( () => {
-        done();
-      })
-    });
-
-    it('should animate leave elements staggered', (done) => {
-      var proms = [];
-      elems.each( (idx, elem) => {
-        proms.push(sut.leave(elem));
-      });
-
-      Promise.all(proms).then( () => {
-        done();
-      })
+      $(elems).removeClass('au-left');
     });
 
     it('should trigger stagger event', (done) => {
-      var proms = []
+      let proms = []
         , eventCalled = false;
 
       var listener = document.addEventListener(animationEvent.staggerNext, () => eventCalled = true);
@@ -543,6 +523,66 @@ describe('animator-css', () => {
         document.removeEventListener(animationEvent.staggerNext, listener);
         done();
       });
+    });
+
+    it('should animate enter elements staggered', (done) => {
+      var proms = [];
+      elems.each( (idx, elem) => {
+        proms.push(sut.enter(elem));
+      });
+
+      Promise.all(proms).then( () => {
+        elems.each( (idx, elem) => {
+          expect($(elem).css('opacity')).toBe('1');
+        });
+        done();
+      });
+    });
+
+    it('should animate leave elements staggered', (done) => {
+      var proms = [];
+      elems.each( (idx, elem) => {
+        proms.push(sut.leave(elem));
+      });
+
+      Promise.all(proms).then( () => {
+        elems.each( (idx, elem) => {
+          expect($(elem).css('opacity')).toBe('0');
+        });
+        done();
+      })
+    });
+
+    it('should animate enter element using stagger-enter', () => {
+      elems = $('.stagger-enter-only');
+
+      var proms = [];
+      elems.each( (idx, elem) => {
+        proms.push(sut.leave(elem));
+      });
+
+      Promise.all(proms).then( () => {
+        elems.each( (idx, elem) => {
+          expect($(elem).css('opacity')).toBe('1');
+        });
+        done();
+      })
+    });
+
+    it('should animate leave element using stagger-leave', () => {
+      elems = $('.stagger-leave-only');
+
+      var proms = [];
+      elems.each( (idx, elem) => {
+        proms.push(sut.leave(elem));
+      });
+
+      Promise.all(proms).then( () => {
+        elems.each( (idx, elem) => {
+          expect($(elem).css('opacity')).toBe('0');
+        });
+        done();
+      })
     });
   });
 

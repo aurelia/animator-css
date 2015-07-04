@@ -126,6 +126,32 @@
     animation:1.5s hide-animation;
   }
 
+  .stagger.au-left {
+    opacity: 0!important;
+  }
+
+
+  .stagger-enter-only.au-enter {
+    opacity: 0!important;
+  }
+
+  .stagger-enter-only.au-enter-active {
+    -webkit-animation:1.0s show-animation;
+    animation:1.0s show-animation;
+  }
+
+  .stagger-leave-only.au-leave {
+    opacity: 1!important;
+  }
+  .stagger-leave-only.au-leave-active {
+    -webkit-animation:1.0s hide-animation;
+    animation:1.0s hide-animation;
+  }
+
+  .stagger-leave-only.au-left {
+    opacity: 0!important;
+  }
+
   ul.au-stagger {
     /* 200ms will be applied between each successive enter operation */
     -webkit-animation-delay:100ms;
@@ -158,6 +184,18 @@
     <li class="stagger au-animate">Item3</li>
     <li class="stagger au-animate">Item4</li>
     <li class="stagger au-animate">Item5</li>
+  </ul>
+
+  <ul class="au-stagger-enter">
+    <li class="stagger-enter-only au-animate">Item1</li>
+    <li class="stagger-enter-only au-animate">Item2</li>
+    <li class="stagger-enter-only au-animate">Item3</li>
+  </ul>
+
+  <ul class="au-stagger-leave">
+    <li class="stagger-leave-only au-animate">Item1</li>
+    <li class="stagger-leave-only au-animate">Item2</li>
+    <li class="stagger-leave-only au-animate">Item3</li>
   </ul>
 
   <ul class="sequenced-items">
