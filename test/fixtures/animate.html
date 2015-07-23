@@ -1,0 +1,27 @@
+<style type="text/css">
+  #animateAddAndRemove {
+    opacity: 0;
+  }
+  .animate-test {
+    opacity: 1;
+  }
+  .animate-test-add {
+    -webkit-animation:0.2s show-animation;
+    animation:0.2s show-animation;
+  }
+  .animate-test-remove {
+    -webkit-animation:0.2s hide-animation;
+    animation:0.2s hide-animation;
+  }
+
+</style>
+
+<div id="animation">
+  <div id="animateAddAndRemove">Animation - automatic add/remove</div>
+
+  <ul class="sequenced-items">
+    <li class="au-animate">Sequence 1</li>
+    <li class="au-animate">Sequence 2</li>
+    <li class="au-animate">Sequence 3</li>
+  </ul>
+</div>
