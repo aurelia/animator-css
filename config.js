@@ -16,6 +16,7 @@ System.config({
 
 System.config({
   "map": {
+    "aurelia-metadata": "github:aurelia/metadata@0.7.0",
     "aurelia-templating": "github:aurelia/templating@0.13.0",
     "babel": "npm:babel-core@5.2.2",
     "babel-runtime": "npm:babel-runtime@5.2.2",
