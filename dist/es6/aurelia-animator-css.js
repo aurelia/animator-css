@@ -248,7 +248,10 @@ export class CssAnimator {
 
       if(parent !== null &&
          parent !== undefined &&
-         parent.classList.contains('au-stagger')) {
+         (
+          parent.classList.contains('au-stagger') ||
+          parent.classList.contains('au-stagger-enter')
+         )) {
         var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
         delay = this._getElementAnimationDelay(parent) * elemPos;
 
@@ -351,7 +354,10 @@ export class CssAnimator {
 
       if(parent !== null &&
          parent !== undefined &&
-         parent.classList.contains('au-stagger')) {
+         (
+           parent.classList.contains('au-stagger') ||
+           parent.classList.contains('au-stagger-leave')
+         )) {
         var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
         delay = this._getElementAnimationDelay(parent) * elemPos;
 
