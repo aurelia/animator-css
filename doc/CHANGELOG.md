@@ -1,3 +1,17 @@
+### 0.4.1 (2015-07-29)
+
+
+#### Bug Fixes
+
+* **package:** add metadata dependency ([2328ea2f](https://github.com/aurelia/animator-css/commit/2328ea2f4e9142d4f8ee5c1c6727213ea13964f3))
+* **tests:** split up unit tests ([ba524a6d](https://github.com/aurelia/animator-css/commit/ba524a6d4dfc112d6dc20b9cbeb062249f691894))
+
+
+#### Features
+
+* **stagger:** add split stagger feature ([eb27d3e6](https://github.com/aurelia/animator-css/commit/eb27d3e6e8e54bf176abbb5a04ec6734c8e81aff))
+
+
 ## 0.4.0 (2015-07-02)
 
 
