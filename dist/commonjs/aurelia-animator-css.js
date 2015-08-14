@@ -135,7 +135,7 @@ var CssAnimator = (function () {
       classList.add('au-enter');
 
       var animStart;
-      _this4._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this4._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
         _this4.isAnimating = true;
 
         _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterActive, element);
@@ -145,7 +145,7 @@ var CssAnimator = (function () {
         _this4._addAnimationToStack(animId);
 
         var animEnd;
-        _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+        _this4._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
           evAnimEnd.stopPropagation();
 
           classList.remove('au-enter-active');
@@ -214,7 +214,7 @@ var CssAnimator = (function () {
       classList.add('au-leave');
 
       var animStart;
-      _this5._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this5._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
         _this5.isAnimating = true;
 
         _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveActive, element);
@@ -224,7 +224,7 @@ var CssAnimator = (function () {
         _this5._addAnimationToStack(animId);
 
         var animEnd;
-        _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+        _this5._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
           evAnimEnd.stopPropagation();
 
           classList.remove('au-leave-active');
@@ -279,7 +279,7 @@ var CssAnimator = (function () {
   CssAnimator.prototype.removeClass = function removeClass(element, className) {
     var _this6 = this;
 
-    var suppressEvents = arguments[2] === undefined ? false : arguments[2];
+    var suppressEvents = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
     return new Promise(function (resolve, reject) {
       var classList = element.classList;
@@ -298,7 +298,7 @@ var CssAnimator = (function () {
       classList.remove(className);
 
       var animStart;
-      _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this6._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
         _this6.isAnimating = true;
 
         if (suppressEvents !== true) {
@@ -310,10 +310,10 @@ var CssAnimator = (function () {
         _this6._addAnimationToStack(animId);
 
         var animEnd;
-        _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+        _this6._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
           evAnimEnd.stopPropagation();
 
-          classList.remove(className + '-remove');
+          classList.remove(className + "-remove");
 
           _this6._removeAnimationFromStack(animId);
 
@@ -331,11 +331,11 @@ var CssAnimator = (function () {
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
 
-      classList.add(className + '-remove');
+      classList.add(className + "-remove");
 
       setTimeout(function () {
         if (_this6.animationStack.indexOf(animId) < 0) {
-          classList.remove(className + '-remove');
+          classList.remove(className + "-remove");
           classList.remove(className);
 
           if (suppressEvents !== true) {
@@ -351,7 +351,7 @@ var CssAnimator = (function () {
   CssAnimator.prototype.addClass = function addClass(element, className) {
     var _this7 = this;
 
-    var suppressEvents = arguments[2] === undefined ? false : arguments[2];
+    var suppressEvents = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
     return new Promise(function (resolve, reject) {
       var animId = element.toString() + className + Math.random(),
@@ -362,7 +362,7 @@ var CssAnimator = (function () {
       }
 
       var animStart;
-      _this7._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this7._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
         _this7.isAnimating = true;
 
         if (suppressEvents !== true) {
@@ -374,12 +374,12 @@ var CssAnimator = (function () {
         _this7._addAnimationToStack(animId);
 
         var animEnd;
-        _this7._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+        _this7._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
           evAnimEnd.stopPropagation();
 
           classList.add(className);
 
-          classList.remove(className + '-add');
+          classList.remove(className + "-add");
 
           _this7._removeAnimationFromStack(animId);
 
@@ -397,11 +397,11 @@ var CssAnimator = (function () {
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
 
-      classList.add(className + '-add');
+      classList.add(className + "-add");
 
       setTimeout(function () {
         if (_this7.animationStack.indexOf(animId) < 0) {
-          classList.remove(className + '-add');
+          classList.remove(className + "-add");
           classList.add(className);
 
           if (suppressEvents !== true) {
@@ -419,10 +419,12 @@ var CssAnimator = (function () {
 
 exports.CssAnimator = CssAnimator;
 
-function configure(aurelia, cb) {
-  var animator = aurelia.container.get(CssAnimator);
-  _aureliaTemplating.Animator.configureDefault(aurelia.container, animator);
-  if (typeof cb === 'function') {
-    cb(animator);
+function configure(config, callback) {
+  var animator = config.container.get(CssAnimator);
+
+  _aureliaTemplating.Animator.configureDefault(config.container, animator);
+
+  if (typeof callback === 'function') {
+    callback(animator);
   }
 }

@@ -24,7 +24,7 @@ export class CssAnimator {
    * @param fn {Function}    callback that gets executed
    * @private
    */
-  _addMultipleEventListener(el, s, fn) {
+  _addMultipleEventListener(el:HTMLElement, s:string, fn:Function) : void {
     var evts = s.split(' '),
       i, ii;
 
@@ -39,7 +39,7 @@ export class CssAnimator {
    * @param animId {String}
    * @private
    */
-  _addAnimationToStack(animId) {
+  _addAnimationToStack(animId: string) : void {
     if(this.animationStack.indexOf(animId) < 0) {
       this.animationStack.push(animId);
     }
@@ -51,7 +51,7 @@ export class CssAnimator {
    * @param animId {String}
    * @private
    */
-  _removeAnimationFromStack(animId) {
+  _removeAnimationFromStack(animId: string) : void {
     var idx = this.animationStack.indexOf(animId);
     if(idx > -1) {
       this.animationStack.splice(idx, 1);
@@ -61,12 +61,12 @@ export class CssAnimator {
   /**
    * Vendor-prefix save method to get the animation-delay
    *
-   * @param element {HtmlElement} the element to inspect
+   * @param element {HTMLElement} the element to inspect
    * @private
    *
    * @returns {number} animation-delay in seconds
    */
-  _getElementAnimationDelay(element) {
+  _getElementAnimationDelay(element: HTMLElement) : number {
     var styl = window.getComputedStyle(element);
     var prop,
         delay;
@@ -89,13 +89,13 @@ export class CssAnimator {
   /**
    * Run an animation for the given element with the specified className
    *
-   * @param element   {HtmlElement} the element to be animated
+   * @param element   {HTMLElement} the element to be animated
    * @param className {String}      the class to be added and removed
    * @private
    *
    * @returns {Promise.<Boolean>}
    */
-  _performSingleAnimate(element, className) {
+  _performSingleAnimate(element: HTMLElement, className: string) : Promise<boolean> {
     this._triggerDOMEvent(animationEvent.animateBegin, element);
 
     return this.addClass(element, className, true)
@@ -119,10 +119,10 @@ export class CssAnimator {
   /**
    * Triggers a DOM-Event with the given type as name and adds the provided element as detail
    * @param eventType {String}      the event type
-   * @param element   {HtmlElement} the element to be dispatched as event detail
+   * @param element   {HTMLElement} the element to be dispatched as event detail
    * @private
    */
-  _triggerDOMEvent(eventType, element) {
+  _triggerDOMEvent(eventType: string, element: HTMLElement) : void {
     var evt = new window.CustomEvent(eventType, {bubbles: true, cancelable: true, detail: element});
     document.dispatchEvent(evt);
   }
@@ -131,12 +131,12 @@ export class CssAnimator {
   /**
    * Run an animation for the given element/elements with the specified className in parallel
    *
-   * @param element   {HtmlElement, Array<HtmlElement>} the element/s to be animated
+   * @param element   {HTMLElement, Array<HTMLElement>} the element/s to be animated
    * @param className {String}                          the class to be added and removed
    *
-   * @returns {Promise}
+   * @returns {Promise<Boolean>}
    */
-  animate(element, className) {
+  animate(element: HTMLElement | Array<HTMLElement>, className: string) : Promise<boolean> {
     if(Array.isArray(element)) {
       return Promise.all( element.map( (el) => {
         return this._performSingleAnimate(el, className);
@@ -153,7 +153,7 @@ export class CssAnimator {
    *
    * @returns {Promise.<Boolean>}
    */
-  runSequence(animations) {
+  runSequence(animations: Array<CssAnimation>) : Promise<boolean> {
     this._triggerDOMEvent(animationEvent.sequenceBegin, null);
 
     return animations.reduce( (p, anim) => {
@@ -168,18 +168,18 @@ export class CssAnimator {
    *
    * @returns {Promise.<Boolean>}
    */
-  move() {
+  move() : Promise<boolean>{
     return Promise.resolve(false);
   }
 
   /**
    * Performs the enter animation for the given element, triggered by a [my-class]-enter-active css-class
    *
-   * @param element {HtmlElement} the element to be animated
+   * @param element {HTMLElement} the element to be animated
    *
    * @returns {Promise.<Boolean>}
    */
-  enter(element) {
+  enter(element: HTMLElement) : Promise<boolean> {
     return new Promise( (resolve, reject) => {
       // Step 1: generate animation id
       var animId = element.toString() + Math.random(),
@@ -281,11 +281,11 @@ export class CssAnimator {
   /**
    * Performs the leave animation for the given element, triggered by a [my-class]-leave-active css-class
    *
-   * @param element {HtmlElement} the element to be animated
+   * @param element {HTMLElement} the element to be animated
    *
    * @returns {Promise.<Boolean>}
    */
-  leave(element) {
+  leave(element: HTMLElement) : Promise<boolean> {
     return new Promise( (resolve, reject) => {
       // Step 1: generate animation id
       var animId = element.toString() + Math.random(),
@@ -387,13 +387,13 @@ export class CssAnimator {
   /**
    * Executes an animation by removing a css-class
    *
-   * @param element        {HtmlElement}                    the element to be animated
+   * @param element        {HTMLElement}                    the element to be animated
    * @param className      {String}                         css-class to be removed
    * @param suppressEvents {Boolean} [suppressEvents=false] suppress event triggering
    *
    * @returns {Promise.<Boolean>}
    */
-  removeClass(element, className, suppressEvents = false) {
+  removeClass(element: HTMLElement, className: string, suppressEvents: boolean = false) : Promise<boolean> {
     return new Promise( (resolve, reject) => {
       var classList = element.classList;
 
@@ -477,13 +477,13 @@ export class CssAnimator {
   /**
    * Executes an animation by adding a css-class
    *
-   * @param element        {HtmlElement}                    the element to be animated
+   * @param element        {HTMLElement}                    the element to be animated
    * @param className      {String}                         css-class to be removed
    * @param suppressEvents {Boolean} [suppressEvents=false] suppress event triggering
    *
    * @returns {Promise.<Boolean>}
    */
-  addClass(element, className, suppressEvents = false) {
+  addClass(element: HTMLElement, className: string, suppressEvents: boolean = false) : Promise<boolean> {
     return new Promise( (resolve, reject) => {
       // Step 1: generate animation id
       var animId = element.toString() + className + Math.random(),
@@ -561,10 +561,12 @@ export class CssAnimator {
   /* Public API End */
 }
 
-export function configure(aurelia, cb){
-  var animator = aurelia.container.get(CssAnimator);
-  Animator.configureDefault(aurelia.container, animator);
-  if(typeof cb === 'function') {
-    cb(animator);
+export function configure(config: Object, callback?:(animator:CssAnimator) => void){
+  var animator = config.container.get(CssAnimator);
+
+  Animator.configureDefault(config.container, animator);
+
+  if(typeof callback === 'function') {
+    callback(animator);
   }
 }

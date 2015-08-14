@@ -1,3 +1,17 @@
+## 0.15.0 (2015-08-14)
+
+
+#### Bug Fixes
+
+* **index:** update to new framework configuration api ([8930d386](https://github.com/aurelia/animator-css/commit/8930d3864a10b63d4680f1be316a124a2d4b4fdc))
+* **typing:** add type information ([f28fdba9](https://github.com/aurelia/animator-css/commit/f28fdba95b77fb8a162af3ea58d55ad4741b1ff9))
+
+
+#### Features
+
+* **all:** add more type info ([8fd02a8f](https://github.com/aurelia/animator-css/commit/8fd02a8fa7ce5211efd1e83b1d22f1710a99e8df))
+
+
 ### 0.14.1 (2015-07-29)
 
 
