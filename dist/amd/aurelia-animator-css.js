@@ -21,11 +21,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
     }
 
     CssAnimator.prototype._addMultipleEventListener = function _addMultipleEventListener(el, s, fn) {
-      var evts = s.split(' '),
-          i,
-          ii;
-
-      for (i = 0, ii = evts.length; i < ii; ++i) {
+      var evts = s.split(' ');
+      for (var i = 0, ii = evts.length; i < ii; ++i) {
         el.addEventListener(evts[i], fn, false);
       }
     };
@@ -45,7 +42,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
     CssAnimator.prototype._getElementAnimationDelay = function _getElementAnimationDelay(element) {
       var styl = window.getComputedStyle(element);
-      var prop, delay;
+      var prop = undefined;
+      var delay = undefined;
 
       if (styl.getPropertyValue('animation-delay')) {
         prop = 'animation-delay';
@@ -56,6 +54,7 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
       } else {
         return 0;
       }
+
       delay = styl.getPropertyValue(prop);
       delay = Number(delay.replace(/[^\d\.]/g, ''));
 
@@ -74,9 +73,9 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
           return _this.removeClass(element, className, true).then(function () {
             _this._triggerDOMEvent(_aureliaTemplating.animationEvent.animateDone, element);
           });
-        } else {
-          return false;
         }
+
+        return false;
       })['catch'](function () {
         _this._triggerDOMEvent(_aureliaTemplating.animationEvent.animateTimeout, element);
       });
@@ -94,9 +93,9 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
         return Promise.all(element.map(function (el) {
           return _this2._performSingleAnimate(el, className);
         }));
-      } else {
-        return this._performSingleAnimate(element, className);
       }
+
+      return this._performSingleAnimate(element, className);
     };
 
     CssAnimator.prototype.runSequence = function runSequence(animations) {
@@ -121,8 +120,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
       var _this4 = this;
 
       return new Promise(function (resolve, reject) {
-        var animId = element.toString() + Math.random(),
-            classList = element.classList;
+        var animId = element.toString() + Math.random();
+        var classList = element.classList;
 
         _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterBegin, element);
 
@@ -133,8 +132,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
         classList.add('au-enter');
 
-        var animStart;
-        _this4._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
+        var animStart = undefined;
+        _this4._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
           _this4.isAnimating = true;
 
           _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterActive, element);
@@ -143,8 +142,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
           _this4._addAnimationToStack(animId);
 
-          var animEnd;
-          _this4._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
+          var animEnd = undefined;
+          _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
             evAnimEnd.stopPropagation();
 
             classList.remove('au-enter-active');
@@ -167,8 +166,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
         }, false);
 
-        var parent = element.parentElement,
-            delay = 0;
+        var parent = element.parentElement;
+        var delay = 0;
 
         if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-enter'))) {
           var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
@@ -200,8 +199,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
       var _this5 = this;
 
       return new Promise(function (resolve, reject) {
-        var animId = element.toString() + Math.random(),
-            classList = element.classList;
+        var animId = element.toString() + Math.random();
+        var classList = element.classList;
 
         _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveBegin, element);
 
@@ -212,8 +211,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
         classList.add('au-leave');
 
-        var animStart;
-        _this5._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
+        var animStart = undefined;
+        _this5._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
           _this5.isAnimating = true;
 
           _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveActive, element);
@@ -222,8 +221,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
           _this5._addAnimationToStack(animId);
 
-          var animEnd;
-          _this5._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
+          var animEnd = undefined;
+          _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
             evAnimEnd.stopPropagation();
 
             classList.remove('au-leave-active');
@@ -246,8 +245,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
         }, false);
 
-        var parent = element.parentElement,
-            delay = 0;
+        var parent = element.parentElement;
+        var delay = 0;
 
         if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-leave'))) {
           var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
@@ -296,8 +295,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
         classList.remove(className);
 
-        var animStart;
-        _this6._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
+        var animStart = undefined;
+        _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
           _this6.isAnimating = true;
 
           if (suppressEvents !== true) {
@@ -308,11 +307,11 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
           _this6._addAnimationToStack(animId);
 
-          var animEnd;
-          _this6._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
+          var animEnd = undefined;
+          _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
             evAnimEnd.stopPropagation();
 
-            classList.remove(className + "-remove");
+            classList.remove(className + '-remove');
 
             _this6._removeAnimationFromStack(animId);
 
@@ -330,11 +329,11 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
         }, false);
 
-        classList.add(className + "-remove");
+        classList.add(className + '-remove');
 
         setTimeout(function () {
           if (_this6.animationStack.indexOf(animId) < 0) {
-            classList.remove(className + "-remove");
+            classList.remove(className + '-remove');
             classList.remove(className);
 
             if (suppressEvents !== true) {
@@ -353,15 +352,15 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
       var suppressEvents = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
       return new Promise(function (resolve, reject) {
-        var animId = element.toString() + className + Math.random(),
-            classList = element.classList;
+        var animId = element.toString() + className + Math.random();
+        var classList = element.classList;
 
         if (suppressEvents !== true) {
           _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassBegin, element);
         }
 
-        var animStart;
-        _this7._addMultipleEventListener(element, "webkitAnimationStart animationstart", animStart = function (evAnimStart) {
+        var animStart = undefined;
+        _this7._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
           _this7.isAnimating = true;
 
           if (suppressEvents !== true) {
@@ -372,13 +371,13 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
 
           _this7._addAnimationToStack(animId);
 
-          var animEnd;
-          _this7._addMultipleEventListener(element, "webkitAnimationEnd animationend", animEnd = function (evAnimEnd) {
+          var animEnd = undefined;
+          _this7._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
             evAnimEnd.stopPropagation();
 
             classList.add(className);
 
-            classList.remove(className + "-add");
+            classList.remove(className + '-add');
 
             _this7._removeAnimationFromStack(animId);
 
@@ -396,11 +395,11 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
         }, false);
 
-        classList.add(className + "-add");
+        classList.add(className + '-add');
 
         setTimeout(function () {
           if (_this7.animationStack.indexOf(animId) < 0) {
-            classList.remove(className + "-add");
+            classList.remove(className + '-add');
             classList.add(className);
 
             if (suppressEvents !== true) {

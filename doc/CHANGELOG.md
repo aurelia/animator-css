@@ -1,3 +1,12 @@
+## 0.16.0 (2015-09-05)
+
+
+#### Bug Fixes
+
+* **CssAnimation:** add export to interface ([8fbea194](https://github.com/aurelia/animator-css/commit/8fbea194e4ea8bf070b02dd969ed0a80042b0f53))
+* **build:** update linting, testing and tools ([8a14252d](https://github.com/aurelia/animator-css/commit/8a14252db8dcd28cde743f33f291a03949e5e1d7))
+
+
 ## 0.15.0 (2015-08-14)
 
 
