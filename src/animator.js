@@ -1,4 +1,5 @@
 import {animationEvent} from 'aurelia-templating';
+import {DOM} from 'aurelia-pal';
 
 interface CssAnimation {
   className: string;
@@ -65,7 +66,7 @@ export class CssAnimator {
    * @returns animation-delay in seconds
    */
   _getElementAnimationDelay(element: HTMLElement): number {
-    let styl = window.getComputedStyle(element);
+    let styl = DOM.getComputedStyle(element);
     let prop;
     let delay;
 
@@ -119,8 +120,8 @@ export class CssAnimator {
    * @param element   the element to be dispatched as event detail
    */
   _triggerDOMEvent(eventType: string, element: HTMLElement): void {
-    let evt = new window.CustomEvent(eventType, {bubbles: true, cancelable: true, detail: element});
-    document.dispatchEvent(evt);
+    let evt = DOM.createCustomEvent(eventType, {bubbles: true, cancelable: true, detail: element});
+    DOM.dispatchEvent(evt);
   }
 
   /* Public API Begin */

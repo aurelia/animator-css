@@ -1,10 +1,12 @@
 import {CssAnimator} from '../src/animator';
 import {animationEvent} from 'aurelia-templating';
+import {initialize} from 'aurelia-pal-browser';
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/';
 
 describe('animator-css', () => {
   var sut;
+  beforeAll(() => initialize());
   beforeEach(() => {
     sut = new CssAnimator();
   });
