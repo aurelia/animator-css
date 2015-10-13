@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating) {
+define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aureliaTemplating, _aureliaPal) {
   'use strict';
 
   exports.__esModule = true;
@@ -41,7 +41,7 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
     };
 
     CssAnimator.prototype._getElementAnimationDelay = function _getElementAnimationDelay(element) {
-      var styl = window.getComputedStyle(element);
+      var styl = _aureliaPal.DOM.getComputedStyle(element);
       var prop = undefined;
       var delay = undefined;
 
@@ -82,8 +82,8 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
     };
 
     CssAnimator.prototype._triggerDOMEvent = function _triggerDOMEvent(eventType, element) {
-      var evt = new window.CustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
-      document.dispatchEvent(evt);
+      var evt = _aureliaPal.DOM.createCustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
+      _aureliaPal.DOM.dispatchEvent(evt);
     };
 
     CssAnimator.prototype.animate = function animate(element, className) {

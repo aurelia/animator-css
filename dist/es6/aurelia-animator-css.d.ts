@@ -1,5 +1,6 @@
 declare module 'aurelia-animator-css' {
   import { animationEvent, Animator }  from 'aurelia-templating';
+  import { DOM }  from 'aurelia-pal';
   export interface CssAnimation {
     className: string;
     element: HTMLElement;

@@ -7,6 +7,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var _aureliaTemplating = require('aurelia-templating');
 
+var _aureliaPal = require('aurelia-pal');
+
 var CssAnimator = (function () {
   function CssAnimator() {
     _classCallCheck(this, CssAnimator);
@@ -42,7 +44,7 @@ var CssAnimator = (function () {
   };
 
   CssAnimator.prototype._getElementAnimationDelay = function _getElementAnimationDelay(element) {
-    var styl = window.getComputedStyle(element);
+    var styl = _aureliaPal.DOM.getComputedStyle(element);
     var prop = undefined;
     var delay = undefined;
 
@@ -83,8 +85,8 @@ var CssAnimator = (function () {
   };
 
   CssAnimator.prototype._triggerDOMEvent = function _triggerDOMEvent(eventType, element) {
-    var evt = new window.CustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
-    document.dispatchEvent(evt);
+    var evt = _aureliaPal.DOM.createCustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
+    _aureliaPal.DOM.dispatchEvent(evt);
   };
 
   CssAnimator.prototype.animate = function animate(element, className) {
