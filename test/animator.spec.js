@@ -14,14 +14,24 @@ describe('animator-css', () => {
 
   describe('plugin initialization', () => {
     var aurelia = {
-      globalizeResources: () => {
+      globalResources: () => {
 
       },
       container: {
         registerInstance: (type, instance) => {
 
         },
-        get: (type) => { return new type(); }
+        get: (type) => {
+          if(type === CssAnimator) {
+            return new CssAnimator();
+          }
+
+          return {
+            configureAnimator() {
+
+            }
+          };
+        }
       }
     };
 
