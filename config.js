@@ -16,7 +16,7 @@ System.config({
   map: {
     "aurelia-metadata": "github:aurelia/metadata@0.10.0",
     "aurelia-pal": "github:aurelia/pal@0.3.0",
-    "aurelia-pal-browser": "github:aurelia/pal-browser@0.2.0",
+    "aurelia-pal-browser": "github:aurelia/pal-browser@0.3.0",
     "aurelia-templating": "github:aurelia/templating@0.17.0",
     "babel": "npm:babel-core@5.2.2",
     "babel-runtime": "npm:babel-runtime@5.2.2",
@@ -41,8 +41,8 @@ System.config({
       "aurelia-pal": "github:aurelia/pal@0.3.0",
       "core-js": "npm:core-js@1.2.6"
     },
-    "github:aurelia/pal-browser@0.2.0": {
-      "aurelia-pal": "github:aurelia/pal@0.2.0"
+    "github:aurelia/pal-browser@0.3.0": {
+      "aurelia-pal": "github:aurelia/pal@0.3.0"
     },
     "github:aurelia/task-queue@0.9.0": {
       "aurelia-pal": "github:aurelia/pal@0.3.0"

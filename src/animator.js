@@ -159,15 +159,6 @@ export class CssAnimator {
   }
 
   /**
-   * Stub of move interface method
-   *
-   * @returns
-   */
-  move(): Promise<boolean> {
-    return Promise.resolve(false);
-  }
-
-  /**
    * Performs the enter animation for the given element, triggered by a [my-class]-enter-active css-class
    *
    * @param element the element to be animated
