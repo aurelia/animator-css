@@ -42,7 +42,7 @@
           ]
         },
         {
-          "id": 29,
+          "id": 27,
           "name": "addClass",
           "kind": 2048,
           "kindString": "Method",
@@ -51,7 +51,7 @@
           },
           "signatures": [
             {
-              "id": 30,
+              "id": 28,
               "name": "addClass",
               "kind": 4096,
               "kindString": "Call signature",
@@ -62,7 +62,7 @@
               },
               "parameters": [
                 {
-                  "id": 31,
+                  "id": 29,
                   "name": "element",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -76,7 +76,7 @@
                   }
                 },
                 {
-                  "id": 32,
+                  "id": 30,
                   "name": "className",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -90,7 +90,7 @@
                   }
                 },
                 {
-                  "id": 33,
+                  "id": 31,
                   "name": "suppressEvents",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -197,7 +197,7 @@
           ]
         },
         {
-          "id": 18,
+          "id": 16,
           "name": "enter",
           "kind": 2048,
           "kindString": "Method",
@@ -206,7 +206,7 @@
           },
           "signatures": [
             {
-              "id": 19,
+              "id": 17,
               "name": "enter",
               "kind": 4096,
               "kindString": "Call signature",
@@ -217,7 +217,7 @@
               },
               "parameters": [
                 {
-                  "id": 20,
+                  "id": 18,
                   "name": "element",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -245,7 +245,7 @@
           ]
         },
         {
-          "id": 21,
+          "id": 19,
           "name": "leave",
           "kind": 2048,
           "kindString": "Method",
@@ -254,7 +254,7 @@
           },
           "signatures": [
             {
-              "id": 22,
+              "id": 20,
               "name": "leave",
               "kind": 4096,
               "kindString": "Call signature",
@@ -265,7 +265,7 @@
               },
               "parameters": [
                 {
-                  "id": 23,
+                  "id": 21,
                   "name": "element",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -293,39 +293,7 @@
           ]
         },
         {
-          "id": 16,
-          "name": "move",
-          "kind": 2048,
-          "kindString": "Method",
-          "flags": {
-            "isExported": true
-          },
-          "signatures": [
-            {
-              "id": 17,
-              "name": "move",
-              "kind": 4096,
-              "kindString": "Call signature",
-              "flags": {},
-              "comment": {
-                "shortText": "Stub of move interface method",
-                "returns": "\n"
-              },
-              "type": {
-                "type": "reference",
-                "name": "Promise",
-                "typeArguments": [
-                  {
-                    "type": "instrinct",
-                    "name": "boolean"
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "id": 24,
+          "id": 22,
           "name": "removeClass",
           "kind": 2048,
           "kindString": "Method",
@@ -334,7 +302,7 @@
           },
           "signatures": [
             {
-              "id": 25,
+              "id": 23,
               "name": "removeClass",
               "kind": 4096,
               "kindString": "Call signature",
@@ -345,7 +313,7 @@
               },
               "parameters": [
                 {
-                  "id": 26,
+                  "id": 24,
                   "name": "element",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -359,7 +327,7 @@
                   }
                 },
                 {
-                  "id": 27,
+                  "id": 25,
                   "name": "className",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -373,7 +341,7 @@
                   }
                 },
                 {
-                  "id": 28,
+                  "id": 26,
                   "name": "suppressEvents",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -470,12 +438,11 @@
           "title": "Methods",
           "kind": 2048,
           "children": [
-            29,
+            27,
             9,
-            18,
-            21,
             16,
-            24,
+            19,
+            22,
             13
           ]
         }
@@ -529,7 +496,7 @@
       ]
     },
     {
-      "id": 34,
+      "id": 32,
       "name": "configure",
       "kind": 64,
       "kindString": "Function",
@@ -538,14 +505,14 @@
       },
       "signatures": [
         {
-          "id": 35,
+          "id": 33,
           "name": "configure",
           "kind": 4096,
           "kindString": "Call signature",
           "flags": {},
           "parameters": [
             {
-              "id": 36,
+              "id": 34,
               "name": "config",
               "kind": 32768,
               "kindString": "Parameter",
@@ -556,7 +523,7 @@
               }
             },
             {
-              "id": 37,
+              "id": 35,
               "name": "callback",
               "kind": 32768,
               "kindString": "Parameter",
@@ -566,21 +533,21 @@
               "type": {
                 "type": "reflection",
                 "declaration": {
-                  "id": 38,
+                  "id": 36,
                   "name": "__type",
                   "kind": 65536,
                   "kindString": "Type literal",
                   "flags": {},
                   "signatures": [
                     {
-                      "id": 39,
+                      "id": 37,
                       "name": "__call",
                       "kind": 4096,
                       "kindString": "Call signature",
                       "flags": {},
                       "parameters": [
                         {
-                          "id": 40,
+                          "id": 38,
                           "name": "animator",
                           "kind": 32768,
                           "kindString": "Parameter",
@@ -629,7 +596,7 @@
       "title": "Functions",
       "kind": 64,
       "children": [
-        34
+        32
       ]
     }
   ]

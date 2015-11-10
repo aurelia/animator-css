@@ -1,3 +1,12 @@
+## 0.18.0 (2015-11-10)
+
+
+#### Bug Fixes
+
+* **all:** update to use TemplatingEngine to install animator ([a06a44e9](https://github.com/aurelia/animator-css/commit/a06a44e94f1bff4546e7ad50f119fcc0c5daf5d1))
+* **animator:** remove unneeded move method ([2eac6407](https://github.com/aurelia/animator-css/commit/2eac6407ad92f72997f6566e3c3011963733dc82))
+
+
 ## 0.17.0 (2015-10-13)
 
 

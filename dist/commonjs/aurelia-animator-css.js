@@ -115,10 +115,6 @@ var CssAnimator = (function () {
     });
   };
 
-  CssAnimator.prototype.move = function move() {
-    return Promise.resolve(false);
-  };
-
   CssAnimator.prototype.enter = function enter(element) {
     var _this4 = this;
 
@@ -422,9 +418,7 @@ exports.CssAnimator = CssAnimator;
 
 function configure(config, callback) {
   var animator = config.container.get(CssAnimator);
-
-  _aureliaTemplating.Animator.configureDefault(config.container, animator);
-
+  config.container.get(_aureliaTemplating.TemplatingEngine).configureAnimator(animator);
   if (typeof callback === 'function') {
     callback(animator);
   }

@@ -1,5 +1,5 @@
 declare module 'aurelia-animator-css' {
-  import { animationEvent, Animator }  from 'aurelia-templating';
+  import { animationEvent, TemplatingEngine }  from 'aurelia-templating';
   import { DOM }  from 'aurelia-pal';
   export interface CssAnimation {
     className: string;
@@ -29,13 +29,6 @@ declare module 'aurelia-animator-css' {
        * @returns
        */
     runSequence(animations: Array<CssAnimation>): Promise<boolean>;
-    
-    /**
-       * Stub of move interface method
-       *
-       * @returns
-       */
-    move(): Promise<boolean>;
     
     /**
        * Performs the enter animation for the given element, triggered by a [my-class]-enter-active css-class

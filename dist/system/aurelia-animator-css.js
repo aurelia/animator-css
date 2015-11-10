@@ -1,7 +1,7 @@
 System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
   'use strict';
 
-  var animationEvent, Animator, DOM, CssAnimator;
+  var animationEvent, TemplatingEngine, DOM, CssAnimator;
 
   _export('configure', configure);
 
@@ -9,9 +9,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
   function configure(config, callback) {
     var animator = config.container.get(CssAnimator);
-
-    Animator.configureDefault(config.container, animator);
-
+    config.container.get(TemplatingEngine).configureAnimator(animator);
     if (typeof callback === 'function') {
       callback(animator);
     }
@@ -20,7 +18,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
   return {
     setters: [function (_aureliaTemplating) {
       animationEvent = _aureliaTemplating.animationEvent;
-      Animator = _aureliaTemplating.Animator;
+      TemplatingEngine = _aureliaTemplating.TemplatingEngine;
     }, function (_aureliaPal) {
       DOM = _aureliaPal.DOM;
     }],
@@ -129,10 +127,6 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
           }, Promise.resolve(true)).then(function () {
             _this3._triggerDOMEvent(animationEvent.sequenceDone, null);
           });
-        };
-
-        CssAnimator.prototype.move = function move() {
-          return Promise.resolve(false);
         };
 
         CssAnimator.prototype.enter = function enter(element) {

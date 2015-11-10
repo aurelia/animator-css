@@ -1,4 +1,4 @@
-import {animationEvent,Animator} from 'aurelia-templating';
+import {animationEvent,TemplatingEngine} from 'aurelia-templating';
 import {DOM} from 'aurelia-pal';
 
 interface CssAnimation {
@@ -156,15 +156,6 @@ export class CssAnimator {
     }, Promise.resolve(true) ).then(() => {
       this._triggerDOMEvent(animationEvent.sequenceDone, null);
     });
-  }
-
-  /**
-   * Stub of move interface method
-   *
-   * @returns
-   */
-  move(): Promise<boolean> {
-    return Promise.resolve(false);
   }
 
   /**
@@ -558,10 +549,6 @@ export class CssAnimator {
 
 export function configure(config: Object, callback?:(animator:CssAnimator) => void) {
   let animator = config.container.get(CssAnimator);
-
-  Animator.configureDefault(config.container, animator);
-
-  if (typeof callback === 'function') {
-    callback(animator);
-  }
+  config.container.get(TemplatingEngine).configureAnimator(animator);
+  if (typeof callback === 'function') { callback(animator); }
 }
