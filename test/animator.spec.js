@@ -509,6 +509,35 @@ describe('animator-css', () => {
     });
   });
 
+  describe('add and removeClass', () => {
+
+    let elem, testClass;
+
+    beforeEach(() => {
+      loadFixtures('addremove.html');
+      elem = $('#elem2').eq(0)[0];
+      testClass = 'aurelia-hide';
+    });
+
+    fit('should handle quick add and remove cycle', (done) => {
+      var ok = [];
+
+      ok.push(sut.addClass(elem, testClass));
+
+      setTimeout( () => {
+        ok.push(sut.removeClass(elem, testClass));
+      }, 49);
+
+      setTimeout( () => {
+        Promise.all(ok).then( () => {
+          console.log(elem.classList);
+          expect(elem.classList.contains(testClass)).toBe(false);
+          done();
+        });
+      }, 50);
+    });
+  });
+
   describe('staggering animations', () => {
     var elems;
 
