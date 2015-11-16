@@ -14,7 +14,7 @@
         "isExported": true
       },
       "comment": {
-        "shortText": "Aurelia animator implementation using CSS3-Animations"
+        "shortText": "An implementation of the Animator using CSS3-Animations."
       },
       "children": [
         {
@@ -25,6 +25,9 @@
           "flags": {
             "isExported": true
           },
+          "comment": {
+            "shortText": "Creates an instance of CssAnimator."
+          },
           "signatures": [
             {
               "id": 8,
@@ -32,6 +35,9 @@
               "kind": 16384,
               "kindString": "Constructor signature",
               "flags": {},
+              "comment": {
+                "shortText": "Creates an instance of CssAnimator."
+              },
               "type": {
                 "type": "reference",
                 "name": "CssAnimator",
@@ -57,8 +63,8 @@
               "kindString": "Call signature",
               "flags": {},
               "comment": {
-                "shortText": "Executes an animation by adding a css-class",
-                "returns": "\n"
+                "shortText": "Add a class to an element to trigger an animation.",
+                "returns": "Resolved when the animation is done\n"
               },
               "parameters": [
                 {
@@ -68,7 +74,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "the element to be animated"
+                    "text": "Element to animate"
                   },
                   "type": {
                     "type": "reference",
@@ -82,7 +88,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "css-class to be removed"
+                    "text": "Properties to animate or name of the effect to use"
                   },
                   "type": {
                     "type": "instrinct",
@@ -98,7 +104,7 @@
                     "isOptional": true
                   },
                   "comment": {
-                    "text": "suppress event triggering\n"
+                    "text": "Indicates whether or not to suppress animation events."
                   },
                   "type": {
                     "type": "instrinct",
@@ -135,8 +141,8 @@
               "kindString": "Call signature",
               "flags": {},
               "comment": {
-                "shortText": "Run an animation for the given element/elements with the specified className in parallel",
-                "returns": "\n"
+                "shortText": "Execute a single animation.",
+                "returns": "Resolved when the animation is done\n"
               },
               "parameters": [
                 {
@@ -146,7 +152,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "the element/s to be animated"
+                    "text": "Element to animate"
                   },
                   "type": {
                     "type": "union",
@@ -175,7 +181,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "the class to be added and removed"
+                    "text": "Properties to animate or name of the effect to use. For css animators this represents the className to be added and removed right after the animation is done."
                   },
                   "type": {
                     "type": "instrinct",
@@ -212,8 +218,8 @@
               "kindString": "Call signature",
               "flags": {},
               "comment": {
-                "shortText": "Performs the enter animation for the given element, triggered by a [my-class]-enter-active css-class",
-                "returns": "\n"
+                "shortText": "Execute an 'enter' animation on an element",
+                "returns": "Resolved when the animation is done\n"
               },
               "parameters": [
                 {
@@ -223,7 +229,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "the element to be animated\n"
+                    "text": "Element to animate"
                   },
                   "type": {
                     "type": "reference",
@@ -260,8 +266,8 @@
               "kindString": "Call signature",
               "flags": {},
               "comment": {
-                "shortText": "Performs the leave animation for the given element, triggered by a [my-class]-leave-active css-class",
-                "returns": "\n"
+                "shortText": "Execute a 'leave' animation on an element",
+                "returns": "Resolved when the animation is done\n"
               },
               "parameters": [
                 {
@@ -271,7 +277,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "the element to be animated\n"
+                    "text": "Element to animate"
                   },
                   "type": {
                     "type": "reference",
@@ -308,8 +314,8 @@
               "kindString": "Call signature",
               "flags": {},
               "comment": {
-                "shortText": "Executes an animation by removing a css-class",
-                "returns": "\n"
+                "shortText": "Add a class to an element to trigger an animation.",
+                "returns": "Resolved when the animation is done\n"
               },
               "parameters": [
                 {
@@ -319,7 +325,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "he element to be animated"
+                    "text": "Element to animate"
                   },
                   "type": {
                     "type": "reference",
@@ -333,7 +339,7 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "css-class to be removed"
+                    "text": "Properties to animate or name of the effect to use"
                   },
                   "type": {
                     "type": "instrinct",
@@ -349,7 +355,7 @@
                     "isOptional": true
                   },
                   "comment": {
-                    "text": "suppress event triggering\n"
+                    "text": "Indicates whether or not to suppress animation events."
                   },
                   "type": {
                     "type": "instrinct",
@@ -386,8 +392,8 @@
               "kindString": "Call signature",
               "flags": {},
               "comment": {
-                "shortText": "Runs a series of animations in sequence",
-                "returns": "\n"
+                "shortText": "Run a sequence of animations one after the other.",
+                "returns": "Resolved when all animations are done\n"
               },
               "parameters": [
                 {
@@ -396,9 +402,6 @@
                   "kind": 32768,
                   "kindString": "Parameter",
                   "flags": {},
-                  "comment": {
-                    "text": "array of animation parameters"
-                  },
                   "type": {
                     "type": "reference",
                     "name": "Array",
@@ -510,6 +513,9 @@
           "kind": 4096,
           "kindString": "Call signature",
           "flags": {},
+          "comment": {
+            "shortText": "Configuires the CssAnimator as the default animator for Aurelia."
+          },
           "parameters": [
             {
               "id": 34,
@@ -517,6 +523,9 @@
               "kind": 32768,
               "kindString": "Parameter",
               "flags": {},
+              "comment": {
+                "text": "The FrameworkConfiguration instance."
+              },
               "type": {
                 "type": "reference",
                 "name": "Object"
@@ -529,6 +538,9 @@
               "kindString": "Parameter",
               "flags": {
                 "isOptional": true
+              },
+              "comment": {
+                "text": "A configuration callback provided by the plugin consumer.\n"
               },
               "type": {
                 "type": "reflection",
@@ -571,7 +583,7 @@
           ],
           "type": {
             "type": "instrinct",
-            "name": "any"
+            "name": "void"
           }
         }
       ]
