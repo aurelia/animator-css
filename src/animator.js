@@ -7,9 +7,12 @@ interface CssAnimation {
 }
 
 /**
- * Aurelia animator implementation using CSS3-Animations
+ * An implementation of the Animator using CSS3-Animations.
  */
 export class CssAnimator {
+  /**
+   * Creates an instance of CssAnimator.
+   */
   constructor() {
     this.animationStack = [];
 
@@ -126,11 +129,11 @@ export class CssAnimator {
 
   /* Public API Begin */
   /**
-   * Run an animation for the given element/elements with the specified className in parallel
-   *
-   * @param element   the element/s to be animated
-   * @param className the class to be added and removed
-   * @returns
+   * Execute a single animation.
+   * @param element Element to animate
+   * @param className Properties to animate or name of the effect to use. For css animators this represents the className to be added and removed right after the animation is done.
+   * @param options options for the animation (duration, easing, ...)
+   * @returns Resolved when the animation is done
    */
   animate(element: HTMLElement | Array<HTMLElement>, className: string): Promise<boolean> {
     if (Array.isArray(element)) {
@@ -143,10 +146,9 @@ export class CssAnimator {
   }
 
   /**
-   * Runs a series of animations in sequence
-   *
-   * @param animations array of animation parameters
-   * @returns
+   * Run a sequence of animations one after the other.
+   * @param sequence An array of effectNames or classNames
+   * @returns Resolved when all animations are done
    */
   runSequence(animations: Array<CssAnimation>): Promise<boolean> {
     this._triggerDOMEvent(animationEvent.sequenceBegin, null);
@@ -159,11 +161,9 @@ export class CssAnimator {
   }
 
   /**
-   * Performs the enter animation for the given element, triggered by a [my-class]-enter-active css-class
-   *
-   * @param element the element to be animated
-   *
-   * @returns
+   * Execute an 'enter' animation on an element
+   * @param element Element to animate
+   * @returns Resolved when the animation is done
    */
   enter(element: HTMLElement): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -265,11 +265,9 @@ export class CssAnimator {
   }
 
   /**
-   * Performs the leave animation for the given element, triggered by a [my-class]-leave-active css-class
-   *
-   * @param element the element to be animated
-   *
-   * @returns
+   * Execute a 'leave' animation on an element
+   * @param element Element to animate
+   * @returns Resolved when the animation is done
    */
   leave(element: HTMLElement): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -371,13 +369,11 @@ export class CssAnimator {
   }
 
   /**
-   * Executes an animation by removing a css-class
-   *
-   * @param element        he element to be animated
-   * @param className      css-class to be removed
-   * @param suppressEvents suppress event triggering
-   *
-   * @returns
+   * Add a class to an element to trigger an animation.
+   * @param element Element to animate
+   * @param className Properties to animate or name of the effect to use
+   * @param suppressEvents Indicates whether or not to suppress animation events.
+   * @returns Resolved when the animation is done
    */
   removeClass(element: HTMLElement, className: string, suppressEvents: boolean = false): Promise<boolean> {
     return new Promise( (resolve, reject) => {
@@ -461,13 +457,11 @@ export class CssAnimator {
   }
 
   /**
-   * Executes an animation by adding a css-class
-   *
-   * @param element        the element to be animated
-   * @param className      css-class to be removed
-   * @param suppressEvents suppress event triggering
-   *
-   * @returns
+   * Add a class to an element to trigger an animation.
+   * @param element Element to animate
+   * @param className Properties to animate or name of the effect to use
+   * @param suppressEvents Indicates whether or not to suppress animation events.
+   * @returns Resolved when the animation is done
    */
   addClass(element: HTMLElement, className: string, suppressEvents: boolean = false): Promise<boolean> {
     return new Promise((resolve, reject) => {
