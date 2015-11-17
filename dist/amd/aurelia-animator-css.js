@@ -278,7 +278,7 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
       return new Promise(function (resolve, reject) {
         var classList = element.classList;
 
-        if (!classList.contains(className)) {
+        if (!classList.contains(className) && !classList.contains(className + '-add')) {
           resolve(false);
           return;
         }

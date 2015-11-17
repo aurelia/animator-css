@@ -379,7 +379,7 @@ export class CssAnimator {
     return new Promise( (resolve, reject) => {
       let classList = element.classList;
 
-      if (!classList.contains(className)) {
+      if (!classList.contains(className) && !classList.contains(className + '-add')) {
         resolve(false);
         return;
       }

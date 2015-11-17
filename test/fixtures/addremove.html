@@ -1,15 +1,36 @@
 <style type="text/css">
-  .aurelia-hide {
-    display:none;
+  @keyframes hide-animation {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @-webkit-keyframes hide-animation{
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  
+  @keyframes show-animation {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @-webkit-keyframes show-animation{
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .animate-hide-add {
+    -webkit-animation:0.2s show-animation;
+    animation:0.2s show-animation;
+  }
+  
+  .animate-hide-remove {
+    -webkit-animation:0.2s show-animation;
+    animation:0.2s show-animation;
   }
 
 </style>
 
 <div>
-  <span id="elem1" class="aurelia-hide">
-    <i class="fa fa-spin fa-spinner"></i>&nbsp;<span>Element 1</span><span>…</span>
-  </span>
-  <span id="elem2" class="">
-    Element 2
+  <span id="elem" class="">
+    Quickly animated element
   </span>
 </div>

@@ -515,7 +515,7 @@ describe('animator-css', () => {
 
     beforeEach(() => {
       loadFixtures('addremove.html');
-      elem = $('#elem2').eq(0)[0];
+      elem = $('#elem').eq(0)[0];
       testClass = 'aurelia-hide';
     });
 
@@ -530,11 +530,10 @@ describe('animator-css', () => {
 
       setTimeout( () => {
         Promise.all(ok).then( () => {
-          console.log(elem.classList);
           expect(elem.classList.contains(testClass)).toBe(false);
           done();
         });
-      }, 50);
+      }, 500);
     });
   });
 
