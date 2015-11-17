@@ -519,7 +519,7 @@ describe('animator-css', () => {
       testClass = 'aurelia-hide';
     });
 
-    fit('should handle quick add and remove cycle', (done) => {
+    it('should handle quick add and remove cycle', (done) => {
       var ok = [];
 
       ok.push(sut.addClass(elem, testClass));
