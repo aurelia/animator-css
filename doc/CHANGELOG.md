@@ -1,3 +1,12 @@
+## 1.0.0-beta.1.0.1 (2015-11-17)
+
+
+#### Bug Fixes
+
+* **classes:** fix timing issue of add and remove class ([4e756c34](https://github.com/aurelia/animator-css/commit/4e756c346e5945d75ecbe9122e8035e63edbfc8c))
+* **typing:** add testcase for timing issue ([893059a8](https://github.com/aurelia/animator-css/commit/893059a868fab7cace7f805bf265c78d3d8fcfff))
+
+
 ### 1.0.0-beta.1 (2015-11-16)
 
 
