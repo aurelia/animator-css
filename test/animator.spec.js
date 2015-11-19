@@ -593,7 +593,7 @@ describe('animator-css', () => {
       })
     });
 
-    it('should animate enter element using stagger-enter', () => {
+    it('should animate enter element using stagger-enter', (done) => {
       elems = $('.stagger-enter-only');
 
       var proms = [];
@@ -609,7 +609,7 @@ describe('animator-css', () => {
       })
     });
 
-    it('should animate leave element using stagger-leave', () => {
+    it('should animate leave element using stagger-leave', (done) => {
       elems = $('.stagger-leave-only');
 
       var proms = [];
