@@ -184,6 +184,7 @@ export class CssAnimator {
 
       // Step 3: setup event to check whether animations started
       let animStart;
+      let noAnimTimeout;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
         this.isAnimating = true;
 
@@ -206,6 +207,7 @@ export class CssAnimator {
           classList.remove('au-enter');
 
           // Step 3.2.2 remove animation from stack
+          window.clearTimeout(noAnimTimeout);
           this._removeAnimationFromStack(animId);
 
           // Step 3.2.3 remove animationend listener
@@ -251,7 +253,7 @@ export class CssAnimator {
       }
 
       // Step 5: if no animations happened cleanup animation classes
-      setTimeout(() => {
+      noAnimTimeout = setTimeout(() => {
         if (this.animationStack.indexOf(animId) < 0) {
           classList.remove('au-enter-active');
           classList.remove('au-enter');
@@ -288,6 +290,7 @@ export class CssAnimator {
 
       // Step 3: setup event to check whether animations started
       let animStart;
+      let noAnimTimeout;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
         this.isAnimating = true;
 
@@ -310,6 +313,7 @@ export class CssAnimator {
           classList.remove('au-leave');
 
           // Step 3.2.2 remove animation from stack
+          window.clearTimeout(noAnimTimeout);
           this._removeAnimationFromStack(animId);
 
           // Step 3.2.3 remove animationend listener
@@ -355,7 +359,7 @@ export class CssAnimator {
       }
 
       // Step 5: if no animations happened cleanup animation classes
-      setTimeout(() => {
+      noAnimTimeout = setTimeout(() => {
         if (this.animationStack.indexOf(animId) < 0) {
           classList.remove('au-leave-active');
           classList.remove('au-leave');
@@ -396,6 +400,7 @@ export class CssAnimator {
 
       // Step 3: setup event to check whether animations started
       let animStart;
+      let noAnimTimeout;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
         this.isAnimating = true;
 
@@ -419,6 +424,7 @@ export class CssAnimator {
           classList.remove(className + '-remove');
 
           // Step 3.2.2 remove animation from stack
+          window.clearTimeout(noAnimTimeout);
           this._removeAnimationFromStack(animId);
 
           // Step 3.2.3 remove animationend listener
@@ -441,7 +447,7 @@ export class CssAnimator {
       classList.add(className + '-remove');
 
       // Step 5: if no animations happened cleanup animation classes and remove final class
-      setTimeout(() => {
+      noAnimTimeout = setTimeout(() => {
         if (this.animationStack.indexOf(animId) < 0) {
           classList.remove(className + '-remove');
           classList.remove(className);
@@ -475,6 +481,7 @@ export class CssAnimator {
 
       // Step 2: setup event to check whether animations started
       let animStart;
+      let noAnimTimeout;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
         this.isAnimating = true;
 
@@ -501,6 +508,7 @@ export class CssAnimator {
           classList.remove(className + '-add');
 
           // Step 2.2.3 remove animation from stack
+          window.clearTimeout(noAnimTimeout);
           this._removeAnimationFromStack(animId);
 
           // Step 2.2.4 remove animationend listener
@@ -523,7 +531,7 @@ export class CssAnimator {
       classList.add(className + '-add');
 
       // Step 4: if no animations happened cleanup animation classes and add final class
-      setTimeout(() => {
+      noAnimTimeout = setTimeout(() => {
         if (this.animationStack.indexOf(animId) < 0) {
           classList.remove(className + '-add');
           classList.add(className);
