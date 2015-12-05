@@ -1,22 +1,7 @@
 <style type="text/css">
-  @keyframes hide-animation {
-    from { opacity: 1; }
-    to { opacity: 0; }
+  #animateAddAndRemove {
+    opacity: 0;
   }
-  @-webkit-keyframes hide-animation{
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-
-  @keyframes show-animation {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @-webkit-keyframes show-animation{
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
   .animate-test {
     opacity: 1;
   }
@@ -32,6 +17,8 @@
 </style>
 
 <div id="animation">
+  <div id="animateAddAndRemove">Animation - automatic add/remove</div>
+
   <ul class="sequenced-items">
     <li class="au-animate">Sequence 1</li>
     <li class="au-animate">Sequence 2</li>

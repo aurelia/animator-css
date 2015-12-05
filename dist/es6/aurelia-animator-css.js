@@ -14,14 +14,13 @@ export class CssAnimator {
    * Creates an instance of CssAnimator.
    */
   constructor() {
-    this.animationStack = [];
-
     this.useAnimationDoneClasses = false;
     this.animationEnteredClass = 'au-entered';
     this.animationLeftClass = 'au-left';
     this.isAnimating = false;
-
-    this.animationTimeout = 50;
+    // toggle this on to save performance at the cost of animations referring
+    // to missing keyframes breaking detection of termination
+    this.verifyKeyframesExist = true;
   }
 
   /**
@@ -35,30 +34,6 @@ export class CssAnimator {
     let evts = s.split(' ');
     for (let i = 0, ii = evts.length; i < ii; ++i) {
       el.addEventListener(evts[i], fn, false);
-    }
-  }
-
-  /**
-   * Pushes the given animationId onto the stack
-   *
-   * @param animId
-   * @private
-   */
-  _addAnimationToStack(animId: string): void {
-    if (this.animationStack.indexOf(animId) < 0) {
-      this.animationStack.push(animId);
-    }
-  }
-
-  /**
-   * Removes the given animationId from the stack
-   *
-   * @param animId
-   */
-  _removeAnimationFromStack(animId: string): void {
-    let idx = this.animationStack.indexOf(animId);
-    if (idx > -1) {
-      this.animationStack.splice(idx, 1);
     }
   }
 
@@ -87,6 +62,30 @@ export class CssAnimator {
     delay = Number(delay.replace(/[^\d\.]/g, ''));
 
     return (delay * 1000);
+  }
+
+  /**
+   * Vendor-prefix safe method to get the animation names
+   *
+   * @param element the element to inspect
+   * @returns array of animation names
+   */
+  _getElementAnimationNames(element: HTMLElement): Array<String> {
+    let styl = DOM.getComputedStyle(element);
+    let prefix;
+
+    if (styl.getPropertyValue('animation-name')) {
+      prefix = '';
+    } else if (styl.getPropertyValue('-webkit-animation-name')) {
+      prefix = '-webkit-';
+    } else if (styl.getPropertyValue('-moz-animation-name')) {
+      prefix = '-moz-';
+    } else {
+      return [];
+    }
+
+    let animationNames = styl.getPropertyValue(prefix + 'animation-name');
+    return animationNames ? animationNames.split(' ') : [];
   }
 
   /**
@@ -125,6 +124,46 @@ export class CssAnimator {
   _triggerDOMEvent(eventType: string, element: HTMLElement): void {
     let evt = DOM.createCustomEvent(eventType, {bubbles: true, cancelable: true, detail: element});
     DOM.dispatchEvent(evt);
+  }
+
+  /**
+   * Returns true if there is a new animation with valid keyframes
+   * @param animationNames the current animation style.
+   * @param prevAnimationNames the previous animation style
+   * @private
+   */
+  _animationChangeWithValidKeyframe(animationNames: Array<string>, prevAnimationNames: Array<string>): bool {
+    let newAnimationNames = animationNames.filter(name => prevAnimationNames.indexOf(name) === -1);
+
+    if (newAnimationNames.length === 0) {
+      return false;
+    }
+
+    if (! this.verifyKeyframesExist) {
+      return true;
+    }
+
+    const keyframesRuleType = window.CSSRule.KEYFRAMES_RULE ||
+                              window.CSSRule.MOZ_KEYFRAMES_RULE  ||
+                              window.CSSRule.WEBKIT_KEYFRAMES_RULE;
+
+    // loop through the stylesheets searching for the keyframes. no cache is
+    // used in case of dynamic changes to the stylesheets.
+    let styleSheets = document.styleSheets;
+    for (let i = 0; i < styleSheets.length; ++i) {
+      let cssRules = styleSheets[i].cssRules;
+
+      for (let j = 0; j < cssRules.length; ++j) {
+        let cssRule = cssRules[j];
+
+        if (cssRule.type === keyframesRuleType) {
+          if (newAnimationNames.indexOf(cssRule.name) !== -1)
+            return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   /* Public API Begin */
@@ -181,6 +220,7 @@ export class CssAnimator {
 
       // Step 2: Add animation preparation class
       classList.add('au-enter');
+      let prevAnimationNames = this._getElementAnimationNames(element);
 
       // Step 3: setup event to check whether animations started
       let animStart;
@@ -192,26 +232,20 @@ export class CssAnimator {
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 3.1: Animation exists, put on stack
-        this._addAnimationToStack(animId);
-
-        // Step 3.2: Wait for animation to finish
+        // Step 3.1: Wait for animation to finish
         let animEnd;
         this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 3.2.0: Stop event propagation, bubbling will otherwise prevent parent animation
+          // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
           evAnimEnd.stopPropagation();
 
-          // Step 3.2.1: remove animation classes
+          // Step 3.1.1: remove animation classes
           classList.remove('au-enter-active');
           classList.remove('au-enter');
 
-          // Step 3.2.2 remove animation from stack
-          this._removeAnimationFromStack(animId);
-
-          // Step 3.2.3 remove animationend listener
+          // Step 3.1.2 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-          // Step 3.2.4 in case animation done animations are active, add the defined entered class to the element
+          // Step 3.1.3 in case animation done animations are active, add the defined entered class to the element
           if (this.useAnimationDoneClasses &&
              this.animationEnteredClass !== undefined &&
              this.animationEnteredClass !== null) {
@@ -224,13 +258,24 @@ export class CssAnimator {
           resolve(true);
         }, false);
 
-        // Step 3.3 remove animationstart listener
+        // Step 3.2 remove animationstart listener
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
 
       // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
       let parent = element.parentElement;
       let delay = 0;
+
+      let cleanupAnimation = () => {
+        // Step 5: if no animations scheduled cleanup animation classes
+        let animationNames = this._getElementAnimationNames(element);
+        if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+          classList.remove('au-enter-active');
+          classList.remove('au-enter');
+          this._triggerDOMEvent(animationEvent.enterTimeout, element);
+          resolve(false);
+        }
+      }
 
       if (parent !== null &&
          parent !== undefined &&
@@ -245,22 +290,12 @@ export class CssAnimator {
 
         setTimeout(() => {
           classList.add('au-enter-active');
+          cleanupAnimation();
         }, delay);
       } else {
         classList.add('au-enter-active');
+        cleanupAnimation();
       }
-
-      // Step 5: if no animations happened cleanup animation classes
-      setTimeout(() => {
-        if (this.animationStack.indexOf(animId) < 0) {
-          classList.remove('au-enter-active');
-          classList.remove('au-enter');
-
-          this._triggerDOMEvent(animationEvent.enterTimeout, element);
-
-          resolve(false);
-        }
-      }, this._getElementAnimationDelay(element) + this.animationTimeout + delay);
     });
   }
 
@@ -285,6 +320,7 @@ export class CssAnimator {
 
       // Step 2: Add animation preparation class
       classList.add('au-leave');
+      let prevAnimationNames = this._getElementAnimationNames(element);
 
       // Step 3: setup event to check whether animations started
       let animStart;
@@ -296,26 +332,20 @@ export class CssAnimator {
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 3.1: Animation exists, put on stack
-        this._addAnimationToStack(animId);
-
-        // Step 3.2: Wait for animation to finish
+        // Step 3.1: Wait for animation to finish
         let animEnd;
         this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 3.2.0: Stop event propagation, bubbling will otherwise prevent parent animation
+          // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
           evAnimEnd.stopPropagation();
 
-          // Step 3.2.1: remove animation classes
+          // Step 3.1.1: remove animation classes
           classList.remove('au-leave-active');
           classList.remove('au-leave');
 
-          // Step 3.2.2 remove animation from stack
-          this._removeAnimationFromStack(animId);
-
-          // Step 3.2.3 remove animationend listener
+          // Step 3.1.2 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-          // Step 3.2.4 in case animation done animations are active, add the defined left class to the element
+          // Step 3.1.3 in case animation done animations are active, add the defined left class to the element
           if (this.useAnimationDoneClasses &&
              this.animationLeftClass !== undefined &&
              this.animationLeftClass !== null) {
@@ -328,13 +358,24 @@ export class CssAnimator {
           resolve(true);
         }, false);
 
-        // Step 3.3 remove animationstart listener
+        // Step 3.2 remove animationstart listener
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
 
       // Step 4: check if parent element is defined to stagger animations otherwise trigger leave immediately
       let parent = element.parentElement;
       let delay = 0;
+
+      let cleanupAnimation = () => {
+        // Step 5: if no animations scheduled cleanup animation classes
+        let animationNames = this._getElementAnimationNames(element);
+        if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+          classList.remove('au-leave-active');
+          classList.remove('au-leave');
+          this._triggerDOMEvent(animationEvent.leaveTimeout, element);
+          resolve(false);
+        }
+      }
 
       if (parent !== null &&
          parent !== undefined &&
@@ -349,22 +390,12 @@ export class CssAnimator {
 
         setTimeout(() => {
           classList.add('au-leave-active');
+          cleanupAnimation();
         }, delay);
       } else {
         classList.add('au-leave-active');
+        cleanupAnimation();
       }
-
-      // Step 5: if no animations happened cleanup animation classes
-      setTimeout(() => {
-        if (this.animationStack.indexOf(animId) < 0) {
-          classList.remove('au-leave-active');
-          classList.remove('au-leave');
-
-          this._triggerDOMEvent(animationEvent.leaveTimeout, element);
-
-          resolve(false);
-        }
-      }, this._getElementAnimationDelay(element) + this.animationTimeout + delay);
     });
   }
 
@@ -393,6 +424,7 @@ export class CssAnimator {
 
       // Step 2: Remove final className, so animation can start
       classList.remove(className);
+      let prevAnimationNames = this._getElementAnimationNames(element);
 
       // Step 3: setup event to check whether animations started
       let animStart;
@@ -406,22 +438,16 @@ export class CssAnimator {
         // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 3.1: Animation exists, put on stack
-        this._addAnimationToStack(animId);
-
-        // Step 3.2: Wait for animation to finish
+        // Step 3.1: Wait for animation to finish
         let animEnd;
         this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 3.2.0: Stop event propagation, bubbling will otherwise prevent parent animation
+          // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
           evAnimEnd.stopPropagation();
 
-          // Step 3.2.1 Remove -remove suffixed class
+          // Step 3.1.1 Remove -remove suffixed class
           classList.remove(className + '-remove');
 
-          // Step 3.2.2 remove animation from stack
-          this._removeAnimationFromStack(animId);
-
-          // Step 3.2.3 remove animationend listener
+          // Step 3.1.2 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           this.isAnimating = false;
@@ -441,8 +467,8 @@ export class CssAnimator {
       classList.add(className + '-remove');
 
       // Step 5: if no animations happened cleanup animation classes and remove final class
-      setTimeout(() => {
-        if (this.animationStack.indexOf(animId) < 0) {
+      let animationNames = this._getElementAnimationNames(element);
+      if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove(className + '-remove');
           classList.remove(className);
 
@@ -451,8 +477,7 @@ export class CssAnimator {
           }
 
           resolve(false);
-        }
-      }, this._getElementAnimationDelay(element) + this.animationTimeout);
+      }
     });
   }
 
@@ -485,25 +510,19 @@ export class CssAnimator {
         // Step 2.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 2.1: Animation exists, put on stack
-        this._addAnimationToStack(animId);
-
-        // Step 2.2: Wait for animation to finish
+        // Step 2.1: Wait for animation to finish
         let animEnd;
         this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 2.2.0: Stop event propagation, bubbling will otherwise prevent parent animation
+          // Step 2.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
           evAnimEnd.stopPropagation();
 
-          // Step 2.2.1: Add final className
+          // Step 2.1.1: Add final className
           classList.add(className);
 
-          // Step 2.2.2 Remove -add suffixed class
+          // Step 2.1.2 Remove -add suffixed class
           classList.remove(className + '-add');
 
-          // Step 2.2.3 remove animation from stack
-          this._removeAnimationFromStack(animId);
-
-          // Step 2.2.4 remove animationend listener
+          // Step 2.1.3 remove animationend listener
           evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
           this.isAnimating = false;
@@ -515,26 +534,27 @@ export class CssAnimator {
           resolve(true);
         }, false);
 
-        // Step 2.3 remove animationstart listener
+        // Step 2.2 remove animationstart listener
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
+
+      let prevAnimationNames = this._getElementAnimationNames(element);
 
       // Step 3: Add given className + -add suffix to kick off animation
       classList.add(className + '-add');
 
       // Step 4: if no animations happened cleanup animation classes and add final class
-      setTimeout(() => {
-        if (this.animationStack.indexOf(animId) < 0) {
-          classList.remove(className + '-add');
-          classList.add(className);
+      let animationNames = this._getElementAnimationNames(element);
+      if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+        classList.remove(className + '-add');
+        classList.add(className);
 
-          if (suppressEvents !== true) {
-            this._triggerDOMEvent(animationEvent.addClassTimeout, element);
-          }
-
-          resolve(false);
+        if (suppressEvents !== true) {
+          this._triggerDOMEvent(animationEvent.addClassTimeout, element);
         }
-      }, this._getElementAnimationDelay(element) + this.animationTimeout);
+
+        resolve(false);
+      }
     });
   }
 

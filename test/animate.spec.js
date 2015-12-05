@@ -14,44 +14,63 @@ describe('animator-css', () => {
     var elem,
         testClass;
 
-    beforeEach(() => {
-      loadFixtures('animate.html');
-      elem      = $('#animateAddAndRemove').eq(0)[0];
-      testClass = 'animate-test';
-    });
-
-    it('should add and remove a class automatically', (done) => {
-      sut.animate(elem, testClass).then(() => {
-        expect(sut.animationStack.length).toBe(0);
-        expect($('#animateAddAndRemove').eq(0).css('opacity')).toBe('0');
-        done();
+    describe('with valid keyframes', () => {
+      beforeEach(() => {
+        loadFixtures('animate.html');
+        elem      = $('#animateAddAndRemove').eq(0)[0];
+        testClass = 'animate-test';
       });
-    });
 
-    it('should animate multiple elements', (done) => {
-      var elements = $('.sequenced-items li');
-
-      sut.animate([elements.eq(0)[0], elements.eq(1)[0], elements.eq(2)[0]], testClass).then(() => {
-        expect(sut.animationStack.length).toBe(0);
-        expect(elements.eq(0).css('opacity')).toBe('1');
-        expect(elements.eq(1).css('opacity')).toBe('1');
-        expect(elements.eq(2).css('opacity')).toBe('1');
-        done();
+      it('should add and remove a class automatically', (done) => {
+        sut.animate(elem, testClass).then(() => {
+          expect(sut.isAnimating).toBe(false);
+          expect($('#animateAddAndRemove').eq(0).css('opacity')).toBe('0');
+          done();
+        });
       });
-    });
 
-    it('should not fire add/remove events', (done) => {
-      var eventCalled = false
-        , listenerAdd = document.addEventListener(animationEvent.addClassBegin, () => eventCalled = true)
-        , listenerRemove = document.addEventListener(animationEvent.removeClassBegin, () => eventCalled = true);
+      it('should animate multiple elements', (done) => {
+        var elements = $('.sequenced-items li');
 
-      sut.animate(elem, testClass).then(() => {
-        expect(eventCalled).toBe(false);
-
-        document.removeEventListener(animationEvent.addClassBegin, listenerAdd);
-        document.removeEventListener(animationEvent.removeClassBegin, listenerRemove);
-        done();
+        sut.animate([elements.eq(0)[0], elements.eq(1)[0], elements.eq(2)[0]], testClass).then(() => {
+          expect(sut.isAnimating).toBe(false);
+          expect(elements.eq(0).css('opacity')).toBe('1');
+          expect(elements.eq(1).css('opacity')).toBe('1');
+          expect(elements.eq(2).css('opacity')).toBe('1');
+          done();
+        });
       });
-    });
+
+      it('should not fire add/remove events', (done) => {
+        var eventCalled = false
+          , listenerAdd = document.addEventListener(animationEvent.addClassBegin, () => eventCalled = true)
+          , listenerRemove = document.addEventListener(animationEvent.removeClassBegin, () => eventCalled = true);
+
+        sut.animate(elem, testClass).then(() => {
+          expect(eventCalled).toBe(false);
+
+          document.removeEventListener(animationEvent.addClassBegin, listenerAdd);
+          document.removeEventListener(animationEvent.removeClassBegin, listenerRemove);
+          done();
+        });
+      });
+    })
+
+    // missing keyframes currently break the promise animator
+    describe('without valid keyframes', () => {
+      beforeEach(() => {
+        loadFixtures('animate-missing-keyframes.html');
+        elem      = $('#animateAddAndRemove').eq(0)[0];
+        testClass = 'animate-test';
+      });
+
+      it('should add and remove a class automatically', (done) => {
+        sut.animate(elem, testClass).then(() => {
+          expect(sut.isAnimating).toBe(false);
+          expect($('#animateAddAndRemove').eq(0).css('opacity')).toBe('0');
+          done();
+        });
+      });
+    })
   });
 });

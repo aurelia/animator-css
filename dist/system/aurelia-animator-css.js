@@ -27,33 +27,18 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
         function CssAnimator() {
           _classCallCheck(this, CssAnimator);
 
-          this.animationStack = [];
-
           this.useAnimationDoneClasses = false;
           this.animationEnteredClass = 'au-entered';
           this.animationLeftClass = 'au-left';
           this.isAnimating = false;
 
-          this.animationTimeout = 50;
+          this.verifyKeyframesExist = true;
         }
 
         CssAnimator.prototype._addMultipleEventListener = function _addMultipleEventListener(el, s, fn) {
           var evts = s.split(' ');
           for (var i = 0, ii = evts.length; i < ii; ++i) {
             el.addEventListener(evts[i], fn, false);
-          }
-        };
-
-        CssAnimator.prototype._addAnimationToStack = function _addAnimationToStack(animId) {
-          if (this.animationStack.indexOf(animId) < 0) {
-            this.animationStack.push(animId);
-          }
-        };
-
-        CssAnimator.prototype._removeAnimationFromStack = function _removeAnimationFromStack(animId) {
-          var idx = this.animationStack.indexOf(animId);
-          if (idx > -1) {
-            this.animationStack.splice(idx, 1);
           }
         };
 
@@ -76,6 +61,24 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
           delay = Number(delay.replace(/[^\d\.]/g, ''));
 
           return delay * 1000;
+        };
+
+        CssAnimator.prototype._getElementAnimationNames = function _getElementAnimationNames(element) {
+          var styl = DOM.getComputedStyle(element);
+          var prefix = undefined;
+
+          if (styl.getPropertyValue('animation-name')) {
+            prefix = '';
+          } else if (styl.getPropertyValue('-webkit-animation-name')) {
+            prefix = '-webkit-';
+          } else if (styl.getPropertyValue('-moz-animation-name')) {
+            prefix = '-moz-';
+          } else {
+            return [];
+          }
+
+          var animationNames = styl.getPropertyValue(prefix + 'animation-name');
+          return animationNames ? animationNames.split(' ') : [];
         };
 
         CssAnimator.prototype._performSingleAnimate = function _performSingleAnimate(element, className) {
@@ -101,6 +104,37 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
         CssAnimator.prototype._triggerDOMEvent = function _triggerDOMEvent(eventType, element) {
           var evt = DOM.createCustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
           DOM.dispatchEvent(evt);
+        };
+
+        CssAnimator.prototype._animationChangeWithValidKeyframe = function _animationChangeWithValidKeyframe(animationNames, prevAnimationNames) {
+          var newAnimationNames = animationNames.filter(function (name) {
+            return prevAnimationNames.indexOf(name) === -1;
+          });
+
+          if (newAnimationNames.length === 0) {
+            return false;
+          }
+
+          if (!this.verifyKeyframesExist) {
+            return true;
+          }
+
+          var keyframesRuleType = window.CSSRule.KEYFRAMES_RULE || window.CSSRule.MOZ_KEYFRAMES_RULE || window.CSSRule.WEBKIT_KEYFRAMES_RULE;
+
+          var styleSheets = document.styleSheets;
+          for (var i = 0; i < styleSheets.length; ++i) {
+            var cssRules = styleSheets[i].cssRules;
+
+            for (var j = 0; j < cssRules.length; ++j) {
+              var cssRule = cssRules[j];
+
+              if (cssRule.type === keyframesRuleType) {
+                if (newAnimationNames.indexOf(cssRule.name) !== -1) return true;
+              }
+            }
+          }
+
+          return false;
         };
 
         CssAnimator.prototype.animate = function animate(element, className) {
@@ -144,6 +178,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
             }
 
             classList.add('au-enter');
+            var prevAnimationNames = _this4._getElementAnimationNames(element);
 
             var animStart = undefined;
             _this4._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
@@ -153,16 +188,12 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
               evAnimStart.stopPropagation();
 
-              _this4._addAnimationToStack(animId);
-
               var animEnd = undefined;
               _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
                 evAnimEnd.stopPropagation();
 
                 classList.remove('au-enter-active');
                 classList.remove('au-enter');
-
-                _this4._removeAnimationFromStack(animId);
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
@@ -182,6 +213,16 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
             var parent = element.parentElement;
             var delay = 0;
 
+            var cleanupAnimation = function cleanupAnimation() {
+              var animationNames = _this4._getElementAnimationNames(element);
+              if (!_this4._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+                classList.remove('au-enter-active');
+                classList.remove('au-enter');
+                _this4._triggerDOMEvent(animationEvent.enterTimeout, element);
+                resolve(false);
+              }
+            };
+
             if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-enter'))) {
               var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
               delay = _this4._getElementAnimationDelay(parent) * elemPos;
@@ -190,21 +231,12 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
               setTimeout(function () {
                 classList.add('au-enter-active');
+                cleanupAnimation();
               }, delay);
             } else {
               classList.add('au-enter-active');
+              cleanupAnimation();
             }
-
-            setTimeout(function () {
-              if (_this4.animationStack.indexOf(animId) < 0) {
-                classList.remove('au-enter-active');
-                classList.remove('au-enter');
-
-                _this4._triggerDOMEvent(animationEvent.enterTimeout, element);
-
-                resolve(false);
-              }
-            }, _this4._getElementAnimationDelay(element) + _this4.animationTimeout + delay);
           });
         };
 
@@ -223,6 +255,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
             }
 
             classList.add('au-leave');
+            var prevAnimationNames = _this5._getElementAnimationNames(element);
 
             var animStart = undefined;
             _this5._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
@@ -232,16 +265,12 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
               evAnimStart.stopPropagation();
 
-              _this5._addAnimationToStack(animId);
-
               var animEnd = undefined;
               _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
                 evAnimEnd.stopPropagation();
 
                 classList.remove('au-leave-active');
                 classList.remove('au-leave');
-
-                _this5._removeAnimationFromStack(animId);
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
@@ -261,6 +290,16 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
             var parent = element.parentElement;
             var delay = 0;
 
+            var cleanupAnimation = function cleanupAnimation() {
+              var animationNames = _this5._getElementAnimationNames(element);
+              if (!_this5._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+                classList.remove('au-leave-active');
+                classList.remove('au-leave');
+                _this5._triggerDOMEvent(animationEvent.leaveTimeout, element);
+                resolve(false);
+              }
+            };
+
             if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-leave'))) {
               var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
               delay = _this5._getElementAnimationDelay(parent) * elemPos;
@@ -269,21 +308,12 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
               setTimeout(function () {
                 classList.add('au-leave-active');
+                cleanupAnimation();
               }, delay);
             } else {
               classList.add('au-leave-active');
+              cleanupAnimation();
             }
-
-            setTimeout(function () {
-              if (_this5.animationStack.indexOf(animId) < 0) {
-                classList.remove('au-leave-active');
-                classList.remove('au-leave');
-
-                _this5._triggerDOMEvent(animationEvent.leaveTimeout, element);
-
-                resolve(false);
-              }
-            }, _this5._getElementAnimationDelay(element) + _this5.animationTimeout + delay);
           });
         };
 
@@ -307,6 +337,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
             var animId = element.toString() + className + Math.random();
 
             classList.remove(className);
+            var prevAnimationNames = _this6._getElementAnimationNames(element);
 
             var animStart = undefined;
             _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
@@ -318,15 +349,11 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
               evAnimStart.stopPropagation();
 
-              _this6._addAnimationToStack(animId);
-
               var animEnd = undefined;
               _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
                 evAnimEnd.stopPropagation();
 
                 classList.remove(className + '-remove');
-
-                _this6._removeAnimationFromStack(animId);
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
@@ -344,18 +371,17 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
             classList.add(className + '-remove');
 
-            setTimeout(function () {
-              if (_this6.animationStack.indexOf(animId) < 0) {
-                classList.remove(className + '-remove');
-                classList.remove(className);
+            var animationNames = _this6._getElementAnimationNames(element);
+            if (!_this6._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+              classList.remove(className + '-remove');
+              classList.remove(className);
 
-                if (suppressEvents !== true) {
-                  _this6._triggerDOMEvent(animationEvent.removeClassTimeout, element);
-                }
-
-                resolve(false);
+              if (suppressEvents !== true) {
+                _this6._triggerDOMEvent(animationEvent.removeClassTimeout, element);
               }
-            }, _this6._getElementAnimationDelay(element) + _this6.animationTimeout);
+
+              resolve(false);
+            }
           });
         };
 
@@ -382,8 +408,6 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
 
               evAnimStart.stopPropagation();
 
-              _this7._addAnimationToStack(animId);
-
               var animEnd = undefined;
               _this7._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
                 evAnimEnd.stopPropagation();
@@ -391,8 +415,6 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
                 classList.add(className);
 
                 classList.remove(className + '-add');
-
-                _this7._removeAnimationFromStack(animId);
 
                 evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
@@ -408,20 +430,21 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
               evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
             }, false);
 
+            var prevAnimationNames = _this7._getElementAnimationNames(element);
+
             classList.add(className + '-add');
 
-            setTimeout(function () {
-              if (_this7.animationStack.indexOf(animId) < 0) {
-                classList.remove(className + '-add');
-                classList.add(className);
+            var animationNames = _this7._getElementAnimationNames(element);
+            if (!_this7._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+              classList.remove(className + '-add');
+              classList.add(className);
 
-                if (suppressEvents !== true) {
-                  _this7._triggerDOMEvent(animationEvent.addClassTimeout, element);
-                }
-
-                resolve(false);
+              if (suppressEvents !== true) {
+                _this7._triggerDOMEvent(animationEvent.addClassTimeout, element);
               }
-            }, _this7._getElementAnimationDelay(element) + _this7.animationTimeout);
+
+              resolve(false);
+            }
           });
         };
 
