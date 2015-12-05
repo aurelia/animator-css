@@ -224,42 +224,47 @@ export class CssAnimator {
 
       // Step 3: setup event to check whether animations started
       let animStart;
+      let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
+        animHasStarted = true;
         this.isAnimating = true;
 
         this._triggerDOMEvent(animationEvent.enterActive, element);
 
-        // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        // Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 3.1: Wait for animation to finish
-        let animEnd;
-        this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
-          evAnimEnd.stopPropagation();
-
-          // Step 3.1.1: remove animation classes
-          classList.remove('au-enter-active');
-          classList.remove('au-enter');
-
-          // Step 3.1.2 remove animationend listener
-          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-          // Step 3.1.3 in case animation done animations are active, add the defined entered class to the element
-          if (this.useAnimationDoneClasses &&
-             this.animationEnteredClass !== undefined &&
-             this.animationEnteredClass !== null) {
-            classList.add(this.animationEnteredClass);
-          }
-
-          this.isAnimating = false;
-          this._triggerDOMEvent(animationEvent.enterDone, element);
-
-          resolve(true);
-        }, false);
-
-        // Step 3.2 remove animationstart listener
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+      }, false);
+
+      // Step 3.1: Wait for animation to finish
+      let animEnd;
+      this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
+        if (! animHasStarted) {
+          return;
+        }
+
+        // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        evAnimEnd.stopPropagation();
+
+        // Step 3.1.1: remove animation classes
+        classList.remove('au-enter-active');
+        classList.remove('au-enter');
+
+        // Step 3.1.2 remove animationend listener
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+        // Step 3.1.3 in case animation done animations are active, add the defined entered class to the element
+        if (this.useAnimationDoneClasses &&
+           this.animationEnteredClass !== undefined &&
+           this.animationEnteredClass !== null) {
+          classList.add(this.animationEnteredClass);
+        }
+
+        this.isAnimating = false;
+        this._triggerDOMEvent(animationEvent.enterDone, element);
+
+        resolve(true);
       }, false);
 
       // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
@@ -324,43 +329,49 @@ export class CssAnimator {
 
       // Step 3: setup event to check whether animations started
       let animStart;
+      let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
+        animHasStarted = true;
         this.isAnimating = true;
 
         this._triggerDOMEvent(animationEvent.leaveActive, element);
 
-        // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        // Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 3.1: Wait for animation to finish
-        let animEnd;
-        this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
-          evAnimEnd.stopPropagation();
-
-          // Step 3.1.1: remove animation classes
-          classList.remove('au-leave-active');
-          classList.remove('au-leave');
-
-          // Step 3.1.2 remove animationend listener
-          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-          // Step 3.1.3 in case animation done animations are active, add the defined left class to the element
-          if (this.useAnimationDoneClasses &&
-             this.animationLeftClass !== undefined &&
-             this.animationLeftClass !== null) {
-            classList.add(this.animationLeftClass);
-          }
-
-          this.isAnimating = false;
-          this._triggerDOMEvent(animationEvent.leaveDone, element);
-
-          resolve(true);
-        }, false);
-
-        // Step 3.2 remove animationstart listener
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
+
+      // Step 3.1: Wait for animation to finish
+      let animEnd;
+      this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
+        if (! animHasStarted) {
+          return;
+        }
+
+        // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        evAnimEnd.stopPropagation();
+
+        // Step 3.1.1: remove animation classes
+        classList.remove('au-leave-active');
+        classList.remove('au-leave');
+
+        // Step 3.1.2 remove animationend listener
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+        // Step 3.1.3 in case animation done animations are active, add the defined left class to the element
+        if (this.useAnimationDoneClasses &&
+           this.animationLeftClass !== undefined &&
+           this.animationLeftClass !== null) {
+          classList.add(this.animationLeftClass);
+        }
+
+        this.isAnimating = false;
+        this._triggerDOMEvent(animationEvent.leaveDone, element);
+
+        resolve(true);
+      }, false);
+
 
       // Step 4: check if parent element is defined to stagger animations otherwise trigger leave immediately
       let parent = element.parentElement;
@@ -428,40 +439,46 @@ export class CssAnimator {
 
       // Step 3: setup event to check whether animations started
       let animStart;
+      let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
+        animHasStarted = true;
         this.isAnimating = true;
 
         if (suppressEvents !== true) {
           this._triggerDOMEvent(animationEvent.removeClassActive, element);
         }
 
-        // Step 3.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        // Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 3.1: Wait for animation to finish
-        let animEnd;
-        this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
-          evAnimEnd.stopPropagation();
-
-          // Step 3.1.1 Remove -remove suffixed class
-          classList.remove(className + '-remove');
-
-          // Step 3.1.2 remove animationend listener
-          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-          this.isAnimating = false;
-
-          if (suppressEvents !== true) {
-            this._triggerDOMEvent(animationEvent.removeClassDone, element);
-          }
-
-          resolve(true);
-        }, false);
-
-        // Step 3.3 remove animationstart listener
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
       }, false);
+
+      // Step 3.1: Wait for animation to finish
+      let animEnd;
+      this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
+        if (! animHasStarted) {
+          return;
+        }
+
+        // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        evAnimEnd.stopPropagation();
+
+        // Step 3.1.1 Remove -remove suffixed class
+        classList.remove(className + '-remove');
+
+        // Step 3.1.2 remove animationend listener
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+        this.isAnimating = false;
+
+        if (suppressEvents !== true) {
+          this._triggerDOMEvent(animationEvent.removeClassDone, element);
+        }
+
+        resolve(true);
+      }, false);
+
 
       // Step 4: Add given className + -remove suffix to kick off animation
       classList.add(className + '-remove');
@@ -500,42 +517,47 @@ export class CssAnimator {
 
       // Step 2: setup event to check whether animations started
       let animStart;
+      let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
+        animHasStarted = true;
         this.isAnimating = true;
 
         if (suppressEvents !== true) {
           this._triggerDOMEvent(animationEvent.addClassActive, element);
         }
 
-        // Step 2.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        // Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
 
-        // Step 2.1: Wait for animation to finish
-        let animEnd;
-        this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-          // Step 2.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
-          evAnimEnd.stopPropagation();
-
-          // Step 2.1.1: Add final className
-          classList.add(className);
-
-          // Step 2.1.2 Remove -add suffixed class
-          classList.remove(className + '-add');
-
-          // Step 2.1.3 remove animationend listener
-          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-          this.isAnimating = false;
-
-          if (suppressEvents !== true) {
-            this._triggerDOMEvent(animationEvent.addClassDone, element);
-          }
-
-          resolve(true);
-        }, false);
-
-        // Step 2.2 remove animationstart listener
         evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+      }, false);
+
+      // Step 2.1: Wait for animation to finish
+      let animEnd;
+      this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
+        if (! animHasStarted) {
+          return;
+        }
+
+        // Step 2.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        evAnimEnd.stopPropagation();
+
+        // Step 2.1.1: Add final className
+        classList.add(className);
+
+        // Step 2.1.2 Remove -add suffixed class
+        classList.remove(className + '-add');
+
+        // Step 2.1.3 remove animationend listener
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+        this.isAnimating = false;
+
+        if (suppressEvents !== true) {
+          this._triggerDOMEvent(animationEvent.addClassDone, element);
+        }
+
+        resolve(true);
       }, false);
 
       let prevAnimationNames = this._getElementAnimationNames(element);

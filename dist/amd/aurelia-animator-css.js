@@ -164,33 +164,39 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var prevAnimationNames = _this4._getElementAnimationNames(element);
 
         var animStart = undefined;
+        var animHasStarted = false;
         _this4._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+          animHasStarted = true;
           _this4.isAnimating = true;
 
           _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterActive, element);
 
           evAnimStart.stopPropagation();
 
-          var animEnd = undefined;
-          _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
-            evAnimEnd.stopPropagation();
-
-            classList.remove('au-enter-active');
-            classList.remove('au-enter');
-
-            evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-            if (_this4.useAnimationDoneClasses && _this4.animationEnteredClass !== undefined && _this4.animationEnteredClass !== null) {
-              classList.add(_this4.animationEnteredClass);
-            }
-
-            _this4.isAnimating = false;
-            _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterDone, element);
-
-            resolve(true);
-          }, false);
-
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        }, false);
+
+        var animEnd = undefined;
+        _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+          if (!animHasStarted) {
+            return;
+          }
+
+          evAnimEnd.stopPropagation();
+
+          classList.remove('au-enter-active');
+          classList.remove('au-enter');
+
+          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+          if (_this4.useAnimationDoneClasses && _this4.animationEnteredClass !== undefined && _this4.animationEnteredClass !== null) {
+            classList.add(_this4.animationEnteredClass);
+          }
+
+          _this4.isAnimating = false;
+          _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterDone, element);
+
+          resolve(true);
         }, false);
 
         var parent = element.parentElement;
@@ -241,33 +247,39 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var prevAnimationNames = _this5._getElementAnimationNames(element);
 
         var animStart = undefined;
+        var animHasStarted = false;
         _this5._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+          animHasStarted = true;
           _this5.isAnimating = true;
 
           _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveActive, element);
 
           evAnimStart.stopPropagation();
 
-          var animEnd = undefined;
-          _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
-            evAnimEnd.stopPropagation();
-
-            classList.remove('au-leave-active');
-            classList.remove('au-leave');
-
-            evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-            if (_this5.useAnimationDoneClasses && _this5.animationLeftClass !== undefined && _this5.animationLeftClass !== null) {
-              classList.add(_this5.animationLeftClass);
-            }
-
-            _this5.isAnimating = false;
-            _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveDone, element);
-
-            resolve(true);
-          }, false);
-
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        }, false);
+
+        var animEnd = undefined;
+        _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+          if (!animHasStarted) {
+            return;
+          }
+
+          evAnimEnd.stopPropagation();
+
+          classList.remove('au-leave-active');
+          classList.remove('au-leave');
+
+          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+          if (_this5.useAnimationDoneClasses && _this5.animationLeftClass !== undefined && _this5.animationLeftClass !== null) {
+            classList.add(_this5.animationLeftClass);
+          }
+
+          _this5.isAnimating = false;
+          _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveDone, element);
+
+          resolve(true);
         }, false);
 
         var parent = element.parentElement;
@@ -323,7 +335,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var prevAnimationNames = _this6._getElementAnimationNames(element);
 
         var animStart = undefined;
+        var animHasStarted = false;
         _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+          animHasStarted = true;
           _this6.isAnimating = true;
 
           if (suppressEvents !== true) {
@@ -332,24 +346,28 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
 
           evAnimStart.stopPropagation();
 
-          var animEnd = undefined;
-          _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
-            evAnimEnd.stopPropagation();
-
-            classList.remove(className + '-remove');
-
-            evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-            _this6.isAnimating = false;
-
-            if (suppressEvents !== true) {
-              _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassDone, element);
-            }
-
-            resolve(true);
-          }, false);
-
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        }, false);
+
+        var animEnd = undefined;
+        _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+          if (!animHasStarted) {
+            return;
+          }
+
+          evAnimEnd.stopPropagation();
+
+          classList.remove(className + '-remove');
+
+          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+          _this6.isAnimating = false;
+
+          if (suppressEvents !== true) {
+            _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassDone, element);
+          }
+
+          resolve(true);
         }, false);
 
         classList.add(className + '-remove');
@@ -382,7 +400,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         }
 
         var animStart = undefined;
+        var animHasStarted = false;
         _this7._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+          animHasStarted = true;
           _this7.isAnimating = true;
 
           if (suppressEvents !== true) {
@@ -391,26 +411,30 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
 
           evAnimStart.stopPropagation();
 
-          var animEnd = undefined;
-          _this7._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
-            evAnimEnd.stopPropagation();
-
-            classList.add(className);
-
-            classList.remove(className + '-add');
-
-            evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-            _this7.isAnimating = false;
-
-            if (suppressEvents !== true) {
-              _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassDone, element);
-            }
-
-            resolve(true);
-          }, false);
-
           evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        }, false);
+
+        var animEnd = undefined;
+        _this7._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+          if (!animHasStarted) {
+            return;
+          }
+
+          evAnimEnd.stopPropagation();
+
+          classList.add(className);
+
+          classList.remove(className + '-add');
+
+          evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+
+          _this7.isAnimating = false;
+
+          if (suppressEvents !== true) {
+            _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassDone, element);
+          }
+
+          resolve(true);
         }, false);
 
         var prevAnimationNames = _this7._getElementAnimationNames(element);
