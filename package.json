@@ -19,6 +19,9 @@
     "type": "git",
     "url": "https://github.com/aurelia/animator-css"
   },
+  "scripts": {
+    "test": "gulp build && gulp test"
+  },
   "jspmNodeConversion": false,
   "jspm": {
     "main": "aurelia-animator-css",
