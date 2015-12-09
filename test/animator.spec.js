@@ -71,7 +71,7 @@ describe('animator-css', () => {
       var elem = $('.animated-item').eq(0)[0];
 
       sut.enter(elem).then( () => {
-        expect(sut.animationStack.length).toBe(0);
+        expect(sut.isAnimating).toBe(false);
         done();
       });
     });
@@ -80,7 +80,7 @@ describe('animator-css', () => {
       var elem = $('#delayedElement').eq(0)[0];
 
       sut.enter(elem).then( () => {
-        expect(sut.animationStack.length).toBe(0);
+        expect(sut.isAnimating).toBe(false);
         done();
       });
     });
@@ -213,7 +213,7 @@ describe('animator-css', () => {
 
     it('should remove animation from stack after done', (done) => {
       var result = sut.leave(elem).then( () => {
-        expect(sut.animationStack.length).toBe(0);
+        expect(sut.isAnimating).toBe(false);
         done();
       });
     });
@@ -348,7 +348,7 @@ describe('animator-css', () => {
 
     it('should remove animation from stack after done', (done) => {
       var result = sut.removeClass(elem, testClass).then( () => {
-        expect(sut.animationStack.length).toBe(0);
+        expect(sut.isAnimating).toBe(false);
         done();
       });
     });
@@ -437,7 +437,7 @@ describe('animator-css', () => {
 
     it('should remove animation from stack after done', (done) => {
       var result = sut.addClass(elem, testClass).then( () => {
-        expect(sut.animationStack.length).toBe(0);
+        expect(sut.isAnimating).toBe(false);
         done();
       });
     });
