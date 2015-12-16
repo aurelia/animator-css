@@ -1,3 +1,15 @@
+### 1.0.0-beta.1.0.2 (2015-12-16)
+
+
+#### Bug Fixes
+
+* **npm-convention:** npm test works ([d44f2ca5](https://github.com/aurelia/animator-css/commit/d44f2ca513ce3a87ff17dbeae191c4ab0c4f28e0))
+* **race-condition:**
+  * fix for missing animationend event under stress ([f7963e3e](https://github.com/aurelia/animator-css/commit/f7963e3e76871704822408b32bd0caa5f111cd93))
+  * test for animation occurring without timeout ([3eefc533](https://github.com/aurelia/animator-css/commit/3eefc5334556403adb9284b9051187ba27f72939))
+* **tests:** Fixed ReferenceError in two tests ([f976e0b0](https://github.com/aurelia/animator-css/commit/f976e0b09a98136d702144747b4475547c349cb8))
+
+
 ## 1.0.0-beta.1.0.1 (2015-11-17)
 
 

@@ -157,8 +157,9 @@ export class CssAnimator {
         let cssRule = cssRules[j];
 
         if (cssRule.type === keyframesRuleType) {
-          if (newAnimationNames.indexOf(cssRule.name) !== -1)
+          if (newAnimationNames.indexOf(cssRule.name) !== -1) {
             return true;
+          }
         }
       }
     }
@@ -206,8 +207,6 @@ export class CssAnimator {
    */
   enter(element: HTMLElement): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      // Step 1: generate animation id
-      let animId = element.toString() + Math.random();
       let classList = element.classList;
 
       this._triggerDOMEvent(animationEvent.enterBegin, element);
@@ -280,7 +279,7 @@ export class CssAnimator {
           this._triggerDOMEvent(animationEvent.enterTimeout, element);
           resolve(false);
         }
-      }
+      };
 
       if (parent !== null &&
          parent !== undefined &&
@@ -311,8 +310,6 @@ export class CssAnimator {
    */
   leave(element: HTMLElement): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      // Step 1: generate animation id
-      let animId = element.toString() + Math.random();
       let classList = element.classList;
 
       this._triggerDOMEvent(animationEvent.leaveBegin, element);
@@ -386,7 +383,7 @@ export class CssAnimator {
           this._triggerDOMEvent(animationEvent.leaveTimeout, element);
           resolve(false);
         }
-      }
+      };
 
       if (parent !== null &&
          parent !== undefined &&
@@ -429,9 +426,6 @@ export class CssAnimator {
       if (suppressEvents !== true) {
         this._triggerDOMEvent(animationEvent.removeClassBegin, element);
       }
-
-      // Step 1: generate animation id
-      let animId = element.toString() + className + Math.random();
 
       // Step 2: Remove final className, so animation can start
       classList.remove(className);
@@ -486,14 +480,14 @@ export class CssAnimator {
       // Step 5: if no animations happened cleanup animation classes and remove final class
       let animationNames = this._getElementAnimationNames(element);
       if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
-          classList.remove(className + '-remove');
-          classList.remove(className);
+        classList.remove(className + '-remove');
+        classList.remove(className);
 
-          if (suppressEvents !== true) {
-            this._triggerDOMEvent(animationEvent.removeClassTimeout, element);
-          }
+        if (suppressEvents !== true) {
+          this._triggerDOMEvent(animationEvent.removeClassTimeout, element);
+        }
 
-          resolve(false);
+        resolve(false);
       }
     });
   }
@@ -507,8 +501,6 @@ export class CssAnimator {
    */
   addClass(element: HTMLElement, className: string, suppressEvents: boolean = false): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      // Step 1: generate animation id
-      let animId = element.toString() + className + Math.random();
       let classList = element.classList;
 
       if (suppressEvents !== true) {

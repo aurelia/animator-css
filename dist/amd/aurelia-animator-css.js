@@ -112,7 +112,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           var cssRule = cssRules[j];
 
           if (cssRule.type === keyframesRuleType) {
-            if (newAnimationNames.indexOf(cssRule.name) !== -1) return true;
+            if (newAnimationNames.indexOf(cssRule.name) !== -1) {
+              return true;
+            }
           }
         }
       }
@@ -150,7 +152,6 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
       var _this4 = this;
 
       return new Promise(function (resolve, reject) {
-        var animId = element.toString() + Math.random();
         var classList = element.classList;
 
         _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterBegin, element);
@@ -233,7 +234,6 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
       var _this5 = this;
 
       return new Promise(function (resolve, reject) {
-        var animId = element.toString() + Math.random();
         var classList = element.classList;
 
         _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveBegin, element);
@@ -329,8 +329,6 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassBegin, element);
         }
 
-        var animId = element.toString() + className + Math.random();
-
         classList.remove(className);
         var prevAnimationNames = _this6._getElementAnimationNames(element);
 
@@ -392,7 +390,6 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
       var suppressEvents = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
       return new Promise(function (resolve, reject) {
-        var animId = element.toString() + className + Math.random();
         var classList = element.classList;
 
         if (suppressEvents !== true) {
