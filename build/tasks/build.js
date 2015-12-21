@@ -14,7 +14,7 @@ var jsName = paths.packageName + '.js';
 
 gulp.task('build-index', function(){
   var importsToAdd = [];
-  var files = ['instruction.js', 'property.js', 'animator.js', 'index.js'].map(function(file){
+  var files = ['instruction.js', 'property.js', 'lifecycle.js', 'animator.js', 'index.js'].map(function(file){
     return paths.root + file;
   });
 
