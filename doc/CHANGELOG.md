@@ -1,3 +1,11 @@
+### 1.0.0-beta.1.0.3 (2016-01-08)
+
+
+#### Bug Fixes
+
+* **cssRule:** fix cssrule null ([d26e0bd8](https://github.com/aurelia/animator-css/commit/d26e0bd8755bce93b5a349c3e8fb120e0551b2d3))
+
+
 ### 1.0.0-beta.1.0.2 (2015-12-16)
 
 

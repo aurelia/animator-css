@@ -108,6 +108,10 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
       for (var i = 0; i < styleSheets.length; ++i) {
         var cssRules = styleSheets[i].cssRules;
 
+        if (!cssRules) {
+          continue;
+        }
+
         for (var j = 0; j < cssRules.length; ++j) {
           var cssRule = cssRules[j];
 

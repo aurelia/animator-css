@@ -153,6 +153,10 @@ export class CssAnimator {
     for (let i = 0; i < styleSheets.length; ++i) {
       let cssRules = styleSheets[i].cssRules;
 
+      if (!cssRules) {
+        continue;
+      }
+
       for (let j = 0; j < cssRules.length; ++j) {
         let cssRule = cssRules[j];
 
