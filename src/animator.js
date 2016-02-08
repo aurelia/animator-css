@@ -1,7 +1,14 @@
 import {animationEvent} from 'aurelia-templating';
-import {Property} from './property';
-import {DOM} from 'aurelia-pal';
 import {AnimationLifeCycle} from './lifecycle';
+import {DOM} from 'aurelia-pal';
+
+const transitionEvent = {
+  begin: 'au:transition:begin',
+  start: 'au:transition:start',
+  end: 'au:transition:end',
+  done: 'au:transition:done',
+  timeout: 'au:transition:timeout'
+};
 
 interface CssAnimation {
   className: string;
@@ -59,61 +66,6 @@ export class CssAnimator {
       .catch(() => {
         this.LifeCycle.dispatch(animationEvent.animateTimeout, element);
       });
-  }
-
-  /**
-   * Triggers a DOM-Event with the given type as name and adds the provided element as detail
-   * @param eventType the event type
-   * @param element   the element to be dispatched as event detail
-   */
-  _triggerDOMEvent(eventType: string, element: HTMLElement): void {
-    let evt = DOM.createCustomEvent(eventType, {bubbles: true, cancelable: true, detail: element});
-    DOM.dispatchEvent(evt);
-  }
-
-  /**
-   * Returns true if there is a new animation with valid keyframes
-   * @param animationNames the current animation style.
-   * @param prevAnimationNames the previous animation style
-   * @private
-   */
-  _animationChangeWithValidKeyframe(animationNames: Array<string>, prevAnimationNames: Array<string>): bool {
-    let newAnimationNames = animationNames.filter(name => prevAnimationNames.indexOf(name) === -1);
-
-    if (newAnimationNames.length === 0) {
-      return false;
-    }
-
-    if (! this.verifyKeyframesExist) {
-      return true;
-    }
-
-    const keyframesRuleType = window.CSSRule.KEYFRAMES_RULE ||
-                              window.CSSRule.MOZ_KEYFRAMES_RULE  ||
-                              window.CSSRule.WEBKIT_KEYFRAMES_RULE;
-
-    // loop through the stylesheets searching for the keyframes. no cache is
-    // used in case of dynamic changes to the stylesheets.
-    let styleSheets = document.styleSheets;
-    for (let i = 0; i < styleSheets.length; ++i) {
-      let cssRules = styleSheets[i].cssRules;
-
-      if (!cssRules) {
-        continue;
-      }
-
-      for (let j = 0; j < cssRules.length; ++j) {
-        let cssRule = cssRules[j];
-
-        if (cssRule.type === keyframesRuleType) {
-          if (newAnimationNames.indexOf(cssRule.name) !== -1) {
-            return true;
-          }
-        }
-      }
-    }
-
-    return false;
   }
 
   /* Public API Begin */
@@ -226,4 +178,3 @@ export class CssAnimator {
   }
   /* Public API End */
 }
-

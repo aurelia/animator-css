@@ -1,6 +1,9 @@
 import {animationEvent} from 'aurelia-templating';
-import {Property} from './property';
+import {animation} from './support-events';
+import {AnimatorSupport} from './support';
 import {DOM} from 'aurelia-pal';
+
+const Support = new AnimatorSupport();
 
 interface LifeCycleStep {
   addClass: Array|String, // Array of classNames
@@ -53,6 +56,22 @@ class DefaultLifeCycleStrategy {
       {removeClass: [activeClassName, className]}
     ];
   }
+}
+
+function subscribe(node, eventName, callback, bubbles) {
+  let handler = (event)=> {
+    handler.isTriggered = true;
+    handler.dispose();
+    return callback(event);
+  }
+  handler.dispose = ()=> {
+    handler.isBound = false;
+    node.removeEventListener(eventName, handler, bubbles);
+  }
+  handler.isBound = true;
+  handler.isTriggered = false;
+  node.addEventListener(eventName, handler, bubbles);
+  return handler;
 }
 
 const EnterLifeCycleStrategy = new DefaultLifeCycleStrategy('enter');
@@ -174,7 +193,7 @@ export class AnimationLifeCycle {
 
       onAnimationEnd = (event: Event)=> {
         // If animStart hasn't been triggered stop
-        if (!animStart.triggered) {return;}
+        if (!animStart.isTriggered) {return;}
 
         // Stop event propagation, bubbling will otherwise prevent parent animation
         event.stopPropagation();
@@ -186,7 +205,7 @@ export class AnimationLifeCycle {
         animEnd.dispose();
 
         // If animStart is still bound, then dispose
-        if (animStart.bound) animStart.dispose();
+        if (animStart.isBound) animStart.dispose();
 
         this._animator.isAnimating = false;
 
@@ -216,7 +235,7 @@ export class AnimationLifeCycle {
         let delay = 0;
 
         elementIndex = Array.prototype.indexOf.call(parent.childNodes, element);
-        delay = Property.getPropertyValue(parent, 'animation-delay');
+        delay = Support.getSupportValue(parent, 'animation-delay');
         delay = (delay * elementIndex) || delay;
 
         // Manually dispatch stagger Event
@@ -243,13 +262,13 @@ export class AnimationLifeCycle {
       this.runStep('prepare', element, instruction);
 
       // Save a reference to the current animationNames
-      prevAnimationNames = Property.getAnimationNames(element);
+      prevAnimationNames = Support.getAnimationNames(element);
 
       // add animationstart Event Listener
-      animStart = Property.subscribe(element, 'animationstart', onAnimationStart, false);
+      animStart = subscribe(element, animation.start, onAnimationStart, false);
 
       // add animationEnd eventListener
-      animEnd = Property.subscribe(element, 'animationend', onAnimationEnd, false);
+      animEnd = subscribe(element, animation.end, onAnimationEnd, false);
 
       tryStagger( activate = ()=> {
 
@@ -257,8 +276,8 @@ export class AnimationLifeCycle {
         this.runStep('activate', element, instruction);
 
         // if no animations scheduled cleanup animation classes
-        let animationNames = Property.getAnimationNames(element);
-        let possibleAnimations = Property.keyframes.validateKeyFrames(
+        let animationNames = Support.getAnimationNames(element);
+        let possibleAnimations = Support.validateKeyFrames(
           this._animator.verifyKeyframesExist,
           animationNames,
           prevAnimationNames
