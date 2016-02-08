@@ -1,3 +1,19 @@
+### 1.0.0-beta.1.1.0 (2016-01-29)
+
+
+#### Features
+
+* **all:** update jspm meta; core-js; aurelia deps ([b6f0a247](https://github.com/aurelia/animator-css/commit/b6f0a247f73264d21f2d23f960fe7c3263bab121))
+
+
+### 1.0.0-beta.1.0.3 (2016-01-08)
+
+
+#### Bug Fixes
+
+* **cssRule:** fix cssrule null ([d26e0bd8](https://github.com/aurelia/animator-css/commit/d26e0bd8755bce93b5a349c3e8fb120e0551b2d3))
+
+
 ### 1.0.0-beta.1.0.2 (2015-12-16)
 
 
