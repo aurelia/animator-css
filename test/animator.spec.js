@@ -571,7 +571,10 @@ describe('animator-css', () => {
         proms.push(sut.enter(elem));
       });
 
+      var time = Date.now(); 
       Promise.all(proms).then( () => {
+        let complete = (Date.now() - time) <= 1500+100*elems.length;
+        expect(complete).toBe(true);
         elems.each( (idx, elem) => {
           expect($(elem).css('opacity')).toBe('1');
         });
@@ -585,7 +588,10 @@ describe('animator-css', () => {
         proms.push(sut.leave(elem));
       });
 
+    var time = Date.now(); 
       Promise.all(proms).then( () => {
+        let complete = (Date.now() - time) <= 1500+100*elems.length;
+        expect(complete).toBe(true);
         elems.each( (idx, elem) => {
           expect($(elem).css('opacity')).toBe('0');
         });
