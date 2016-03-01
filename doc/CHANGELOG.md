@@ -1,3 +1,11 @@
+### 1.0.0-beta.1.1.2 (2016-03-01)
+
+
+#### Bug Fixes
+
+* **CssAnimator:** stagger only child elements ([219b5c79](https://github.com/aurelia/animator-css/commit/219b5c791209c70b78e287dc7654eb174f1e00d2))
+
+
 ### 1.0.0-beta.1.1.1 (2016-02-08)
 
 

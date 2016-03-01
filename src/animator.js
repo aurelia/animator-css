@@ -291,7 +291,7 @@ export class CssAnimator {
           parent.classList.contains('au-stagger') ||
           parent.classList.contains('au-stagger-enter')
          )) {
-        let elemPos = Array.prototype.indexOf.call(parent.children, element); 
+        let elemPos = Array.prototype.indexOf.call(parent.children, element);
         delay = this._getElementAnimationDelay(parent) * elemPos;
 
         this._triggerDOMEvent(animationEvent.staggerNext, element);

@@ -235,7 +235,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
             };
 
             if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-enter'))) {
-              var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+              var elemPos = Array.prototype.indexOf.call(parent.children, element);
               delay = _this4._getElementAnimationDelay(parent) * elemPos;
 
               _this4._triggerDOMEvent(animationEvent.staggerNext, element);
@@ -317,7 +317,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export) {
             };
 
             if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-leave'))) {
-              var elemPos = Array.prototype.indexOf.call(parent.childNodes, element);
+              var elemPos = Array.prototype.indexOf.call(parent.children, element);
               delay = _this5._getElementAnimationDelay(parent) * elemPos;
 
               _this5._triggerDOMEvent(animationEvent.staggerNext, element);
