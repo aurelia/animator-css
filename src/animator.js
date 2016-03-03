@@ -150,22 +150,27 @@ export class CssAnimator {
     // loop through the stylesheets searching for the keyframes. no cache is
     // used in case of dynamic changes to the stylesheets.
     let styleSheets = document.styleSheets;
-    for (let i = 0; i < styleSheets.length; ++i) {
-      let cssRules = styleSheets[i].cssRules;
+    
+    try {
+      for (let i = 0; i < styleSheets.length; ++i) {
+        let cssRules = styleSheets[i].cssRules;
 
-      if (!cssRules) {
-        continue;
-      }
+        if (!cssRules) {
+          continue;
+        }
 
-      for (let j = 0; j < cssRules.length; ++j) {
-        let cssRule = cssRules[j];
+        for (let j = 0; j < cssRules.length; ++j) {
+          let cssRule = cssRules[j];
 
-        if (cssRule.type === keyframesRuleType) {
-          if (newAnimationNames.indexOf(cssRule.name) !== -1) {
-            return true;
+          if (cssRule.type === keyframesRuleType) {
+            if (newAnimationNames.indexOf(cssRule.name) !== -1) {
+              return true;
+            }
           }
         }
       }
+    } catch (e) {
+      
     }
 
     return false;
