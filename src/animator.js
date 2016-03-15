@@ -150,7 +150,7 @@ export class CssAnimator {
     // loop through the stylesheets searching for the keyframes. no cache is
     // used in case of dynamic changes to the stylesheets.
     let styleSheets = document.styleSheets;
-    
+
     try {
       for (let i = 0; i < styleSheets.length; ++i) {
         let cssRules = styleSheets[i].cssRules;
@@ -170,7 +170,7 @@ export class CssAnimator {
         }
       }
     } catch (e) {
-      
+      //do nothing
     }
 
     return false;
