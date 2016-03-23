@@ -1,11 +1,19 @@
 declare module 'aurelia-animator-css' {
-  import { animationEvent, TemplatingEngine }  from 'aurelia-templating';
-  import { DOM }  from 'aurelia-pal';
+  import {
+    animationEvent,
+    TemplatingEngine
+  } from 'aurelia-templating';
+  import {
+    DOM
+  } from 'aurelia-pal';
   export interface CssAnimation {
     className: string;
     element: HTMLElement;
   }
   
+  /**
+   * An implementation of the Animator using CSS3-Animations.
+   */
   /**
    * An implementation of the Animator using CSS3-Animations.
    */

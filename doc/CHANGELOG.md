@@ -1,3 +1,11 @@
+### 1.0.0-beta.1.2.0 (2016-03-22)
+
+
+#### Bug Fixes
+
+* **cssRules:** add try catch ([d66df21c](https://github.com/aurelia/animator-css/commit/d66df21c84a889d6867a20fad9639920109b5af6))
+
+
 ### 1.0.0-beta.1.1.2 (2016-03-01)
 
 

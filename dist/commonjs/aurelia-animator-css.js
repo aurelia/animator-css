@@ -1,15 +1,18 @@
 'use strict';
 
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CssAnimator = undefined;
 exports.configure = configure;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var _aureliaTemplating = require('aurelia-templating');
 
 var _aureliaPal = require('aurelia-pal');
 
-var CssAnimator = (function () {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CssAnimator = exports.CssAnimator = function () {
   function CssAnimator() {
     _classCallCheck(this, CssAnimator);
 
@@ -30,8 +33,8 @@ var CssAnimator = (function () {
 
   CssAnimator.prototype._getElementAnimationDelay = function _getElementAnimationDelay(element) {
     var styl = _aureliaPal.DOM.getComputedStyle(element);
-    var prop = undefined;
-    var delay = undefined;
+    var prop = void 0;
+    var delay = void 0;
 
     if (styl.getPropertyValue('animation-delay')) {
       prop = 'animation-delay';
@@ -51,7 +54,7 @@ var CssAnimator = (function () {
 
   CssAnimator.prototype._getElementAnimationNames = function _getElementAnimationNames(element) {
     var styl = _aureliaPal.DOM.getComputedStyle(element);
-    var prefix = undefined;
+    var prefix = void 0;
 
     if (styl.getPropertyValue('animation-name')) {
       prefix = '';
@@ -82,7 +85,7 @@ var CssAnimator = (function () {
       }
 
       return false;
-    })['catch'](function () {
+    }).catch(function () {
       _this._triggerDOMEvent(_aureliaTemplating.animationEvent.animateTimeout, element);
     });
   };
@@ -108,23 +111,26 @@ var CssAnimator = (function () {
     var keyframesRuleType = window.CSSRule.KEYFRAMES_RULE || window.CSSRule.MOZ_KEYFRAMES_RULE || window.CSSRule.WEBKIT_KEYFRAMES_RULE;
 
     var styleSheets = document.styleSheets;
-    for (var i = 0; i < styleSheets.length; ++i) {
-      var cssRules = styleSheets[i].cssRules;
 
-      if (!cssRules) {
-        continue;
-      }
+    try {
+      for (var i = 0; i < styleSheets.length; ++i) {
+        var cssRules = styleSheets[i].cssRules;
 
-      for (var j = 0; j < cssRules.length; ++j) {
-        var cssRule = cssRules[j];
+        if (!cssRules) {
+          continue;
+        }
 
-        if (cssRule.type === keyframesRuleType) {
-          if (newAnimationNames.indexOf(cssRule.name) !== -1) {
-            return true;
+        for (var j = 0; j < cssRules.length; ++j) {
+          var cssRule = cssRules[j];
+
+          if (cssRule.type === keyframesRuleType) {
+            if (newAnimationNames.indexOf(cssRule.name) !== -1) {
+              return true;
+            }
           }
         }
       }
-    }
+    } catch (e) {}
 
     return false;
   };
@@ -171,9 +177,9 @@ var CssAnimator = (function () {
       classList.add('au-enter');
       var prevAnimationNames = _this4._getElementAnimationNames(element);
 
-      var animStart = undefined;
+      var _animStart = void 0;
       var animHasStarted = false;
-      _this4._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this4._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart = function animStart(evAnimStart) {
         animHasStarted = true;
         _this4.isAnimating = true;
 
@@ -181,11 +187,11 @@ var CssAnimator = (function () {
 
         evAnimStart.stopPropagation();
 
-        evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        evAnimStart.target.removeEventListener(evAnimStart.type, _animStart);
       }, false);
 
-      var animEnd = undefined;
-      _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+      var _animEnd = void 0;
+      _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd = function animEnd(evAnimEnd) {
         if (!animHasStarted) {
           return;
         }
@@ -195,7 +201,7 @@ var CssAnimator = (function () {
         classList.remove('au-enter-active');
         classList.remove('au-enter');
 
-        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, _animEnd);
 
         if (_this4.useAnimationDoneClasses && _this4.animationEnteredClass !== undefined && _this4.animationEnteredClass !== null) {
           classList.add(_this4.animationEnteredClass);
@@ -253,9 +259,9 @@ var CssAnimator = (function () {
       classList.add('au-leave');
       var prevAnimationNames = _this5._getElementAnimationNames(element);
 
-      var animStart = undefined;
+      var _animStart2 = void 0;
       var animHasStarted = false;
-      _this5._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this5._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart2 = function animStart(evAnimStart) {
         animHasStarted = true;
         _this5.isAnimating = true;
 
@@ -263,11 +269,11 @@ var CssAnimator = (function () {
 
         evAnimStart.stopPropagation();
 
-        evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        evAnimStart.target.removeEventListener(evAnimStart.type, _animStart2);
       }, false);
 
-      var animEnd = undefined;
-      _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+      var _animEnd2 = void 0;
+      _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd2 = function animEnd(evAnimEnd) {
         if (!animHasStarted) {
           return;
         }
@@ -277,7 +283,7 @@ var CssAnimator = (function () {
         classList.remove('au-leave-active');
         classList.remove('au-leave');
 
-        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, _animEnd2);
 
         if (_this5.useAnimationDoneClasses && _this5.animationLeftClass !== undefined && _this5.animationLeftClass !== null) {
           classList.add(_this5.animationLeftClass);
@@ -339,9 +345,9 @@ var CssAnimator = (function () {
       classList.remove(className);
       var prevAnimationNames = _this6._getElementAnimationNames(element);
 
-      var animStart = undefined;
+      var _animStart3 = void 0;
       var animHasStarted = false;
-      _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart3 = function animStart(evAnimStart) {
         animHasStarted = true;
         _this6.isAnimating = true;
 
@@ -351,11 +357,11 @@ var CssAnimator = (function () {
 
         evAnimStart.stopPropagation();
 
-        evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        evAnimStart.target.removeEventListener(evAnimStart.type, _animStart3);
       }, false);
 
-      var animEnd = undefined;
-      _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+      var _animEnd3 = void 0;
+      _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd3 = function animEnd(evAnimEnd) {
         if (!animHasStarted) {
           return;
         }
@@ -364,7 +370,7 @@ var CssAnimator = (function () {
 
         classList.remove(className + '-remove');
 
-        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, _animEnd3);
 
         _this6.isAnimating = false;
 
@@ -403,9 +409,9 @@ var CssAnimator = (function () {
         _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassBegin, element);
       }
 
-      var animStart = undefined;
+      var _animStart4 = void 0;
       var animHasStarted = false;
-      _this7._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = function (evAnimStart) {
+      _this7._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart4 = function animStart(evAnimStart) {
         animHasStarted = true;
         _this7.isAnimating = true;
 
@@ -415,11 +421,11 @@ var CssAnimator = (function () {
 
         evAnimStart.stopPropagation();
 
-        evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
+        evAnimStart.target.removeEventListener(evAnimStart.type, _animStart4);
       }, false);
 
-      var animEnd = undefined;
-      _this7._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = function (evAnimEnd) {
+      var _animEnd4 = void 0;
+      _this7._addMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd4 = function animEnd(evAnimEnd) {
         if (!animHasStarted) {
           return;
         }
@@ -430,7 +436,7 @@ var CssAnimator = (function () {
 
         classList.remove(className + '-add');
 
-        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
+        evAnimEnd.target.removeEventListener(evAnimEnd.type, _animEnd4);
 
         _this7.isAnimating = false;
 
@@ -460,9 +466,7 @@ var CssAnimator = (function () {
   };
 
   return CssAnimator;
-})();
-
-exports.CssAnimator = CssAnimator;
+}();
 
 function configure(config, callback) {
   var animator = config.container.get(CssAnimator);
