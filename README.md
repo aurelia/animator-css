@@ -3,6 +3,7 @@
 [![npm Version](https://img.shields.io/npm/v/aurelia-animator-css.svg)](https://www.npmjs.com/package/aurelia-animator-css)
 [![ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.io)
 [![Join the chat at https://gitter.im/aurelia/discuss](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aurelia/discuss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![CircleCI](https://circleci.com/gh/aurelia/animator-css.svg?style=shield)](https://circleci.com/gh/aurelia/animator-css)
 
 An implementation of the abstract Animator interface from templating which enables css-based animations.
 
