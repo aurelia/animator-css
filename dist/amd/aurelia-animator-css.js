@@ -7,15 +7,11 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
   exports.CssAnimator = undefined;
   exports.configure = configure;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   var CssAnimator = exports.CssAnimator = function () {
     function CssAnimator() {
-      _classCallCheck(this, CssAnimator);
+      
 
       this.useAnimationDoneClasses = false;
       this.animationEnteredClass = 'au-entered';

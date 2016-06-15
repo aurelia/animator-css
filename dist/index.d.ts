@@ -1,0 +1,1 @@
+export * from 'aurelia-animator-css/aurelia-animator-css';

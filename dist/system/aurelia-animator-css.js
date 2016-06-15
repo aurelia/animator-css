@@ -1,13 +1,11 @@
 'use strict';
 
 System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _context) {
+  "use strict";
+
   var animationEvent, TemplatingEngine, DOM, CssAnimator;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   return {
     setters: [function (_aureliaTemplating) {
@@ -19,7 +17,7 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _conte
     execute: function () {
       _export('CssAnimator', CssAnimator = function () {
         function CssAnimator() {
-          _classCallCheck(this, CssAnimator);
+          
 
           this.useAnimationDoneClasses = false;
           this.animationEnteredClass = 'au-entered';

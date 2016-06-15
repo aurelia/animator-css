@@ -1,18 +1,9 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CssAnimator = undefined;
-exports.configure = configure;
-
-var _aureliaTemplating = require('aurelia-templating');
-
-var _aureliaPal = require('aurelia-pal');
 
 
+import { animationEvent, TemplatingEngine } from 'aurelia-templating';
+import { DOM } from 'aurelia-pal';
 
-var CssAnimator = exports.CssAnimator = function () {
+export var CssAnimator = function () {
   function CssAnimator() {
     
 
@@ -32,7 +23,7 @@ var CssAnimator = exports.CssAnimator = function () {
   };
 
   CssAnimator.prototype._getElementAnimationDelay = function _getElementAnimationDelay(element) {
-    var styl = _aureliaPal.DOM.getComputedStyle(element);
+    var styl = DOM.getComputedStyle(element);
     var prop = void 0;
     var delay = void 0;
 
@@ -53,7 +44,7 @@ var CssAnimator = exports.CssAnimator = function () {
   };
 
   CssAnimator.prototype._getElementAnimationNames = function _getElementAnimationNames(element) {
-    var styl = _aureliaPal.DOM.getComputedStyle(element);
+    var styl = DOM.getComputedStyle(element);
     var prefix = void 0;
 
     if (styl.getPropertyValue('animation-name')) {
@@ -73,26 +64,26 @@ var CssAnimator = exports.CssAnimator = function () {
   CssAnimator.prototype._performSingleAnimate = function _performSingleAnimate(element, className) {
     var _this = this;
 
-    this._triggerDOMEvent(_aureliaTemplating.animationEvent.animateBegin, element);
+    this._triggerDOMEvent(animationEvent.animateBegin, element);
 
     return this.addClass(element, className, true).then(function (result) {
-      _this._triggerDOMEvent(_aureliaTemplating.animationEvent.animateActive, element);
+      _this._triggerDOMEvent(animationEvent.animateActive, element);
 
       if (result !== false) {
         return _this.removeClass(element, className, true).then(function () {
-          _this._triggerDOMEvent(_aureliaTemplating.animationEvent.animateDone, element);
+          _this._triggerDOMEvent(animationEvent.animateDone, element);
         });
       }
 
       return false;
     }).catch(function () {
-      _this._triggerDOMEvent(_aureliaTemplating.animationEvent.animateTimeout, element);
+      _this._triggerDOMEvent(animationEvent.animateTimeout, element);
     });
   };
 
   CssAnimator.prototype._triggerDOMEvent = function _triggerDOMEvent(eventType, element) {
-    var evt = _aureliaPal.DOM.createCustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
-    _aureliaPal.DOM.dispatchEvent(evt);
+    var evt = DOM.createCustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
+    DOM.dispatchEvent(evt);
   };
 
   CssAnimator.prototype._animationChangeWithValidKeyframe = function _animationChangeWithValidKeyframe(animationNames, prevAnimationNames) {
@@ -150,14 +141,14 @@ var CssAnimator = exports.CssAnimator = function () {
   CssAnimator.prototype.runSequence = function runSequence(animations) {
     var _this3 = this;
 
-    this._triggerDOMEvent(_aureliaTemplating.animationEvent.sequenceBegin, null);
+    this._triggerDOMEvent(animationEvent.sequenceBegin, null);
 
     return animations.reduce(function (p, anim) {
       return p.then(function () {
         return _this3.animate(anim.element, anim.className);
       });
     }, Promise.resolve(true)).then(function () {
-      _this3._triggerDOMEvent(_aureliaTemplating.animationEvent.sequenceDone, null);
+      _this3._triggerDOMEvent(animationEvent.sequenceDone, null);
     });
   };
 
@@ -167,7 +158,7 @@ var CssAnimator = exports.CssAnimator = function () {
     return new Promise(function (resolve, reject) {
       var classList = element.classList;
 
-      _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterBegin, element);
+      _this4._triggerDOMEvent(animationEvent.enterBegin, element);
 
       if (_this4.useAnimationDoneClasses) {
         classList.remove(_this4.animationEnteredClass);
@@ -183,7 +174,7 @@ var CssAnimator = exports.CssAnimator = function () {
         animHasStarted = true;
         _this4.isAnimating = true;
 
-        _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterActive, element);
+        _this4._triggerDOMEvent(animationEvent.enterActive, element);
 
         evAnimStart.stopPropagation();
 
@@ -208,7 +199,7 @@ var CssAnimator = exports.CssAnimator = function () {
         }
 
         _this4.isAnimating = false;
-        _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterDone, element);
+        _this4._triggerDOMEvent(animationEvent.enterDone, element);
 
         resolve(true);
       }, false);
@@ -221,7 +212,7 @@ var CssAnimator = exports.CssAnimator = function () {
         if (!_this4._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove('au-enter-active');
           classList.remove('au-enter');
-          _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterTimeout, element);
+          _this4._triggerDOMEvent(animationEvent.enterTimeout, element);
           resolve(false);
         }
       };
@@ -230,7 +221,7 @@ var CssAnimator = exports.CssAnimator = function () {
         var elemPos = Array.prototype.indexOf.call(parent.children, element);
         delay = _this4._getElementAnimationDelay(parent) * elemPos;
 
-        _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.staggerNext, element);
+        _this4._triggerDOMEvent(animationEvent.staggerNext, element);
 
         setTimeout(function () {
           classList.add('au-enter-active');
@@ -249,7 +240,7 @@ var CssAnimator = exports.CssAnimator = function () {
     return new Promise(function (resolve, reject) {
       var classList = element.classList;
 
-      _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveBegin, element);
+      _this5._triggerDOMEvent(animationEvent.leaveBegin, element);
 
       if (_this5.useAnimationDoneClasses) {
         classList.remove(_this5.animationEnteredClass);
@@ -265,7 +256,7 @@ var CssAnimator = exports.CssAnimator = function () {
         animHasStarted = true;
         _this5.isAnimating = true;
 
-        _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveActive, element);
+        _this5._triggerDOMEvent(animationEvent.leaveActive, element);
 
         evAnimStart.stopPropagation();
 
@@ -290,7 +281,7 @@ var CssAnimator = exports.CssAnimator = function () {
         }
 
         _this5.isAnimating = false;
-        _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveDone, element);
+        _this5._triggerDOMEvent(animationEvent.leaveDone, element);
 
         resolve(true);
       }, false);
@@ -303,7 +294,7 @@ var CssAnimator = exports.CssAnimator = function () {
         if (!_this5._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove('au-leave-active');
           classList.remove('au-leave');
-          _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveTimeout, element);
+          _this5._triggerDOMEvent(animationEvent.leaveTimeout, element);
           resolve(false);
         }
       };
@@ -312,7 +303,7 @@ var CssAnimator = exports.CssAnimator = function () {
         var elemPos = Array.prototype.indexOf.call(parent.children, element);
         delay = _this5._getElementAnimationDelay(parent) * elemPos;
 
-        _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.staggerNext, element);
+        _this5._triggerDOMEvent(animationEvent.staggerNext, element);
 
         setTimeout(function () {
           classList.add('au-leave-active');
@@ -339,7 +330,7 @@ var CssAnimator = exports.CssAnimator = function () {
       }
 
       if (suppressEvents !== true) {
-        _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassBegin, element);
+        _this6._triggerDOMEvent(animationEvent.removeClassBegin, element);
       }
 
       classList.remove(className);
@@ -352,7 +343,7 @@ var CssAnimator = exports.CssAnimator = function () {
         _this6.isAnimating = true;
 
         if (suppressEvents !== true) {
-          _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassActive, element);
+          _this6._triggerDOMEvent(animationEvent.removeClassActive, element);
         }
 
         evAnimStart.stopPropagation();
@@ -375,7 +366,7 @@ var CssAnimator = exports.CssAnimator = function () {
         _this6.isAnimating = false;
 
         if (suppressEvents !== true) {
-          _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassDone, element);
+          _this6._triggerDOMEvent(animationEvent.removeClassDone, element);
         }
 
         resolve(true);
@@ -389,7 +380,7 @@ var CssAnimator = exports.CssAnimator = function () {
         classList.remove(className);
 
         if (suppressEvents !== true) {
-          _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassTimeout, element);
+          _this6._triggerDOMEvent(animationEvent.removeClassTimeout, element);
         }
 
         resolve(false);
@@ -406,7 +397,7 @@ var CssAnimator = exports.CssAnimator = function () {
       var classList = element.classList;
 
       if (suppressEvents !== true) {
-        _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassBegin, element);
+        _this7._triggerDOMEvent(animationEvent.addClassBegin, element);
       }
 
       var _animStart4 = void 0;
@@ -416,7 +407,7 @@ var CssAnimator = exports.CssAnimator = function () {
         _this7.isAnimating = true;
 
         if (suppressEvents !== true) {
-          _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassActive, element);
+          _this7._triggerDOMEvent(animationEvent.addClassActive, element);
         }
 
         evAnimStart.stopPropagation();
@@ -441,7 +432,7 @@ var CssAnimator = exports.CssAnimator = function () {
         _this7.isAnimating = false;
 
         if (suppressEvents !== true) {
-          _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassDone, element);
+          _this7._triggerDOMEvent(animationEvent.addClassDone, element);
         }
 
         resolve(true);
@@ -457,7 +448,7 @@ var CssAnimator = exports.CssAnimator = function () {
         classList.add(className);
 
         if (suppressEvents !== true) {
-          _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassTimeout, element);
+          _this7._triggerDOMEvent(animationEvent.addClassTimeout, element);
         }
 
         resolve(false);
@@ -468,9 +459,9 @@ var CssAnimator = exports.CssAnimator = function () {
   return CssAnimator;
 }();
 
-function configure(config, callback) {
+export function configure(config, callback) {
   var animator = config.container.get(CssAnimator);
-  config.container.get(_aureliaTemplating.TemplatingEngine).configureAnimator(animator);
+  config.container.get(TemplatingEngine).configureAnimator(animator);
   if (typeof callback === 'function') {
     callback(animator);
   }
