@@ -1,12 +1,5 @@
 System.config({
   defaultJSExtensions: true,
-  transpiler: "babel",
-  babelOptions: {
-    "optional": [
-      "runtime",
-      "es7.decorators"
-    ]
-  },
   paths: {
     "aurelia-animator-css/*": "dist\\system/*.js",
     "github:*": "jspm_packages/github/*",
