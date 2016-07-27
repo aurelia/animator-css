@@ -7,6 +7,16 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _conte
 
   
 
+  function configure(config, callback) {
+    var animator = config.container.get(CssAnimator);
+    config.container.get(TemplatingEngine).configureAnimator(animator);
+    if (typeof callback === 'function') {
+      callback(animator);
+    }
+  }
+
+  _export('configure', configure);
+
   return {
     setters: [function (_aureliaTemplating) {
       animationEvent = _aureliaTemplating.animationEvent;
@@ -472,16 +482,6 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _conte
       }());
 
       _export('CssAnimator', CssAnimator);
-
-      function configure(config, callback) {
-        var animator = config.container.get(CssAnimator);
-        config.container.get(TemplatingEngine).configureAnimator(animator);
-        if (typeof callback === 'function') {
-          callback(animator);
-        }
-      }
-
-      _export('configure', configure);
     }
   };
 });
