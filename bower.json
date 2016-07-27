@@ -20,8 +20,8 @@
     "url": "https://github.com/aurelia/animator-css"
   },
   "dependencies": {
-    "aurelia-metadata": "^1.0.0-rc.1.0.0",
-    "aurelia-pal": "^1.0.0-rc.1.0.0",
-    "aurelia-templating": "^1.0.0-rc.1.0.0"
+    "aurelia-metadata": "^1.0.0",
+    "aurelia-pal": "^1.0.0",
+    "aurelia-templating": "^1.0.0"
   }
 }
