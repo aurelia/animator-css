@@ -153,7 +153,13 @@ export class CssAnimator {
 
     try {
       for (let i = 0; i < styleSheets.length; ++i) {
-        let cssRules = styleSheets[i].cssRules;
+        let cssRules = null;
+
+        try {
+          cssRules = styleSheets[i].cssRules;
+        } catch (e) {
+          // do nothing
+        }
 
         if (!cssRules) {
           continue;
