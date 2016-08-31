@@ -537,6 +537,29 @@ describe('animator-css', () => {
     });
   });
 
+  describe('event listener cleanup', () => {
+
+    let el, testClass;
+
+    beforeEach(() => {
+      loadFixtures('addremove.html');
+      el = $('#overlap').eq(0)[0];
+      sut.addClass(el, 'aurelia-hide');
+    });
+
+    it('should remove event listeners when no animation occurs', (done) => {
+      expect(el.classList.contains('fade-in')).toBe(true);
+      expect(el.classList.contains('aurelia-hide')).toBe(true);
+
+      sut.removeClass(el, 'aurelia-hide');
+      setTimeout(function() {
+        expect(el.classList.contains('fade-in')).toBe(true);
+        expect(el.classList.contains('aurelia-hide')).toBe(false);
+        done();
+      }, 2000);
+    });
+  });
+
   describe('staggering animations', () => {
     var elems;
 
