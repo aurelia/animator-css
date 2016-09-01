@@ -27,6 +27,13 @@
     animation:0.2s show-animation;
   }
 
+  .aurelia-hide { 
+    display: none !important;
+  }
+  .fade-in { 
+    animation: show-animation 1s;
+    -webkit-animation: show-animation 1s;
+  }
 </style>
 
 <div>
@@ -34,3 +41,5 @@
     Quickly animated element
   </span>
 </div>
+
+<div id="overlap" class="fade-in au-animate aurelia-hide">Clean up</div>
