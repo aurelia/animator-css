@@ -1,3 +1,14 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/aurelia/animator-css/compare/1.0.0...v1.0.1) (2016-09-05)
+
+
+### Bug Fixes
+
+* **CssAnimator:** clear event handlers when there's no animation ([7683336](https://github.com/aurelia/animator-css/commit/7683336)), closes [#47](https://github.com/aurelia/animator-css/issues/47)
+* **cssRules:** add additional try/catch ([4e21ea8](https://github.com/aurelia/animator-css/commit/4e21ea8)), closes [#40](https://github.com/aurelia/animator-css/issues/40)
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/aurelia/animator-css/compare/1.0.0-rc.1.0.0...v1.0.0) (2016-07-27)
 

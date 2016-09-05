@@ -28,6 +28,13 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
       }
     };
 
+    CssAnimator.prototype._removeMultipleEventListener = function _removeMultipleEventListener(el, s, fn) {
+      var evts = s.split(' ');
+      for (var i = 0, ii = evts.length; i < ii; ++i) {
+        el.removeEventListener(evts[i], fn, false);
+      }
+    };
+
     CssAnimator.prototype._getElementAnimationDelay = function _getElementAnimationDelay(element) {
       var styl = _aureliaPal.DOM.getComputedStyle(element);
       var prop = void 0;
@@ -111,7 +118,11 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
 
       try {
         for (var i = 0; i < styleSheets.length; ++i) {
-          var cssRules = styleSheets[i].cssRules;
+          var cssRules = null;
+
+          try {
+            cssRules = styleSheets[i].cssRules;
+          } catch (e) {}
 
           if (!cssRules) {
             continue;
@@ -218,6 +229,10 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           if (!_this4._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
             classList.remove('au-enter-active');
             classList.remove('au-enter');
+
+            _this4._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd);
+            _this4._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart);
+
             _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.enterTimeout, element);
             resolve(false);
           }
@@ -300,6 +315,10 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           if (!_this5._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
             classList.remove('au-leave-active');
             classList.remove('au-leave');
+
+            _this5._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd2);
+            _this5._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart2);
+
             _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.leaveTimeout, element);
             resolve(false);
           }
@@ -385,6 +404,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           classList.remove(className + '-remove');
           classList.remove(className);
 
+          _this6._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd3);
+          _this6._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart3);
+
           if (suppressEvents !== true) {
             _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassTimeout, element);
           }
@@ -452,6 +474,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         if (!_this7._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove(className + '-add');
           classList.add(className);
+
+          _this7._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd4);
+          _this7._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart4);
 
           if (suppressEvents !== true) {
             _this7._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassTimeout, element);

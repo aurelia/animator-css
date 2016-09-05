@@ -18,6 +18,13 @@ export let CssAnimator = class CssAnimator {
     }
   }
 
+  _removeMultipleEventListener(el, s, fn) {
+    let evts = s.split(' ');
+    for (let i = 0, ii = evts.length; i < ii; ++i) {
+      el.removeEventListener(evts[i], fn, false);
+    }
+  }
+
   _getElementAnimationDelay(element) {
     let styl = DOM.getComputedStyle(element);
     let prop;
@@ -97,7 +104,11 @@ export let CssAnimator = class CssAnimator {
 
     try {
       for (let i = 0; i < styleSheets.length; ++i) {
-        let cssRules = styleSheets[i].cssRules;
+        let cssRules = null;
+
+        try {
+          cssRules = styleSheets[i].cssRules;
+        } catch (e) {}
 
         if (!cssRules) {
           continue;
@@ -198,6 +209,10 @@ export let CssAnimator = class CssAnimator {
         if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove('au-enter-active');
           classList.remove('au-enter');
+
+          this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
+          this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
+
           this._triggerDOMEvent(animationEvent.enterTimeout, element);
           resolve(false);
         }
@@ -278,6 +293,10 @@ export let CssAnimator = class CssAnimator {
         if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove('au-leave-active');
           classList.remove('au-leave');
+
+          this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
+          this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
+
           this._triggerDOMEvent(animationEvent.leaveTimeout, element);
           resolve(false);
         }
@@ -359,6 +378,9 @@ export let CssAnimator = class CssAnimator {
         classList.remove(className + '-remove');
         classList.remove(className);
 
+        this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
+        this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
+
         if (suppressEvents !== true) {
           this._triggerDOMEvent(animationEvent.removeClassTimeout, element);
         }
@@ -422,6 +444,9 @@ export let CssAnimator = class CssAnimator {
       if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
         classList.remove(className + '-add');
         classList.add(className);
+
+        this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
+        this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
 
         if (suppressEvents !== true) {
           this._triggerDOMEvent(animationEvent.addClassTimeout, element);
