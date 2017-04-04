@@ -653,5 +653,26 @@ describe('animator-css', () => {
         done();
       })
     });
+
+    it('should ignore exising elements when calculating stagger delay', (done) => {
+      elems = $('.stagger');
+
+      let anim = (s,e,d) => {
+        let proms = [];
+        for ( let i = s; i < e; ++i )
+        {
+          proms.push(sut[d](elems[i]));
+        }
+        return Promise.all(proms);
+      };
+
+      anim(0, 2, 'enter').then( () => {
+        let time = Date.now();
+        Promise.all([anim(3, 4, 'enter'), anim(0, 2, 'leave')] ).then( () => {
+          expect((Date.now() - time) <= 1500+200).toBe(true);
+          done();
+        } );
+      });
+    });
   });
 });
