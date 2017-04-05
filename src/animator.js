@@ -236,11 +236,11 @@ export class CssAnimator {
    * @param doneClass class to apply when done
    * @private
    */
-  _stateAnim( element, direction, doneClass ) {
-    let auClass = 'au-' + direction;
-    let auClassActive = auClass + '-active';
+  _stateAnim(element: HTMLElement, direction: string, doneClass: string) {
+    const auClass = 'au-' + direction;
+    const auClassActive = auClass + '-active';
     return new Promise((resolve, reject) => {
-      let classList = element.classList;
+      const classList = element.classList;
 
       this._triggerDOMEvent(animationEvent[direction + 'Begin'], element);
 
@@ -252,7 +252,7 @@ export class CssAnimator {
 
       // Step 2: Add animation preparation class
       classList.add(auClass);
-      let prevAnimationNames = this._getElementAnimationNames(element);
+      const prevAnimationNames = this._getElementAnimationNames(element);
 
       // Step 3: setup event to check whether animations started
       let animStart;
@@ -272,7 +272,7 @@ export class CssAnimator {
       // Step 3.1: Wait for animation to finish
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-        if (! animHasStarted) {
+        if (!animHasStarted) {
           return;
         }
 
@@ -288,8 +288,8 @@ export class CssAnimator {
 
         // Step 3.1.3 in case animation done animations are active, add the defined done class to the element
         if (this.useAnimationDoneClasses &&
-           doneClass !== undefined &&
-           doneClass !== null) {
+            doneClass !== undefined &&
+            doneClass !== null) {
           classList.add(doneClass);
         }
 
@@ -300,13 +300,13 @@ export class CssAnimator {
       }, false);
 
       // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
-      let parent = element.parentElement;
+      const parent = element.parentElement;
       let delay = 0;
-      let attrib = 'data-animator-pending' + direction;
+      const attrib = 'data-animator-pending' + direction;
 
-      let cleanupAnimation = () => {
+      const cleanupAnimation = () => {
         // Step 5: if no animations scheduled cleanup animation classes
-        let animationNames = this._getElementAnimationNames(element);
+        const animationNames = this._getElementAnimationNames(element);
         if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove(auClassActive);
           classList.remove(auClass);
@@ -321,12 +321,12 @@ export class CssAnimator {
       };
 
       if (parent !== null &&
-         parent !== undefined &&
-         (
-          parent.classList.contains('au-stagger') ||
-          parent.classList.contains('au-stagger-enter')
-         )) {
-        let offset = +(parent.getAttribute(attrib) || 0);
+          parent !== undefined &&
+          (
+            parent.classList.contains('au-stagger') ||
+            parent.classList.contains('au-stagger-enter')
+          )) {
+        const offset = +(parent.getAttribute(attrib) || 0);
         parent.setAttribute(attrib, offset + 1);
         delay = this._getElementAnimationDelay(parent) * offset;
         this._triggerDOMEvent(animationEvent.staggerNext, element);

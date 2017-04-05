@@ -6,14 +6,14 @@ import {initialize} from 'aurelia-pal-browser';
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/';
 
 describe('animator-css', () => {
-  var sut;
+  let sut;
   beforeAll(() => initialize());
   beforeEach( () => {
     sut = new CssAnimator();
   });
 
   describe('plugin initialization', () => {
-    var aurelia = {
+    let aurelia = {
       globalResources: () => {
 
       },
@@ -22,7 +22,7 @@ describe('animator-css', () => {
 
         },
         get: (type) => {
-          if(type === CssAnimator) {
+          if (type === CssAnimator) {
             return new CssAnimator();
           }
 
@@ -40,7 +40,7 @@ describe('animator-css', () => {
     });
 
     it('should accept a setup callback passing back the animator instance', (done) => {
-      var cb = (instance) => {
+      const cb = (instance) => {
         expect(typeof instance).toBe('object');
         done();
       };
@@ -56,67 +56,68 @@ describe('animator-css', () => {
   });
 
   describe('enter animation', () => {
-    var elem;
+    let elem;
+
     beforeEach(() => {
       loadFixtures('animation.html');
       elem = $('.au-animate').eq(0)[0];
     });
 
     it('should return a promise', () => {
-      var result = sut.enter(elem).catch((error) => console.log(error));
+      const result = sut.enter(elem).catch((error) => { throw error; });
       expect(result.then).toBeDefined();
     });
 
     it('should remove animation from stack after done', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( () => {
+      sut.enter(elemAnimated).then( () => {
         expect(sut.isAnimating).toBe(false);
         done();
       });
     });
 
     it('should respect animation-delay', (done) => {
-      var elem = $('#delayedElement').eq(0)[0];
+      const elemAnimated = $('#delayedElement').eq(0)[0];
 
-      sut.enter(elem).then( () => {
+      sut.enter(elemAnimated).then( () => {
         expect(sut.isAnimating).toBe(false);
         done();
       });
     });
 
     it('should kick off animation', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( (didRunAnimation) => {
+      sut.enter(elemAnimated).then( (didRunAnimation) => {
         expect(didRunAnimation).toBe(true);
         done();
       });
     });
 
     it('should not kick off animation on element without proper classes', (done) => {
-      var elem = $('.boring-item').eq(0)[0];
-      sut.enter(elem).then( (didRunAnimation) => {
+      const elemAnimated = $('.boring-item').eq(0)[0];
+      sut.enter(elemAnimated).then( (didRunAnimation) => {
         expect(didRunAnimation).toBe(false);
         done();
       });
     });
 
     it('should cleanup animation classes', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( () => {
-        expect(elem.classList.contains("au-enter")).toBe(false);
-        expect(elem.classList.contains("au-enter-active")).toBe(false);
+      sut.enter(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('au-enter')).toBe(false);
+        expect(elemAnimated.classList.contains('au-enter-active')).toBe(false);
         done();
       });
     });
 
     it('should not add left class by default', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( () => {
-        expect(elem.classList.contains("au-entered")).toBe(false);
+      sut.enter(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('au-entered')).toBe(false);
         done();
       });
     });
@@ -125,10 +126,10 @@ describe('animator-css', () => {
       sut.useAnimationDoneClasses = true;
       sut.animationEnteredClass = 'custom-entered';
 
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( () => {
-        expect(elem.classList.contains("custom-entered")).toBe(true);
+      sut.enter(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('custom-entered')).toBe(true);
         done();
       });
     });
@@ -137,18 +138,16 @@ describe('animator-css', () => {
       sut.useAnimationDoneClasses = true;
       sut.animationEnteredClass = undefined;
 
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( () => {
-        expect(elem.classList.contains("undefined")).toBe(false);
+      sut.enter(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('undefined')).toBe(false);
         done();
       });
     });
 
     it('should set isAnimating to active during animations', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
-
-      sut.enter(elem).then( () => {
+      sut.enter($('.animated-item').eq(0)[0]).then( () => {
         expect(sut.isAnimating).toBe(false);
         done();
       });
@@ -159,19 +158,16 @@ describe('animator-css', () => {
     });
 
     it('should publish expected events', (done) => {
-      var elem = $('.animated-item').eq(0)[0]
-        , enterBeginCalled = false
-        , enterActiveCalled = false
-        , enterDoneCalled = false;
+      let elemAnimated = $('.animated-item').eq(0)[0];
+      let enterBeginCalled = false;
+      let enterActiveCalled = false;
+      let enterDoneCalled = false;
 
-      var l1 = document.addEventListener(animationEvent.enterBegin, (payload) => enterBeginCalled = true)
-        , l2 = document.addEventListener(animationEvent.enterActive, (payload) => enterActiveCalled = true)
-        , l3 = document.addEventListener(animationEvent.enterDone, () => enterDoneCalled = true);
+      const l1 = document.addEventListener(animationEvent.enterBegin, (payload) => enterBeginCalled = true);
+      const l2 = document.addEventListener(animationEvent.enterActive, (payload) => enterActiveCalled = true);
+      const l3 = document.addEventListener(animationEvent.enterDone, () => enterDoneCalled = true);
 
-
-
-      sut.enter(elem).then( () => {
-
+      sut.enter(elemAnimated).then( () => {
         expect(enterBeginCalled).toBe(true);
         expect(enterActiveCalled).toBe(true);
         expect(enterDoneCalled).toBe(true);
@@ -184,14 +180,14 @@ describe('animator-css', () => {
     });
 
     it('should publish timeout event', (done) => {
-      var elem = $('.boring-item').eq(0)[0]
-        , timeoutCalled = false;
+      let elemAnimated = $('.boring-item').eq(0)[0];
+      let timeoutCalled = false;
 
-      var listener = document.addEventListener(animationEvent.enterTimeout, () => {
+      const listener = document.addEventListener(animationEvent.enterTimeout, () => {
         timeoutCalled = true;
       });
 
-      sut.enter(elem).then( () => {
+      sut.enter(elemAnimated).then( () => {
         expect(timeoutCalled).toBe(true);
         document.removeEventListener(animationEvent.enterTimeout, listener, false);
         done();
@@ -200,56 +196,56 @@ describe('animator-css', () => {
   });
 
   describe('leave animation', () => {
-    var elem;
+    let elem;
     beforeEach(() => {
       loadFixtures('animation.html');
       elem = $('.au-animate').eq(0)[0];
     });
 
     it('should return a promise', () => {
-      var result = sut.leave(elem);
+      const result = sut.leave(elem);
       expect(result.then).toBeDefined();
     });
 
     it('should remove animation from stack after done', (done) => {
-      var result = sut.leave(elem).then( () => {
+      sut.leave(elem).then( () => {
         expect(sut.isAnimating).toBe(false);
         done();
       });
     });
 
     it('should kick off animation', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.leave(elem).then( (didRunAnimation) => {
+      sut.leave(elemAnimated).then( (didRunAnimation) => {
         expect(didRunAnimation).toBe(true);
         done();
       });
     });
 
     it('should not kick off animation on element without proper classes', (done) => {
-      var elem = $('.boring-item').eq(0)[0];
-      sut.leave(elem).then( (didRunAnimation) => {
+      const elemAnimated = $('.boring-item').eq(0)[0];
+      sut.leave(elemAnimated).then( (didRunAnimation) => {
         expect(didRunAnimation).toBe(false);
         done();
       });
     });
 
     it('should cleanup animation classes', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.enter(elem).then( () => {
-        expect(elem.classList.contains("au-leave")).toBe(false);
-        expect(elem.classList.contains("au-leave-active")).toBe(false);
+      sut.enter(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('au-leave')).toBe(false);
+        expect(elemAnimated.classList.contains('au-leave-active')).toBe(false);
         done();
       });
     });
 
     it('should not add left class by default', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.leave(elem).then( () => {
-        expect(elem.classList.contains("au-left")).toBe(false);
+      sut.leave(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('au-left')).toBe(false);
         done();
       });
     });
@@ -258,10 +254,10 @@ describe('animator-css', () => {
       sut.useAnimationDoneClasses = true;
       sut.animationLeftClass = 'custom-left';
 
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.leave(elem).then( () => {
-        expect(elem.classList.contains("custom-left")).toBe(true);
+      sut.leave(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('custom-left')).toBe(true);
         done();
       });
     });
@@ -270,18 +266,16 @@ describe('animator-css', () => {
       sut.useAnimationDoneClasses = true;
       sut.animationLeftClass = undefined;
 
-      var elem = $('.animated-item').eq(0)[0];
+      const elemAnimated = $('.animated-item').eq(0)[0];
 
-      sut.leave(elem).then( () => {
-        expect(elem.classList.contains("undefined")).toBe(false);
+      sut.leave(elemAnimated).then( () => {
+        expect(elemAnimated.classList.contains('undefined')).toBe(false);
         done();
       });
     });
 
     it('should set isAnimating to active during animations', (done) => {
-      var elem = $('.animated-item').eq(0)[0];
-
-      sut.leave(elem).then( () => {
+      sut.leave($('.animated-item').eq(0)[0]).then( () => {
         expect(sut.isAnimating).toBe(false);
         done();
       });
@@ -292,17 +286,17 @@ describe('animator-css', () => {
     });
 
     it('should publish expected events', (done) => {
-      var elem = $('.animated-item').eq(0)[0]
-        , leaveBeginCalled = false
-        , leaveActiveCalled = false
-        , leaveDoneCalled = false;
+      let elemPublish = $('.animated-item').eq(0)[0];
+      let leaveBeginCalled = false;
+      let leaveActiveCalled = false;
+      let leaveDoneCalled = false;
 
-      var l1 = document.addEventListener(animationEvent.leaveBegin, (payload) => leaveBeginCalled = true)
-        , l2 = document.addEventListener(animationEvent.leaveActive, (payload) => leaveActiveCalled = true)
-        , l3 = document.addEventListener(animationEvent.leaveDone, () => leaveDoneCalled = true);
+      const l1 = document.addEventListener(animationEvent.leaveBegin, (payload) => leaveBeginCalled = true);
+      const l2 = document.addEventListener(animationEvent.leaveActive, (payload) => leaveActiveCalled = true);
+      const l3 = document.addEventListener(animationEvent.leaveDone, () => leaveDoneCalled = true);
 
 
-      sut.leave(elem).then( () => {
+      sut.leave(elemPublish).then( () => {
         expect(leaveBeginCalled).toBe(true);
         expect(leaveActiveCalled).toBe(true);
         expect(leaveDoneCalled).toBe(true);
@@ -316,14 +310,14 @@ describe('animator-css', () => {
     });
 
     it('should publish timeout event', (done) => {
-      var elem = $('.boring-item').eq(0)[0]
-        , timeoutCalled = false;
+      let elemTimeout = $('.boring-item').eq(0)[0];
+      let timeoutCalled = false;
 
-      var listener = document.addEventListener(animationEvent.leaveTimeout, () => {
+      const listener = document.addEventListener(animationEvent.leaveTimeout, () => {
         timeoutCalled = true;
       });
 
-      sut.leave(elem).then( () => {
+      sut.leave(elemTimeout).then( () => {
         expect(timeoutCalled).toBe(true);
         document.removeEventListener(animationEvent.leaveTimeout, listener, false);
         done();
@@ -332,8 +326,8 @@ describe('animator-css', () => {
   });
 
   describe('removeClass animation', () => {
-    var elem,
-        testClass;
+    let elem;
+    let testClass;
 
     beforeEach(() => {
       loadFixtures('animation.html');
@@ -342,12 +336,12 @@ describe('animator-css', () => {
     });
 
     it('should return a promise', () => {
-      var result = sut.removeClass(elem, testClass);
+      const result = sut.removeClass(elem, testClass);
       expect(result.then).toBeDefined();
     });
 
     it('should remove animation from stack after done', (done) => {
-      var result = sut.removeClass(elem, testClass).then( () => {
+      sut.removeClass(elem, testClass).then( () => {
         expect(sut.isAnimating).toBe(false);
         done();
       });
@@ -361,8 +355,7 @@ describe('animator-css', () => {
     });
 
     it('should not kick off animation on element without proper classes', (done) => {
-      var elem = $('#removeClassWrong').eq(0)[0];
-      sut.removeClass(elem, testClass).then( (didRunAnimation) => {
+      sut.removeClass($('#removeClassWrong').eq(0)[0], testClass).then( (didRunAnimation) => {
         expect(didRunAnimation).toBe(false);
         done();
       });
@@ -371,7 +364,7 @@ describe('animator-css', () => {
     it('should cleanup animation classes', (done) => {
       sut.removeClass(elem, testClass).then( () => {
         expect(elem.classList.contains(testClass)).toBe(false);
-        expect(elem.classList.contains(testClass + "-remove")).toBe(false);
+        expect(elem.classList.contains(testClass + '-remove')).toBe(false);
         done();
       });
     });
@@ -388,11 +381,11 @@ describe('animator-css', () => {
     });
 
     it('should publish expected events', (done) => {
-      var removeClassBeginCalled = false
-        , removeClassDoneCalled = false;
+      let removeClassBeginCalled = false;
+      let removeClassDoneCalled = false;
 
-      var l1 = document.addEventListener(animationEvent.removeClassBegin, () => removeClassBeginCalled = true)
-        , l2 = document.addEventListener(animationEvent.removeClassDone, () => removeClassDoneCalled = true);
+      let l1 = document.addEventListener(animationEvent.removeClassBegin, () => removeClassBeginCalled = true);
+      let l2 = document.addEventListener(animationEvent.removeClassDone, () => removeClassDoneCalled = true);
 
       sut.removeClass(elem, testClass).then(() => {
         expect(removeClassBeginCalled).toBe(true);
@@ -405,14 +398,14 @@ describe('animator-css', () => {
     });
 
     it('should publish timeout event', (done) => {
-      var elem = $('#removeClassNoAnim').eq(0)[0]
-        , timeoutCalled = false;
+      let elemTimeout = $('#removeClassNoAnim').eq(0)[0];
+      let timeoutCalled = false;
 
       document.addEventListener(animationEvent.removeClassTimeout, () => {
         timeoutCalled = true;
       });
 
-      sut.removeClass(elem, 'remove-non-anim').then( (didRunAnimation) => {
+      sut.removeClass(elemTimeout, 'remove-non-anim').then( (didRunAnimation) => {
         expect(didRunAnimation).toBe(false);
         expect(timeoutCalled).toBe(true);
         done();
@@ -421,8 +414,8 @@ describe('animator-css', () => {
   });
 
   describe('addClass animation', () => {
-    var elem,
-      testClass;
+    let elem;
+    let testClass;
 
     beforeEach(() => {
       loadFixtures('animation.html');
@@ -431,12 +424,12 @@ describe('animator-css', () => {
     });
 
     it('should return a promise', () => {
-      var result = sut.addClass(elem, testClass);
+      const result = sut.addClass(elem, testClass);
       expect(result.then).toBeDefined();
     });
 
     it('should remove animation from stack after done', (done) => {
-      var result = sut.addClass(elem, testClass).then( () => {
+      sut.addClass(elem, testClass).then( () => {
         expect(sut.isAnimating).toBe(false);
         done();
       });
@@ -460,7 +453,7 @@ describe('animator-css', () => {
     it('should cleanup animation classes', (done) => {
       sut.addClass(elem, testClass).then( (didRunAnimation) => {
         expect(elem.classList.contains(testClass)).toBe(true);
-        expect(elem.classList.contains(testClass + "-add")).toBe(false);
+        expect(elem.classList.contains(testClass + '-add')).toBe(false);
         done();
       });
     });
@@ -477,11 +470,11 @@ describe('animator-css', () => {
     });
 
     it('should publish expected events', (done) => {
-      var addClassBeginCalled = false
-        , addClassDoneCalled = false;
+      let addClassBeginCalled = false;
+      let addClassDoneCalled = false;
 
-      var l1 = document.addEventListener(animationEvent.addClassBegin, () => addClassBeginCalled = true)
-        , l2 = document.addEventListener(animationEvent.addClassDone, () => addClassDoneCalled = true);
+      let l1 = document.addEventListener(animationEvent.addClassBegin, () => addClassBeginCalled = true);
+      let l2 = document.addEventListener(animationEvent.addClassDone, () => addClassDoneCalled = true);
 
       sut.addClass(elem, testClass).then( () => {
         expect(addClassBeginCalled).toBe(true);
@@ -494,14 +487,14 @@ describe('animator-css', () => {
     });
 
     it('should publish timeout event', (done) => {
-      var elem = $('#addClassNoAnim').eq(0)[0]
-        , timeoutCalled = false;
+      const elemTimeout = $('#addClassNoAnim').eq(0)[0];
+      let timeoutCalled = false;
 
       document.addEventListener(animationEvent.addClassTimeout, () => {
         timeoutCalled = true;
       });
 
-      sut.addClass(elem, 'add-non-anim').then( (didRunAnimation) => {
+      sut.addClass(elemTimeout, 'add-non-anim').then( (didRunAnimation) => {
         expect(didRunAnimation).toBe(false);
         expect(timeoutCalled).toBe(true);
         done();
@@ -510,8 +503,8 @@ describe('animator-css', () => {
   });
 
   describe('add and removeClass', () => {
-
-    let elem, testClass;
+    let elem;
+    let testClass;
 
     beforeEach(() => {
       loadFixtures('addremove.html');
@@ -520,7 +513,7 @@ describe('animator-css', () => {
     });
 
     it('should handle quick add and remove cycle', (done) => {
-      var ok = [];
+      let ok = [];
 
       ok.push(sut.addClass(elem, testClass));
 
@@ -538,8 +531,7 @@ describe('animator-css', () => {
   });
 
   describe('event listener cleanup', () => {
-
-    let el, testClass;
+    let el;
 
     beforeEach(() => {
       loadFixtures('addremove.html');
@@ -561,7 +553,7 @@ describe('animator-css', () => {
   });
 
   describe('staggering animations', () => {
-    var elems;
+    let elems;
 
     beforeEach(() => {
       sut.useAnimationDoneClasses = true;
@@ -571,10 +563,10 @@ describe('animator-css', () => {
     });
 
     it('should trigger stagger event', (done) => {
-      let proms = []
-        , eventCalled = false;
+      let proms = [];
+      let eventCalled = false;
 
-      var listener = document.addEventListener(animationEvent.staggerNext, () => eventCalled = true);
+      let listener = document.addEventListener(animationEvent.staggerNext, () => eventCalled = true);
 
       elems.each( (idx, elem) => {
         proms.push(sut.enter(elem));
@@ -589,14 +581,14 @@ describe('animator-css', () => {
     });
 
     it('should animate enter elements staggered', (done) => {
-      var proms = [];
+      let proms = [];
       elems.each( (idx, elem) => {
         proms.push(sut.enter(elem));
       });
 
-      var time = Date.now(); 
+      let time = Date.now();
       Promise.all(proms).then( () => {
-        let complete = (Date.now() - time) <= 1500+100*elems.length;
+        let complete = (Date.now() - time) <= 1500 + 100 * elems.length;
         expect(complete).toBe(true);
         elems.each( (idx, elem) => {
           expect($(elem).css('opacity')).toBe('1');
@@ -606,26 +598,26 @@ describe('animator-css', () => {
     });
 
     it('should animate leave elements staggered', (done) => {
-      var proms = [];
+      let proms = [];
       elems.each( (idx, elem) => {
         proms.push(sut.leave(elem));
       });
 
-    var time = Date.now(); 
+      let time = Date.now();
       Promise.all(proms).then( () => {
-        let complete = (Date.now() - time) <= 1500+100*elems.length;
+        let complete = (Date.now() - time) <= 1500 + 100 * elems.length;
         expect(complete).toBe(true);
         elems.each( (idx, elem) => {
           expect($(elem).css('opacity')).toBe('0');
         });
         done();
-      })
+      });
     });
 
     it('should animate enter element using stagger-enter', (done) => {
       elems = $('.stagger-enter-only');
 
-      var proms = [];
+      let proms = [];
       elems.each( (idx, elem) => {
         proms.push(sut.leave(elem));
       });
@@ -635,13 +627,13 @@ describe('animator-css', () => {
           expect($(elem).css('opacity')).toBe('1');
         });
         done();
-      })
+      });
     });
 
     it('should animate leave element using stagger-leave', (done) => {
       elems = $('.stagger-leave-only');
 
-      var proms = [];
+      let proms = [];
       elems.each( (idx, elem) => {
         proms.push(sut.leave(elem));
       });
@@ -651,27 +643,27 @@ describe('animator-css', () => {
           expect($(elem).css('opacity')).toBe('0');
         });
         done();
-      })
+      });
     });
 
     it('should ignore exising elements when calculating stagger delay', (done) => {
       elems = $('.stagger');
 
-      let anim = (s,e,d) => {
+      let anim = (s, e, d) => {
         let proms = [];
-        for ( let i = s; i < e; ++i )
-        {
+        for ( let i = s; i < e; ++i ) {
           proms.push(sut[d](elems[i]));
         }
+
         return Promise.all(proms);
       };
 
       anim(0, 2, 'enter').then( () => {
         let time = Date.now();
-        Promise.all([anim(3, 4, 'enter'), anim(0, 2, 'leave')] ).then( () => {
-          expect((Date.now() - time) <= 1500+200).toBe(true);
+        Promise.all([anim(3, 4, 'enter'), anim(0, 2, 'leave')]).then(() => {
+          expect((Date.now() - time) <= 1500 + 200).toBe(true);
           done();
-        } );
+        });
       });
     });
   });
