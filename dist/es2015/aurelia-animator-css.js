@@ -151,19 +151,21 @@ export let CssAnimator = class CssAnimator {
     });
   }
 
-  enter(element) {
+  _stateAnim(element, direction, doneClass) {
+    const auClass = 'au-' + direction;
+    const auClassActive = auClass + '-active';
     return new Promise((resolve, reject) => {
-      let classList = element.classList;
+      const classList = element.classList;
 
-      this._triggerDOMEvent(animationEvent.enterBegin, element);
+      this._triggerDOMEvent(animationEvent[direction + 'Begin'], element);
 
       if (this.useAnimationDoneClasses) {
         classList.remove(this.animationEnteredClass);
         classList.remove(this.animationLeftClass);
       }
 
-      classList.add('au-enter');
-      let prevAnimationNames = this._getElementAnimationNames(element);
+      classList.add(auClass);
+      const prevAnimationNames = this._getElementAnimationNames(element);
 
       let animStart;
       let animHasStarted = false;
@@ -171,7 +173,7 @@ export let CssAnimator = class CssAnimator {
         animHasStarted = true;
         this.isAnimating = true;
 
-        this._triggerDOMEvent(animationEvent.enterActive, element);
+        this._triggerDOMEvent(animationEvent[direction + 'Active'], element);
 
         evAnimStart.stopPropagation();
 
@@ -186,137 +188,63 @@ export let CssAnimator = class CssAnimator {
 
         evAnimEnd.stopPropagation();
 
-        classList.remove('au-enter-active');
-        classList.remove('au-enter');
+        classList.remove(auClassActive);
+        classList.remove(auClass);
 
         evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-        if (this.useAnimationDoneClasses && this.animationEnteredClass !== undefined && this.animationEnteredClass !== null) {
-          classList.add(this.animationEnteredClass);
+        if (this.useAnimationDoneClasses && doneClass !== undefined && doneClass !== null) {
+          classList.add(doneClass);
         }
 
         this.isAnimating = false;
-        this._triggerDOMEvent(animationEvent.enterDone, element);
+        this._triggerDOMEvent(animationEvent[direction + 'Done'], element);
 
         resolve(true);
       }, false);
 
-      let parent = element.parentElement;
+      const parent = element.parentElement;
       let delay = 0;
+      const attrib = 'data-animator-pending' + direction;
 
-      let cleanupAnimation = () => {
-        let animationNames = this._getElementAnimationNames(element);
+      const cleanupAnimation = () => {
+        const animationNames = this._getElementAnimationNames(element);
         if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
-          classList.remove('au-enter-active');
-          classList.remove('au-enter');
+          classList.remove(auClassActive);
+          classList.remove(auClass);
 
           this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
           this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
 
-          this._triggerDOMEvent(animationEvent.enterTimeout, element);
+          this._triggerDOMEvent(animationEvent[direction + 'Timeout'], element);
           resolve(false);
         }
+        parent && parent.setAttribute(attrib, +(parent.getAttribute(attrib) || 1) - 1);
       };
 
       if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-enter'))) {
-        let elemPos = Array.prototype.indexOf.call(parent.children, element);
-        delay = this._getElementAnimationDelay(parent) * elemPos;
-
+        const offset = +(parent.getAttribute(attrib) || 0);
+        parent.setAttribute(attrib, offset + 1);
+        delay = this._getElementAnimationDelay(parent) * offset;
         this._triggerDOMEvent(animationEvent.staggerNext, element);
 
         setTimeout(() => {
-          classList.add('au-enter-active');
+          classList.add(auClassActive);
           cleanupAnimation();
         }, delay);
       } else {
-        classList.add('au-enter-active');
+        classList.add(auClassActive);
         cleanupAnimation();
       }
     });
   }
 
+  enter(element) {
+    return this._stateAnim(element, 'enter', this.animationEnteredClass);
+  }
+
   leave(element) {
-    return new Promise((resolve, reject) => {
-      let classList = element.classList;
-
-      this._triggerDOMEvent(animationEvent.leaveBegin, element);
-
-      if (this.useAnimationDoneClasses) {
-        classList.remove(this.animationEnteredClass);
-        classList.remove(this.animationLeftClass);
-      }
-
-      classList.add('au-leave');
-      let prevAnimationNames = this._getElementAnimationNames(element);
-
-      let animStart;
-      let animHasStarted = false;
-      this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = evAnimStart => {
-        animHasStarted = true;
-        this.isAnimating = true;
-
-        this._triggerDOMEvent(animationEvent.leaveActive, element);
-
-        evAnimStart.stopPropagation();
-
-        evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
-      }, false);
-
-      let animEnd;
-      this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = evAnimEnd => {
-        if (!animHasStarted) {
-          return;
-        }
-
-        evAnimEnd.stopPropagation();
-
-        classList.remove('au-leave-active');
-        classList.remove('au-leave');
-
-        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-        if (this.useAnimationDoneClasses && this.animationLeftClass !== undefined && this.animationLeftClass !== null) {
-          classList.add(this.animationLeftClass);
-        }
-
-        this.isAnimating = false;
-        this._triggerDOMEvent(animationEvent.leaveDone, element);
-
-        resolve(true);
-      }, false);
-
-      let parent = element.parentElement;
-      let delay = 0;
-
-      let cleanupAnimation = () => {
-        let animationNames = this._getElementAnimationNames(element);
-        if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
-          classList.remove('au-leave-active');
-          classList.remove('au-leave');
-
-          this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
-          this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
-
-          this._triggerDOMEvent(animationEvent.leaveTimeout, element);
-          resolve(false);
-        }
-      };
-
-      if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-leave'))) {
-        let elemPos = Array.prototype.indexOf.call(parent.children, element);
-        delay = this._getElementAnimationDelay(parent) * elemPos;
-
-        this._triggerDOMEvent(animationEvent.staggerNext, element);
-
-        setTimeout(() => {
-          classList.add('au-leave-active');
-          cleanupAnimation();
-        }, delay);
-      } else {
-        classList.add('au-leave-active');
-        cleanupAnimation();
-      }
-    });
+    return this._stateAnim(element, 'leave', this.animationLeftClass);
   }
 
   removeClass(element, className, suppressEvents = false) {

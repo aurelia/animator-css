@@ -7,7 +7,7 @@ import {
 } from 'aurelia-pal';
 export declare interface CssAnimation {
   className: string;
-  element: HTMLElement;
+  element: Element;
 }
 
 /**
@@ -31,7 +31,7 @@ export declare class CssAnimator {
      * @param options options for the animation (duration, easing, ...)
      * @returns Resolved when the animation is done
      */
-  animate(element: HTMLElement | Array<HTMLElement>, className: string): Promise<boolean>;
+  animate(element: Element | Array<Element>, className: string): Promise<boolean>;
   
   /**
      * Run a sequence of animations one after the other.
@@ -45,14 +45,14 @@ export declare class CssAnimator {
      * @param element Element to animate
      * @returns Resolved when the animation is done
      */
-  enter(element: HTMLElement): Promise<boolean>;
+  enter(element: Element): Promise<boolean>;
   
   /**
      * Execute a 'leave' animation on an element
      * @param element Element to animate
      * @returns Resolved when the animation is done
      */
-  leave(element: HTMLElement): Promise<boolean>;
+  leave(element: Element): Promise<boolean>;
   
   /**
      * Add a class to an element to trigger an animation.
@@ -61,7 +61,7 @@ export declare class CssAnimator {
      * @param suppressEvents Indicates whether or not to suppress animation events.
      * @returns Resolved when the animation is done
      */
-  removeClass(element: HTMLElement, className: string, suppressEvents?: boolean): Promise<boolean>;
+  removeClass(element: Element, className: string, suppressEvents?: boolean): Promise<boolean>;
   
   /**
      * Add a class to an element to trigger an animation.
@@ -70,7 +70,7 @@ export declare class CssAnimator {
      * @param suppressEvents Indicates whether or not to suppress animation events.
      * @returns Resolved when the animation is done
      */
-  addClass(element: HTMLElement, className: string, suppressEvents?: boolean): Promise<boolean>;
+  addClass(element: Element, className: string, suppressEvents?: boolean): Promise<boolean>;
 }
 
 /* Public API End */

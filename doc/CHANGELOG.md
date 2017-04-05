@@ -1,3 +1,15 @@
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/aurelia/animator-css/compare/1.0.1...v1.0.2) (2017-04-05)
+
+
+### Bug Fixes
+
+* **lint:** fixes linting issues ([80ce3d1](https://github.com/aurelia/animator-css/commit/80ce3d1))
+* **stagger:** delay calculation ([6112d34](https://github.com/aurelia/animator-css/commit/6112d34)), closes [#55](https://github.com/aurelia/animator-css/issues/55)
+* **types:** switch to Element interface ([de66cf0](https://github.com/aurelia/animator-css/commit/de66cf0))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/aurelia/animator-css/compare/1.0.0...v1.0.1) (2016-09-05)
 
