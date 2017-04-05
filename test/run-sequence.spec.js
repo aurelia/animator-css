@@ -5,7 +5,7 @@ import {initialize} from 'aurelia-pal-browser';
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/';
 
 describe('animator-css', () => {
-  var sut;
+  let sut;
 
   beforeAll(() => initialize());
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('animator-css', () => {
   });
 
   describe('runSequence function', () => {
-    var elems;
+    let elems;
 
     beforeEach(() => {
       loadFixtures('run-sequence.html');
@@ -21,7 +21,7 @@ describe('animator-css', () => {
     });
 
     it('should run multiple animations one after another', (done) => {
-      var testClass = 'animate-test';
+      const testClass = 'animate-test';
 
       sut.runSequence([
         { element: elems.eq(0)[0], className: testClass },
@@ -36,12 +36,12 @@ describe('animator-css', () => {
     });
 
     it('should fire sequence DOM events', () => {
-      var beginFired = false
-        , doneFired = false
-        , listenerBegin = document.addEventListener(animationEvent.sequenceBegin, () => beginFired = true)
-        , listenerDone   = document.addEventListener(animationEvent.sequenceDone, () => doneFired = true);
+      let beginFired = false;
+      let doneFired = false;
+      const listenerBegin = document.addEventListener(animationEvent.sequenceBegin, () => beginFired = true);
+      const listenerDone = document.addEventListener(animationEvent.sequenceDone, () => doneFired = true);
 
-      var testClass = 'animate-test';
+      const testClass = 'animate-test';
 
       sut.runSequence([
         { element: elems.eq(0)[0], className: testClass },

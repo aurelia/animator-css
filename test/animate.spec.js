@@ -5,14 +5,14 @@ import {initialize} from 'aurelia-pal-browser';
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/';
 
 describe('animator-css', () => {
-  var sut;
+  let sut;
   beforeAll(() => initialize());
   beforeEach(() => {
     sut = new CssAnimator();
   });
   describe('animate function', () => {
-    var elem,
-        testClass;
+    let elem;
+    let testClass;
 
     describe('with valid keyframes', () => {
       beforeEach(() => {
@@ -30,7 +30,7 @@ describe('animator-css', () => {
       });
 
       it('should animate multiple elements', (done) => {
-        var elements = $('.sequenced-items li');
+        let elements = $('.sequenced-items li');
 
         sut.animate([elements.eq(0)[0], elements.eq(1)[0], elements.eq(2)[0]], testClass).then(() => {
           expect(sut.isAnimating).toBe(false);
@@ -42,9 +42,9 @@ describe('animator-css', () => {
       });
 
       it('should not fire add/remove events', (done) => {
-        var eventCalled = false
-          , listenerAdd = document.addEventListener(animationEvent.addClassBegin, () => eventCalled = true)
-          , listenerRemove = document.addEventListener(animationEvent.removeClassBegin, () => eventCalled = true);
+        let eventCalled = false;
+        const listenerAdd = document.addEventListener(animationEvent.addClassBegin, () => eventCalled = true);
+        const listenerRemove = document.addEventListener(animationEvent.removeClassBegin, () => eventCalled = true);
 
         sut.animate(elem, testClass).then(() => {
           expect(eventCalled).toBe(false);
@@ -54,7 +54,7 @@ describe('animator-css', () => {
           done();
         });
       });
-    })
+    });
 
     // missing keyframes currently break the promise animator
     describe('without valid keyframes', () => {
@@ -71,6 +71,6 @@ describe('animator-css', () => {
           done();
         });
       });
-    })
+    });
   });
 });

@@ -230,15 +230,19 @@ export class CssAnimator {
   }
 
   /**
-   * Execute an 'enter' animation on an element
-   * @param element Element to animate
-   * @returns Resolved when the animation is done
+   * Animates element on enter or leave
+   * @param element element to animate
+   * @param direction 'enter' or 'leave'
+   * @param doneClass class to apply when done
+   * @private
    */
-  enter(element: HTMLElement): Promise<boolean> {
+  _stateAnim(element: HTMLElement, direction: string, doneClass: string) {
+    const auClass = 'au-' + direction;
+    const auClassActive = auClass + '-active';
     return new Promise((resolve, reject) => {
-      let classList = element.classList;
+      const classList = element.classList;
 
-      this._triggerDOMEvent(animationEvent.enterBegin, element);
+      this._triggerDOMEvent(animationEvent[direction + 'Begin'], element);
 
       // Step 1.2: remove done classes
       if (this.useAnimationDoneClasses) {
@@ -247,8 +251,8 @@ export class CssAnimator {
       }
 
       // Step 2: Add animation preparation class
-      classList.add('au-enter');
-      let prevAnimationNames = this._getElementAnimationNames(element);
+      classList.add(auClass);
+      const prevAnimationNames = this._getElementAnimationNames(element);
 
       // Step 3: setup event to check whether animations started
       let animStart;
@@ -257,7 +261,7 @@ export class CssAnimator {
         animHasStarted = true;
         this.isAnimating = true;
 
-        this._triggerDOMEvent(animationEvent.enterActive, element);
+        this._triggerDOMEvent(animationEvent[direction + 'Active'], element);
 
         // Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimStart.stopPropagation();
@@ -268,7 +272,7 @@ export class CssAnimator {
       // Step 3.1: Wait for animation to finish
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-        if (! animHasStarted) {
+        if (!animHasStarted) {
           return;
         }
 
@@ -276,64 +280,75 @@ export class CssAnimator {
         evAnimEnd.stopPropagation();
 
         // Step 3.1.1: remove animation classes
-        classList.remove('au-enter-active');
-        classList.remove('au-enter');
+        classList.remove(auClassActive);
+        classList.remove(auClass);
 
         // Step 3.1.2 remove animationend listener
         evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
-        // Step 3.1.3 in case animation done animations are active, add the defined entered class to the element
+        // Step 3.1.3 in case animation done animations are active, add the defined done class to the element
         if (this.useAnimationDoneClasses &&
-           this.animationEnteredClass !== undefined &&
-           this.animationEnteredClass !== null) {
-          classList.add(this.animationEnteredClass);
+            doneClass !== undefined &&
+            doneClass !== null) {
+          classList.add(doneClass);
         }
 
         this.isAnimating = false;
-        this._triggerDOMEvent(animationEvent.enterDone, element);
+        this._triggerDOMEvent(animationEvent[direction + 'Done'], element);
 
         resolve(true);
       }, false);
 
       // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
-      let parent = element.parentElement;
+      const parent = element.parentElement;
       let delay = 0;
+      const attrib = 'data-animator-pending' + direction;
 
-      let cleanupAnimation = () => {
+      const cleanupAnimation = () => {
         // Step 5: if no animations scheduled cleanup animation classes
-        let animationNames = this._getElementAnimationNames(element);
+        const animationNames = this._getElementAnimationNames(element);
         if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
-          classList.remove('au-enter-active');
-          classList.remove('au-enter');
+          classList.remove(auClassActive);
+          classList.remove(auClass);
 
           this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
           this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
 
-          this._triggerDOMEvent(animationEvent.enterTimeout, element);
+          this._triggerDOMEvent(animationEvent[direction + 'Timeout'], element);
           resolve(false);
         }
+        parent && parent.setAttribute(attrib, +(parent.getAttribute(attrib) || 1) - 1);
       };
 
       if (parent !== null &&
-         parent !== undefined &&
-         (
-          parent.classList.contains('au-stagger') ||
-          parent.classList.contains('au-stagger-enter')
-         )) {
-        let elemPos = Array.prototype.indexOf.call(parent.children, element);
-        delay = this._getElementAnimationDelay(parent) * elemPos;
-
+          parent !== undefined &&
+          (
+            parent.classList.contains('au-stagger') ||
+            parent.classList.contains('au-stagger-enter')
+          )) {
+        const offset = +(parent.getAttribute(attrib) || 0);
+        parent.setAttribute(attrib, offset + 1);
+        delay = this._getElementAnimationDelay(parent) * offset;
         this._triggerDOMEvent(animationEvent.staggerNext, element);
 
         setTimeout(() => {
-          classList.add('au-enter-active');
+          classList.add(auClassActive);
           cleanupAnimation();
         }, delay);
       } else {
-        classList.add('au-enter-active');
+        classList.add(auClassActive);
         cleanupAnimation();
       }
     });
+  }
+
+  /**
+   * Execute an 'enter' animation on an element
+   * @param element Element to animate
+   * @returns Resolved when the animation is done
+   */
+  enter(element: HTMLElement): Promise<boolean> {
+    return this._stateAnim(element, 'enter', this.animationEnteredClass);
   }
 
   /**
@@ -342,106 +357,7 @@ export class CssAnimator {
    * @returns Resolved when the animation is done
    */
   leave(element: HTMLElement): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      let classList = element.classList;
-
-      this._triggerDOMEvent(animationEvent.leaveBegin, element);
-
-      // Step 1.1: remove done classes
-      if (this.useAnimationDoneClasses) {
-        classList.remove(this.animationEnteredClass);
-        classList.remove(this.animationLeftClass);
-      }
-
-      // Step 2: Add animation preparation class
-      classList.add('au-leave');
-      let prevAnimationNames = this._getElementAnimationNames(element);
-
-      // Step 3: setup event to check whether animations started
-      let animStart;
-      let animHasStarted = false;
-      this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
-        animHasStarted = true;
-        this.isAnimating = true;
-
-        this._triggerDOMEvent(animationEvent.leaveActive, element);
-
-        // Stop event propagation, bubbling will otherwise prevent parent animation
-        evAnimStart.stopPropagation();
-
-        evAnimStart.target.removeEventListener(evAnimStart.type, animStart);
-      }, false);
-
-      // Step 3.1: Wait for animation to finish
-      let animEnd;
-      this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-        if (! animHasStarted) {
-          return;
-        }
-
-        // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
-        evAnimEnd.stopPropagation();
-
-        // Step 3.1.1: remove animation classes
-        classList.remove('au-leave-active');
-        classList.remove('au-leave');
-
-        // Step 3.1.2 remove animationend listener
-        evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
-
-        // Step 3.1.3 in case animation done animations are active, add the defined left class to the element
-        if (this.useAnimationDoneClasses &&
-           this.animationLeftClass !== undefined &&
-           this.animationLeftClass !== null) {
-          classList.add(this.animationLeftClass);
-        }
-
-        this.isAnimating = false;
-        this._triggerDOMEvent(animationEvent.leaveDone, element);
-
-        resolve(true);
-      }, false);
-
-
-      // Step 4: check if parent element is defined to stagger animations otherwise trigger leave immediately
-      let parent = element.parentElement;
-      let delay = 0;
-
-      let cleanupAnimation = () => {
-        // Step 5: if no animations scheduled cleanup animation classes
-        let animationNames = this._getElementAnimationNames(element);
-        if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
-          classList.remove('au-leave-active');
-          classList.remove('au-leave');
-
-          this._removeMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd);
-          this._removeMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart);
-
-          this._triggerDOMEvent(animationEvent.leaveTimeout, element);
-          resolve(false);
-        }
-      };
-
-      if (parent !== null &&
-         parent !== undefined &&
-         (
-           parent.classList.contains('au-stagger') ||
-           parent.classList.contains('au-stagger-leave')
-         )) {
-        let elemPos = Array.prototype.indexOf.call(parent.children, element);
-        delay = this._getElementAnimationDelay(parent) * elemPos;
-
-        this._triggerDOMEvent(animationEvent.staggerNext, element);
-
-        setTimeout(() => {
-          classList.add('au-leave-active');
-          cleanupAnimation();
-        }, delay);
-      } else {
-        classList.add('au-leave-active');
-        cleanupAnimation();
-      }
-    });
+    return this._stateAnim(element, 'leave', this.animationLeftClass);
   }
 
   /**
