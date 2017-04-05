@@ -3,7 +3,7 @@ import {DOM} from 'aurelia-pal';
 
 interface CssAnimation {
   className: string;
-  element: HTMLElement;
+  element: Element;
 }
 
 /**
@@ -30,7 +30,7 @@ export class CssAnimator {
    * @param s  collection of events to bind listeners to
    * @param fn callback that gets executed
    */
-  _addMultipleEventListener(el: HTMLElement, s: string, fn: Function) : void {
+  _addMultipleEventListener(el: Element, s: string, fn: Function) : void {
     let evts = s.split(' ');
     for (let i = 0, ii = evts.length; i < ii; ++i) {
       el.addEventListener(evts[i], fn, false);
@@ -44,7 +44,7 @@ export class CssAnimator {
    * @param s  collection of events to remove
    * @param fn callback to remove
    */
-  _removeMultipleEventListener(el: HTMLElement, s: string, fn: Function) : void {
+  _removeMultipleEventListener(el: Element, s: string, fn: Function) : void {
     let evts = s.split(' ');
     for (let i = 0, ii = evts.length; i < ii; ++i) {
       el.removeEventListener(evts[i], fn, false);
@@ -57,7 +57,7 @@ export class CssAnimator {
    * @param element the element to inspect
    * @returns animation-delay in seconds
    */
-  _getElementAnimationDelay(element: HTMLElement): number {
+  _getElementAnimationDelay(element: Element): number {
     let styl = DOM.getComputedStyle(element);
     let prop;
     let delay;
@@ -84,7 +84,7 @@ export class CssAnimator {
    * @param element the element to inspect
    * @returns array of animation names
    */
-  _getElementAnimationNames(element: HTMLElement): Array<String> {
+  _getElementAnimationNames(element: Element): Array<String> {
     let styl = DOM.getComputedStyle(element);
     let prefix;
 
@@ -109,7 +109,7 @@ export class CssAnimator {
    * @param className the class to be added and removed
    * @returns {Promise<Boolean>}
    */
-  _performSingleAnimate(element: HTMLElement, className: string): Promise<boolean> {
+  _performSingleAnimate(element: Element, className: string): Promise<boolean> {
     this._triggerDOMEvent(animationEvent.animateBegin, element);
 
     return this.addClass(element, className, true)
@@ -135,7 +135,7 @@ export class CssAnimator {
    * @param eventType the event type
    * @param element   the element to be dispatched as event detail
    */
-  _triggerDOMEvent(eventType: string, element: HTMLElement): void {
+  _triggerDOMEvent(eventType: string, element: Element): void {
     let evt = DOM.createCustomEvent(eventType, {bubbles: true, cancelable: true, detail: element});
     DOM.dispatchEvent(evt);
   }
@@ -204,7 +204,7 @@ export class CssAnimator {
    * @param options options for the animation (duration, easing, ...)
    * @returns Resolved when the animation is done
    */
-  animate(element: HTMLElement | Array<HTMLElement>, className: string): Promise<boolean> {
+  animate(element: Element | Array<Element>, className: string): Promise<boolean> {
     if (Array.isArray(element)) {
       return Promise.all(element.map( (el) => {
         return this._performSingleAnimate(el, className);
@@ -236,7 +236,7 @@ export class CssAnimator {
    * @param doneClass class to apply when done
    * @private
    */
-  _stateAnim(element: HTMLElement, direction: string, doneClass: string) {
+  _stateAnim(element: Element, direction: string, doneClass: string) {
     const auClass = 'au-' + direction;
     const auClassActive = auClass + '-active';
     return new Promise((resolve, reject) => {
@@ -347,7 +347,7 @@ export class CssAnimator {
    * @param element Element to animate
    * @returns Resolved when the animation is done
    */
-  enter(element: HTMLElement): Promise<boolean> {
+  enter(element: Element): Promise<boolean> {
     return this._stateAnim(element, 'enter', this.animationEnteredClass);
   }
 
@@ -356,7 +356,7 @@ export class CssAnimator {
    * @param element Element to animate
    * @returns Resolved when the animation is done
    */
-  leave(element: HTMLElement): Promise<boolean> {
+  leave(element: Element): Promise<boolean> {
     return this._stateAnim(element, 'leave', this.animationLeftClass);
   }
 
@@ -367,7 +367,7 @@ export class CssAnimator {
    * @param suppressEvents Indicates whether or not to suppress animation events.
    * @returns Resolved when the animation is done
    */
-  removeClass(element: HTMLElement, className: string, suppressEvents: boolean = false): Promise<boolean> {
+  removeClass(element: Element, className: string, suppressEvents: boolean = false): Promise<boolean> {
     return new Promise( (resolve, reject) => {
       let classList = element.classList;
 
@@ -455,7 +455,7 @@ export class CssAnimator {
    * @param suppressEvents Indicates whether or not to suppress animation events.
    * @returns Resolved when the animation is done
    */
-  addClass(element: HTMLElement, className: string, suppressEvents: boolean = false): Promise<boolean> {
+  addClass(element: Element, className: string, suppressEvents: boolean = false): Promise<boolean> {
     return new Promise((resolve, reject) => {
       let classList = element.classList;
 
