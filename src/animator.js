@@ -258,6 +258,9 @@ export class CssAnimator {
       let animStart;
       let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
+        if (evAnimStart.target !== element) {
+          return;
+        }
         animHasStarted = true;
         this.isAnimating = true;
 
@@ -273,6 +276,9 @@ export class CssAnimator {
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
         if (!animHasStarted) {
+          return;
+        }
+        if (evAnimEnd.target !== element) {
           return;
         }
 
@@ -388,6 +394,9 @@ export class CssAnimator {
       let animStart;
       let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
+        if (evAnimStart.target !== element) {
+          return;
+        }
         animHasStarted = true;
         this.isAnimating = true;
 
@@ -405,6 +414,9 @@ export class CssAnimator {
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
         if (! animHasStarted) {
+          return;
+        }
+        if (evAnimEnd.target !== element) {
           return;
         }
 
@@ -467,6 +479,9 @@ export class CssAnimator {
       let animStart;
       let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = (evAnimStart) => {
+        if (evAnimStart.target !== element) {
+          return;
+        }
         animHasStarted = true;
         this.isAnimating = true;
 
@@ -486,7 +501,10 @@ export class CssAnimator {
         if (! animHasStarted) {
           return;
         }
-
+        if (evAnimEnd.target !== element) {
+          return;
+        }
+    
         // Step 2.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimEnd.stopPropagation();
 
