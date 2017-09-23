@@ -615,15 +615,20 @@ describe('animator-css', () => {
     });
 
     it('should animate enter element using stagger-enter', (done) => {
-      elems = $('.stagger-enter-only');
+      let eelems = $('.stagger-enter-only');
+
+      setTimeout( () => {
+        expect($(eelems[0]).css('opacity')).not.toBe('0');
+        expect($(eelems[eelems.length - 1]).css('opacity')).toBe('0');
+      }, 100 );
 
       let proms = [];
-      elems.each( (idx, elem) => {
-        proms.push(sut.leave(elem));
+      eelems.each( (idx, elem) => {
+        proms.push(sut.enter(elem));
       });
 
       Promise.all(proms).then( () => {
-        elems.each( (idx, elem) => {
+        eelems.each( (idx, elem) => {
           expect($(elem).css('opacity')).toBe('1');
         });
         done();
@@ -631,15 +636,20 @@ describe('animator-css', () => {
     });
 
     it('should animate leave element using stagger-leave', (done) => {
-      elems = $('.stagger-leave-only');
+      let lelems = $('.stagger-leave-only');
+
+      setTimeout( () => {
+        expect($(lelems[0]).css('opacity')).not.toBe('1');
+        expect($(lelems[lelems.length - 1]).css('opacity')).toBe('1');
+      }, 100 );
 
       let proms = [];
-      elems.each( (idx, elem) => {
+      lelems.each( (idx, elem) => {
         proms.push(sut.leave(elem));
       });
 
       Promise.all(proms).then( () => {
-        elems.each( (idx, elem) => {
+        lelems.each( (idx, elem) => {
           expect($(elem).css('opacity')).toBe('0');
         });
         done();

@@ -307,7 +307,6 @@ export class CssAnimator {
 
       // Step 4: check if parent element is defined to stagger animations otherwise trigger active immediately
       const parent = element.parentElement;
-      let delay = 0;
       const attrib = 'data-animator-pending' + direction;
 
       const cleanupAnimation = () => {
@@ -326,15 +325,11 @@ export class CssAnimator {
         parent && parent.setAttribute(attrib, +(parent.getAttribute(attrib) || 1) - 1);
       };
 
-      if (parent !== null &&
-          parent !== undefined &&
-          (
-            parent.classList.contains('au-stagger') ||
-            parent.classList.contains('au-stagger-enter')
-          )) {
+      if (parent !== null && parent !== undefined &&
+         (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-' + direction))) {
         const offset = +(parent.getAttribute(attrib) || 0);
         parent.setAttribute(attrib, offset + 1);
-        delay = this._getElementAnimationDelay(parent) * offset;
+        const delay = this._getElementAnimationDelay(parent) * offset;
         this._triggerDOMEvent(animationEvent.staggerNext, element);
 
         setTimeout(() => {
@@ -504,7 +499,7 @@ export class CssAnimator {
         if (evAnimEnd.target !== element) {
           return;
         }
-    
+
         // Step 2.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimEnd.stopPropagation();
 
