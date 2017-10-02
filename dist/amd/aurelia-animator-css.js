@@ -190,6 +190,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var _animStart = void 0;
         var animHasStarted = false;
         _this4._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart = function animStart(evAnimStart) {
+          if (evAnimStart.target !== element) {
+            return;
+          }
           animHasStarted = true;
           _this4.isAnimating = true;
 
@@ -203,6 +206,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var _animEnd = void 0;
         _this4._addMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd = function animEnd(evAnimEnd) {
           if (!animHasStarted) {
+            return;
+          }
+          if (evAnimEnd.target !== element) {
             return;
           }
 
@@ -224,7 +230,6 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         }, false);
 
         var parent = element.parentElement;
-        var delay = 0;
         var attrib = 'data-animator-pending' + direction;
 
         var cleanupAnimation = function cleanupAnimation() {
@@ -242,10 +247,10 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           parent && parent.setAttribute(attrib, +(parent.getAttribute(attrib) || 1) - 1);
         };
 
-        if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-enter'))) {
+        if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-' + direction))) {
           var offset = +(parent.getAttribute(attrib) || 0);
           parent.setAttribute(attrib, offset + 1);
-          delay = _this4._getElementAnimationDelay(parent) * offset;
+          var delay = _this4._getElementAnimationDelay(parent) * offset;
           _this4._triggerDOMEvent(_aureliaTemplating.animationEvent.staggerNext, element);
 
           setTimeout(function () {
@@ -290,6 +295,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var _animStart2 = void 0;
         var animHasStarted = false;
         _this5._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart2 = function animStart(evAnimStart) {
+          if (evAnimStart.target !== element) {
+            return;
+          }
           animHasStarted = true;
           _this5.isAnimating = true;
 
@@ -305,6 +313,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var _animEnd2 = void 0;
         _this5._addMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd2 = function animEnd(evAnimEnd) {
           if (!animHasStarted) {
+            return;
+          }
+          if (evAnimEnd.target !== element) {
             return;
           }
 
@@ -357,6 +368,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var _animStart3 = void 0;
         var animHasStarted = false;
         _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart3 = function animStart(evAnimStart) {
+          if (evAnimStart.target !== element) {
+            return;
+          }
           animHasStarted = true;
           _this6.isAnimating = true;
 
@@ -372,6 +386,9 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
         var _animEnd3 = void 0;
         _this6._addMultipleEventListener(element, 'webkitAnimationEnd animationend', _animEnd3 = function animEnd(evAnimEnd) {
           if (!animHasStarted) {
+            return;
+          }
+          if (evAnimEnd.target !== element) {
             return;
           }
 

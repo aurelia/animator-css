@@ -170,6 +170,9 @@ export let CssAnimator = class CssAnimator {
       let animStart;
       let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = evAnimStart => {
+        if (evAnimStart.target !== element) {
+          return;
+        }
         animHasStarted = true;
         this.isAnimating = true;
 
@@ -183,6 +186,9 @@ export let CssAnimator = class CssAnimator {
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = evAnimEnd => {
         if (!animHasStarted) {
+          return;
+        }
+        if (evAnimEnd.target !== element) {
           return;
         }
 
@@ -204,7 +210,6 @@ export let CssAnimator = class CssAnimator {
       }, false);
 
       const parent = element.parentElement;
-      let delay = 0;
       const attrib = 'data-animator-pending' + direction;
 
       const cleanupAnimation = () => {
@@ -222,10 +227,10 @@ export let CssAnimator = class CssAnimator {
         parent && parent.setAttribute(attrib, +(parent.getAttribute(attrib) || 1) - 1);
       };
 
-      if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-enter'))) {
+      if (parent !== null && parent !== undefined && (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-' + direction))) {
         const offset = +(parent.getAttribute(attrib) || 0);
         parent.setAttribute(attrib, offset + 1);
-        delay = this._getElementAnimationDelay(parent) * offset;
+        const delay = this._getElementAnimationDelay(parent) * offset;
         this._triggerDOMEvent(animationEvent.staggerNext, element);
 
         setTimeout(() => {
@@ -266,6 +271,9 @@ export let CssAnimator = class CssAnimator {
       let animStart;
       let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = evAnimStart => {
+        if (evAnimStart.target !== element) {
+          return;
+        }
         animHasStarted = true;
         this.isAnimating = true;
 
@@ -281,6 +289,9 @@ export let CssAnimator = class CssAnimator {
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = evAnimEnd => {
         if (!animHasStarted) {
+          return;
+        }
+        if (evAnimEnd.target !== element) {
           return;
         }
 
@@ -329,6 +340,9 @@ export let CssAnimator = class CssAnimator {
       let animStart;
       let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = evAnimStart => {
+        if (evAnimStart.target !== element) {
+          return;
+        }
         animHasStarted = true;
         this.isAnimating = true;
 
@@ -344,6 +358,9 @@ export let CssAnimator = class CssAnimator {
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = evAnimEnd => {
         if (!animHasStarted) {
+          return;
+        }
+        if (evAnimEnd.target !== element) {
           return;
         }
 

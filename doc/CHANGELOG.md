@@ -1,3 +1,14 @@
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/aurelia/animator-css/compare/1.0.2...v1.0.3) (2017-10-02)
+
+
+### Bug Fixes
+
+* **events:** start and end events capture bubbles ([bb85e90](https://github.com/aurelia/animator-css/commit/bb85e90))
+* **stagger:** add leave animation stagger ([#62](https://github.com/aurelia/animator-css/issues/62)) ([74904c4](https://github.com/aurelia/animator-css/commit/74904c4))
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/aurelia/animator-css/compare/1.0.1...v1.0.2) (2017-04-05)
 
