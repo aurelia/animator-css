@@ -372,6 +372,7 @@ export class CssAnimator {
     return new Promise( (resolve, reject) => {
       let classList = element.classList;
 
+      //if neither the class exists on the element, or is not currently being added, resolve now.
       if (!classList.contains(className) && !classList.contains(className + '-add')) {
         resolve(false);
         return;
@@ -379,6 +380,12 @@ export class CssAnimator {
 
       if (suppressEvents !== true) {
         this._triggerDOMEvent(animationEvent.removeClassBegin, element);
+      }
+
+      // Step 1: If the 'addClass' animation is in progress, finish it prematurely.
+      if (classList.contains(className + '-add')) {
+        classList.remove(className + '-add');
+        classList.add(className);
       }
 
       // Step 2: Remove final className, so animation can start
@@ -415,13 +422,21 @@ export class CssAnimator {
           return;
         }
 
-        // Step 3.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        // Step 3.1.0: Do nothing if a new addClass animation has started and ended the removeClass animation prematurely
+        if (!element.classList.contains(className + '-remove')) {
+          resolve(true);
+        }
+
+        // Step 3.1.1: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimEnd.stopPropagation();
 
-        // Step 3.1.1 Remove -remove suffixed class
+        // Step 3.1.2: Remove the class
+        classList.remove(className);
+
+        // Step 3.1.3: Remove -remove suffixed class
         classList.remove(className + '-remove');
 
-        // Step 3.1.2 remove animationend listener
+        // Step 3.1.4: remove animationend listener
         evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
         this.isAnimating = false;
@@ -470,6 +485,12 @@ export class CssAnimator {
         this._triggerDOMEvent(animationEvent.addClassBegin, element);
       }
 
+      // Step 1: If the 'removeClass' animation is in progress, finish it prematurely.
+      if (classList.contains(className + '-remove')) {
+        classList.remove(className + '-remove');
+        classList.remove(className);
+      }
+
       // Step 2: setup event to check whether animations started
       let animStart;
       let animHasStarted = false;
@@ -500,16 +521,21 @@ export class CssAnimator {
           return;
         }
 
-        // Step 2.1.0: Stop event propagation, bubbling will otherwise prevent parent animation
+        // Step 2.1.0: Do nothing if a new removeClass animation has started and ended the addClass animation prematurely
+        if (!element.classList.contains(className + '-add')) {
+          resolve(true);
+        }
+
+        // Step 2.1.1: Stop event propagation, bubbling will otherwise prevent parent animation
         evAnimEnd.stopPropagation();
 
-        // Step 2.1.1: Add final className
+        // Step 2.1.2: Add final className
         classList.add(className);
 
-        // Step 2.1.2 Remove -add suffixed class
+        // Step 2.1.3: Remove -add suffixed class
         classList.remove(className + '-add');
 
-        // Step 2.1.3 remove animationend listener
+        // Step 2.1.4: remove animationend listener
         evAnimEnd.target.removeEventListener(evAnimEnd.type, animEnd);
 
         this.isAnimating = false;
