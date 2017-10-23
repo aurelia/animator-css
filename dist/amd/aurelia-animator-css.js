@@ -289,6 +289,11 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassBegin, element);
         }
 
+        if (classList.contains(className + '-add')) {
+          classList.remove(className + '-add');
+          classList.add(className);
+        }
+
         classList.remove(className);
         var prevAnimationNames = _this5._getElementAnimationNames(element);
 
@@ -319,7 +324,13 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
             return;
           }
 
+          if (!element.classList.contains(className + '-remove')) {
+            resolve(true);
+          }
+
           evAnimEnd.stopPropagation();
+
+          classList.remove(className);
 
           classList.remove(className + '-remove');
 
@@ -365,6 +376,11 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassBegin, element);
         }
 
+        if (classList.contains(className + '-remove')) {
+          classList.remove(className + '-remove');
+          classList.remove(className);
+        }
+
         var _animStart3 = void 0;
         var animHasStarted = false;
         _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart3 = function animStart(evAnimStart) {
@@ -390,6 +406,10 @@ define(['exports', 'aurelia-templating', 'aurelia-pal'], function (exports, _aur
           }
           if (evAnimEnd.target !== element) {
             return;
+          }
+
+          if (!element.classList.contains(className + '-add')) {
+            resolve(true);
           }
 
           evAnimEnd.stopPropagation();

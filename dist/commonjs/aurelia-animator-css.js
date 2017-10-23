@@ -292,6 +292,11 @@ var CssAnimator = exports.CssAnimator = function () {
         _this5._triggerDOMEvent(_aureliaTemplating.animationEvent.removeClassBegin, element);
       }
 
+      if (classList.contains(className + '-add')) {
+        classList.remove(className + '-add');
+        classList.add(className);
+      }
+
       classList.remove(className);
       var prevAnimationNames = _this5._getElementAnimationNames(element);
 
@@ -322,7 +327,13 @@ var CssAnimator = exports.CssAnimator = function () {
           return;
         }
 
+        if (!element.classList.contains(className + '-remove')) {
+          resolve(true);
+        }
+
         evAnimEnd.stopPropagation();
+
+        classList.remove(className);
 
         classList.remove(className + '-remove');
 
@@ -368,6 +379,11 @@ var CssAnimator = exports.CssAnimator = function () {
         _this6._triggerDOMEvent(_aureliaTemplating.animationEvent.addClassBegin, element);
       }
 
+      if (classList.contains(className + '-remove')) {
+        classList.remove(className + '-remove');
+        classList.remove(className);
+      }
+
       var _animStart3 = void 0;
       var animHasStarted = false;
       _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart3 = function animStart(evAnimStart) {
@@ -393,6 +409,10 @@ var CssAnimator = exports.CssAnimator = function () {
         }
         if (evAnimEnd.target !== element) {
           return;
+        }
+
+        if (!element.classList.contains(className + '-add')) {
+          resolve(true);
         }
 
         evAnimEnd.stopPropagation();

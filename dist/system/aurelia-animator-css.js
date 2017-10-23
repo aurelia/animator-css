@@ -305,6 +305,11 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _conte
               _this5._triggerDOMEvent(animationEvent.removeClassBegin, element);
             }
 
+            if (classList.contains(className + '-add')) {
+              classList.remove(className + '-add');
+              classList.add(className);
+            }
+
             classList.remove(className);
             var prevAnimationNames = _this5._getElementAnimationNames(element);
 
@@ -335,7 +340,13 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _conte
                 return;
               }
 
+              if (!element.classList.contains(className + '-remove')) {
+                resolve(true);
+              }
+
               evAnimEnd.stopPropagation();
+
+              classList.remove(className);
 
               classList.remove(className + '-remove');
 
@@ -381,6 +392,11 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _conte
               _this6._triggerDOMEvent(animationEvent.addClassBegin, element);
             }
 
+            if (classList.contains(className + '-remove')) {
+              classList.remove(className + '-remove');
+              classList.remove(className);
+            }
+
             var _animStart3 = void 0;
             var animHasStarted = false;
             _this6._addMultipleEventListener(element, 'webkitAnimationStart animationstart', _animStart3 = function animStart(evAnimStart) {
@@ -406,6 +422,10 @@ System.register(['aurelia-templating', 'aurelia-pal'], function (_export, _conte
               }
               if (evAnimEnd.target !== element) {
                 return;
+              }
+
+              if (!element.classList.contains(className + '-add')) {
+                resolve(true);
               }
 
               evAnimEnd.stopPropagation();

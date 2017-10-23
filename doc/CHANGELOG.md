@@ -1,3 +1,11 @@
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/aurelia/animator-css/compare/1.0.3...v1.0.4) (2017-10-23)
+
+### Bug Fixes
+
+* Resolve a race condition with addClass/removeClass
+  * Prematurely ends animations if their opposite is triggered
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/aurelia/animator-css/compare/1.0.2...v1.0.3) (2017-10-02)
 

@@ -265,6 +265,11 @@ export let CssAnimator = class CssAnimator {
         this._triggerDOMEvent(animationEvent.removeClassBegin, element);
       }
 
+      if (classList.contains(className + '-add')) {
+        classList.remove(className + '-add');
+        classList.add(className);
+      }
+
       classList.remove(className);
       let prevAnimationNames = this._getElementAnimationNames(element);
 
@@ -295,7 +300,13 @@ export let CssAnimator = class CssAnimator {
           return;
         }
 
+        if (!element.classList.contains(className + '-remove')) {
+          resolve(true);
+        }
+
         evAnimEnd.stopPropagation();
+
+        classList.remove(className);
 
         classList.remove(className + '-remove');
 
@@ -337,6 +348,11 @@ export let CssAnimator = class CssAnimator {
         this._triggerDOMEvent(animationEvent.addClassBegin, element);
       }
 
+      if (classList.contains(className + '-remove')) {
+        classList.remove(className + '-remove');
+        classList.remove(className);
+      }
+
       let animStart;
       let animHasStarted = false;
       this._addMultipleEventListener(element, 'webkitAnimationStart animationstart', animStart = evAnimStart => {
@@ -362,6 +378,10 @@ export let CssAnimator = class CssAnimator {
         }
         if (evAnimEnd.target !== element) {
           return;
+        }
+
+        if (!element.classList.contains(className + '-add')) {
+          resolve(true);
         }
 
         evAnimEnd.stopPropagation();
