@@ -1,5 +1,5 @@
-import {animationEvent} from 'aurelia-templating';
-import {DOM} from 'aurelia-pal';
+import { animationEvent } from 'aurelia-templating';
+import { DOM } from 'aurelia-pal';
 
 interface CssAnimation {
   className: string;
@@ -30,7 +30,7 @@ export class CssAnimator {
    * @param s  collection of events to bind listeners to
    * @param fn callback that gets executed
    */
-  _addMultipleEventListener(el: Element, s: string, fn: Function) : void {
+  _addMultipleEventListener(el: Element, s: string, fn: Function): void {
     let evts = s.split(' ');
     for (let i = 0, ii = evts.length; i < ii; ++i) {
       el.addEventListener(evts[i], fn, false);
@@ -44,7 +44,7 @@ export class CssAnimator {
    * @param s  collection of events to remove
    * @param fn callback to remove
    */
-  _removeMultipleEventListener(el: Element, s: string, fn: Function) : void {
+  _removeMultipleEventListener(el: Element, s: string, fn: Function): void {
     let evts = s.split(' ');
     for (let i = 0, ii = evts.length; i < ii; ++i) {
       el.removeEventListener(evts[i], fn, false);
@@ -136,7 +136,7 @@ export class CssAnimator {
    * @param element   the element to be dispatched as event detail
    */
   _triggerDOMEvent(eventType: string, element: Element): void {
-    let evt = DOM.createCustomEvent(eventType, {bubbles: true, cancelable: true, detail: element});
+    let evt = DOM.createCustomEvent(eventType, { bubbles: true, cancelable: true, detail: element });
     DOM.dispatchEvent(evt);
   }
 
@@ -153,13 +153,13 @@ export class CssAnimator {
       return false;
     }
 
-    if (! this.verifyKeyframesExist) {
+    if (!this.verifyKeyframesExist) {
       return true;
     }
 
     const keyframesRuleType = window.CSSRule.KEYFRAMES_RULE ||
-                              window.CSSRule.MOZ_KEYFRAMES_RULE  ||
-                              window.CSSRule.WEBKIT_KEYFRAMES_RULE;
+      window.CSSRule.MOZ_KEYFRAMES_RULE ||
+      window.CSSRule.WEBKIT_KEYFRAMES_RULE;
 
     // loop through the stylesheets searching for the keyframes. no cache is
     // used in case of dynamic changes to the stylesheets.
@@ -206,7 +206,7 @@ export class CssAnimator {
    */
   animate(element: Element | Array<Element>, className: string): Promise<boolean> {
     if (Array.isArray(element)) {
-      return Promise.all(element.map( (el) => {
+      return Promise.all(element.map((el) => {
         return this._performSingleAnimate(el, className);
       }));
     }
@@ -224,7 +224,7 @@ export class CssAnimator {
 
     return animations.reduce((p, anim) => {
       return p.then(() => { return this.animate(anim.element, anim.className); });
-    }, Promise.resolve(true) ).then(() => {
+    }, Promise.resolve(true)).then(() => {
       this._triggerDOMEvent(animationEvent.sequenceDone, null);
     });
   }
@@ -294,8 +294,8 @@ export class CssAnimator {
 
         // Step 3.1.3 in case animation done animations are active, add the defined done class to the element
         if (this.useAnimationDoneClasses &&
-            doneClass !== undefined &&
-            doneClass !== null) {
+          doneClass !== undefined &&
+          doneClass !== null) {
           classList.add(doneClass);
         }
 
@@ -312,7 +312,7 @@ export class CssAnimator {
       const cleanupAnimation = () => {
         // Step 5: if no animations scheduled cleanup animation classes
         const animationNames = this._getElementAnimationNames(element);
-        if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+        if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
           classList.remove(auClassActive);
           classList.remove(auClass);
 
@@ -326,7 +326,7 @@ export class CssAnimator {
       };
 
       if (parent !== null && parent !== undefined &&
-         (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-' + direction))) {
+        (parent.classList.contains('au-stagger') || parent.classList.contains('au-stagger-' + direction))) {
         const offset = +(parent.getAttribute(attrib) || 0);
         parent.setAttribute(attrib, offset + 1);
         const delay = this._getElementAnimationDelay(parent) * offset;
@@ -369,10 +369,10 @@ export class CssAnimator {
    * @returns Resolved when the animation is done
    */
   removeClass(element: Element, className: string, suppressEvents: boolean = false): Promise<boolean> {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let classList = element.classList;
 
-      //if neither the class exists on the element, or is not currently being added, resolve now.
+      // if neither the class exists on the element, nor is not currently being added, resolve immediately.
       if (!classList.contains(className) && !classList.contains(className + '-add')) {
         resolve(false);
         return;
@@ -415,7 +415,7 @@ export class CssAnimator {
       // Step 3.1: Wait for animation to finish
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-        if (! animHasStarted) {
+        if (!animHasStarted) {
           return;
         }
         if (evAnimEnd.target !== element) {
@@ -454,7 +454,7 @@ export class CssAnimator {
 
       // Step 5: if no animations happened cleanup animation classes and remove final class
       let animationNames = this._getElementAnimationNames(element);
-      if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+      if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
         classList.remove(className + '-remove');
         classList.remove(className);
 
@@ -514,7 +514,7 @@ export class CssAnimator {
       // Step 2.1: Wait for animation to finish
       let animEnd;
       this._addMultipleEventListener(element, 'webkitAnimationEnd animationend', animEnd = (evAnimEnd) => {
-        if (! animHasStarted) {
+        if (!animHasStarted) {
           return;
         }
         if (evAnimEnd.target !== element) {
@@ -554,7 +554,7 @@ export class CssAnimator {
 
       // Step 4: if no animations happened cleanup animation classes and add final class
       let animationNames = this._getElementAnimationNames(element);
-      if (! this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
+      if (!this._animationChangeWithValidKeyframe(animationNames, prevAnimationNames)) {
         classList.remove(className + '-add');
         classList.add(className);
 
