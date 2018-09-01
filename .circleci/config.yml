@@ -16,7 +16,6 @@ jobs:
       - checkout
       - run: npm ci
       - run: jspm install
-      - run: git checkout -- package.json
       - save_cache:
           key: *cache_key
           paths:
